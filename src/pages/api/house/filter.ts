@@ -29,10 +29,7 @@ export default async function handler(
 
     try {
       // Build query for filtering houses
-      let query = supabase
-        .from("houses")
-        .select("*")
-        .eq("userId", session.user.id); // Fetch only houses belonging to the user
+      let query = supabase.from("House").select("*");
 
       // Apply search filter if provided
       if (search) {
