@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // Hauteur pleine page
+  flex-direction: column;
+}
+
+.btn {
+  width: 100%; // Largeur des boutons
+  max-width: 500px; // Largeur maximale
+  margin-bottom: 20px; // Espacement entre les boutons
+}

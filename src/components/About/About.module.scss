@@ -9,10 +9,12 @@
 }
 
 .aboutUsCard p {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 400;
   line-height: 20px;
   color: #666666;
+  vertical-align: middle; /* Centrer verticalement */
+  text-align: center; /* Centrer horizontalement */
 }
 
 .go-corner {
@@ -119,7 +121,8 @@
 }
 
 .about-section-1 {
-  background-color: $secondary;
+  background-color: $primary;
+  line-height: 48px;
 }
 
 .about-page-desc-1 {

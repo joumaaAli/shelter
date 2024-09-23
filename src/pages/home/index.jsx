@@ -7,13 +7,9 @@ import style from "./home.module.scss";
 const HomePage = () => {
   return (
     <div className={style.home}>
-      <div className={style.carouselWrapper}>
-        <CarouselComponent />
-      </div>
-      <div className="w-100 d-flex  flex-column align-items-center">
-        <About />
-        <ImageGallery />
-      </div>
+      <div className={style.carouselWrapper}></div>
+      <About />
+      <div className="w-100 d-flex  flex-column align-items-center"></div>
     </div>
   );
 };
