@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import style from "./About.module.scss";
 import Link from "next/link";
 
@@ -13,14 +13,16 @@ function About() {
 
   return (
     <div className="about-page">
-      <div className={`${style["about-section-1"]}`}>
-        <div className="container h-200 d-flex align-items-center justify-content-center flex-column py-2">
-          <p className={style["about-page-desc-1"]}>
-            تهدف هذه المنصة الى توحيد جميع اعلانات البيوت التي تعرض لاستقبال
-            اهلنا النازحين
-          </p>
+      <Container className="mb-4">
+        <div className={`${style["about-section-1"]}`}>
+          <div className="container h-200 d-flex align-items-center justify-content-center flex-column py-2">
+            <p className={style["about-page-desc-1"]}>
+              تهدف هذه المنصة الى توحيد جميع اعلانات البيوت التي تعرض لاستقبال
+              اهلنا النازحين
+            </p>
+          </div>
         </div>
-      </div>
+      </Container>
 
       <div className={style.ourServices}>
         <Row className="mx-2">
