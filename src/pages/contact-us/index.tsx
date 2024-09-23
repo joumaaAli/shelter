@@ -1,42 +1,131 @@
 import { ContactForm } from "../../components/Form/Contact/ContactForm";
-import styles from "./Contact.module.scss";
+import styles from "./Contact.module.scss"; // Ensure styles are imported correctly
+import { Table } from "reactstrap";
+import {Col, Container, Row} from "react-bootstrap";
+import shelter_table from "@/utils/models/shelter_table";
 
 const Contact = () => {
+  const shelter_data = [
+    {
+      "#": 1,
+      "المدينة": "دمشق",
+      "المنطفة": "المزة",
+      "الشارع": "شارع المدارس",
+      "المبنى": "البناء 5",
+      "الطابق": 2,
+      "اسم صاحب المنزل": "أحمد خليل",
+      "سعة المنزل": "9",
+      "معلومات إضافية": "قريب من المستشفى",
+      "رقم الهاتف": "0999999991",
+      "الكلفة": "50000 ل.س",
+      "حالة المنزل": "فارغ",
+    },
+    {
+      "#": 2,
+      "المدينة": "حلب",
+      "المنطفة": "السبيل",
+      "الشارع": "شارع الفرسان",
+      "المبنى": "البناء 10",
+      "الطابق": 3,
+      "اسم صاحب المنزل": "نور الدين حسين",
+      "سعة المنزل": "6",
+      "معلومات إضافية": "بالقرب من الجامعة",
+      "رقم الهاتف": "0999999992",
+      "الكلفة": "60000 ل.س",
+      "حالة المنزل": "مأهول",
+    },
+    {
+      "#": 3,
+      "المدينة": "حمص",
+      "المنطفة": "كرم الزيتون",
+      "الشارع": "شارع خالد بن الوليد",
+      "المبنى": "البناء 20",
+      "الطابق": 1,
+      "اسم صاحب المنزل": "حسن محمود",
+      "سعة المنزل": "5",
+      "معلومات إضافية": "مطل على الحديقة",
+      "رقم الهاتف": "0999999993",
+      "الكلفة": "45000 ل.س",
+      "حالة المنزل": "ممتلئ",
+    },
+    {
+      "#": 4,
+      "المدينة": "اللاذقية",
+      "المنطفة": "الرمل الجنوبي",
+      "الشارع": "شارع البحر",
+      "المبنى": "البناء 15",
+      "الطابق": 4,
+      "اسم صاحب المنزل": "علي محمد",
+      "سعة المنزل": "7",
+      "معلومات إضافية": "إطلالة بحرية",
+      "رقم الهاتف": "0999999994",
+      "الكلفة": "70000 ل.س",
+      "حالة المنزل": "فارغ",
+    }
+  ];
+
+  const getRowClass = (status: string) => {
+    switch (status) {
+      case 'فارغ':
+        return '';
+      case 'مأهول':
+        return styles["taken-row"];
+      case 'ممتلئ': // Full
+        return styles["full-row"];
+      default:
+        return '';
+    }
+  };
+
   return (
-    <div className={styles.headerMargin}>
-      <div className={styles.contact}>
-        <h2>Location</h2>
-        <div className={styles.map}>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15319.820734294997!2d-61.5121105!3d16.2740673!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c1349a53a72b509%3A0x9a3c67baafe4a5ab!2sURPS-ML%20Guadeloupe!5e0!3m2!1sen!2slb!4v1721993874401!5m2!1sen!2slb"
-            title="map2"
-          ></iframe>
-        </div>
-        <div className={styles.section}>
-          <div className={styles.text}>
-            97142 Rue Gaston Dorocant, Les Abymes 97142, Guadeloupe
-          </div>
-          {/* <div className="d-flex">
-            <FontAwesomeIcon
-              icon={faPhoneAlt}
-              style={{ fontSize: "24px", color: "blue" }}
-            />
-            <FontAwesomeIcon
-              icon={faMobileAlt}
-              style={{ fontSize: "24px", color: "green" }}
-            />
-            <FontAwesomeIcon
-              icon={faBriefcase}
-              style={{ fontSize: "24px", color: "red" }}
-            />
-          </div> */}
-        </div>
-        <div className={styles.formWrapper}>
-          <h2>To Suggest</h2>
-          <ContactForm />
-        </div>
-      </div>
-    </div>
+      <Container>
+        <Row>
+          <Col xl={8}>
+        <h1 className={styles["titleTable"]}>الملاجئ</h1>
+          </Col>
+          <Col xl={4}>
+            <div className="mt-4">
+              <div className="d-flex align-items-center">
+                <div className={`${styles['taken-row']} me-2`}
+                     style={{width: '15px', height: '15px', borderRadius: '50%', marginLeft: '10px'}}></div>
+                <span>مأهول</span>
+              </div>
+              <div className="d-flex align-items-center">
+                <div className={`${styles['full-row']} me-2`}
+                     style={{width: '15px', height: '15px', borderRadius: '50%', marginLeft: '10px'}}></div>
+                <span>ممتلئ</span>
+              </div>
+              <div className="d-flex align-items-center">
+                <div className="me-2"
+                     style={{width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#f9f9f9', marginLeft: '10px'}}></div>
+                <span>فارغ</span>
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <Table bordered hover responsive="xl" className={styles["table"]}>
+          <thead>
+          <tr>
+            {shelter_table.map((header, index) => (
+                <th key={index}>{header}</th>
+            ))}
+          </tr>
+          </thead>
+          <tbody>
+          {shelter_data.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {Object.values(row).map((cell, cellIndex) => (
+                    <td className={getRowClass(row["حالة المنزل"])} key={cellIndex}>{cellIndex === 9 ? (
+                        <a href={`tel:${cell}`}>{cell}</a>
+                    ) : (
+                        cell
+                    )}</td>
+                ))}
+              </tr>
+          ))}
+          </tbody>
+        </Table>
+      </Container>
   );
 };
 
