@@ -3,6 +3,7 @@ import { Container, Row, Col, Nav } from "react-bootstrap";
 import Application from "@/components/dashboard/Application/Application";
 import Formation from "@/components/dashboard/Formation/Formation";
 import ArticlePage from "@/components/dashboard/Article/Article";
+import Home from "@/components/dashboard/Home/Home";
 import { requireAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
 import RecordPage from "@/components/dashboard/record/Record";
@@ -11,24 +12,13 @@ import styles from "./admin.module.scss";
 
 const AdminPage = () => {
   const [activePage, setActivePage] = useState(0);
-  const tabs = [
-    { id: 0, label: "Applications" },
-    { id: 1, label: "Formations" },
-    { id: 2, label: "Actualite" },
-    { id: 3, label: "Records" },
-  ];
+  const tabs = [{ id: 0, label: "منازل" }];
   // Function to render the selected component
 
   const renderComponent = () => {
     switch (activePage) {
       case 0:
-        return <Application />;
-      case 1:
-        return <Formation />;
-      case 2:
-        return <ArticlePage />;
-      case 3:
-        return <RecordPage />;
+        return <Home />;
       default:
         return <Application />;
     }

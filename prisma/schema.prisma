@@ -102,3 +102,11 @@ model Doctor {
   records    Record[] @relation("RecordToDoctor")
 }
 
+model House {
+  id        Int      @id @default(autoincrement())
+  phoneNumber String
+  spaceForPeople String
+  address   String
+  additionnalInformation String?
+  name      String?
+}

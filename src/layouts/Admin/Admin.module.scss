@@ -4,4 +4,11 @@
   align-items: center;
   padding: 50px;
   width: 100%;
+  direction: rtl;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 20px;
+  }
 }
