@@ -33,6 +33,7 @@ export default async function handler(
     } = req.body;
 
     try {
+      console.log(session.user.id);
       const house = await prisma.house.create({
         data: {
           name,
@@ -45,9 +46,7 @@ export default async function handler(
       });
       return res.status(201).json(house);
     } catch (error) {
-      return res
-        .status(500)
-        .json({ error: "An error occurred while creating the home." });
+      return res.status(500).json({ error: error });
     }
   } else {
     res.setHeader("Allow", ["POST"]);

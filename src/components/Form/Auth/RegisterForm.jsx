@@ -29,7 +29,7 @@ const RegisterForm = ({ id, rawId }) => {
     onSubmit: async (values) => {
       const { error } = await handleRegister(id, values.password);
       if (error) {
-        alert(error.message);
+        alert(error);
       } else {
         router.push(path.auth.login);
       }

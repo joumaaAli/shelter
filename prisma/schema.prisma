@@ -13,7 +13,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-    houses    House[]  @relation("UserHouses")
+  houses    House[]  @relation("UserHouses")
 
 }
 

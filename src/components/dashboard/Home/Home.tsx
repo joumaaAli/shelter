@@ -31,6 +31,7 @@ const HomePage = () => {
       phoneNumber: e.target.phoneNumber.value,
       spaceForPeople: e.target.spaceForPeople.value,
       additionnalInformation: e.target.additionnalInformation.value,
+      taken: false,
     };
     await addHouse(newHome);
     setModalShow(false);
