@@ -16,6 +16,24 @@ export const fetchHouses = async (search: string = "") => {
   }
 };
 
+export const filterHouses = async (
+  search: string = "",
+  spaceForPeople?: number
+) => {
+  try {
+    const response = await axiosInstance.get(homePath + "/filter", {
+      params: {
+        search,
+        spaceForPeople, // Include this parameter for filtering by space for people
+      },
+    });
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error fetching homes:", error);
+    return { success: false, error };
+  }
+};
+
 // Update home data
 export const updateHouse = async (homeData: House) => {
   try {

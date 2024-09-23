@@ -33,19 +33,21 @@ export default async function handler(
     } = req.body;
 
     try {
-      console.log(session.user.id);
       const house = await prisma.house.create({
         data: {
           name,
           address,
           phoneNumber,
-          spaceForPeople,
+          spaceForPeople: parseInt(spaceForPeople),
           additionnalInformation,
-          userId: session.user.id, // Associate house with the user
+          userId: session?.user?.email?.includes("admin")
+            ? null
+            : session.user.id, // Associate house with the user
         },
       });
       return res.status(201).json(house);
     } catch (error) {
+      console.error(error);
       return res.status(500).json({ error: error });
     }
   } else {

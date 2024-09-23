@@ -97,18 +97,17 @@ model Doctor {
   email      String
   records    Record[] @relation("RecordToDoctor")
 }
-
 model House {
   id                      Int      @id @default(autoincrement())
-  userId                  String
+  userId                  String?  // Make this field optional by adding "?"
   name                    String?
   address                 String
   phoneNumber             String
-  spaceForPeople          String
+  spaceForPeople          Int      // This is already an integer
   additionnalInformation  String?
   taken                   Boolean  @default(false)
 
-  user                    User     @relation(fields: [userId], references: [id], name: "UserHouses")
+  user                    User?    @relation(fields: [userId], references: [id], name: "UserHouses") // Relation to User is now optional
 
-  @@index([userId]) // Optional: For faster queries on userId
+  @@index([userId])
 }

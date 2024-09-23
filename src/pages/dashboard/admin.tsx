@@ -1,12 +1,8 @@
-import { useState } from "react";
-import { Container, Row, Col, Nav } from "react-bootstrap";
-import Application from "@/components/dashboard/Application/Application";
-import Formation from "@/components/dashboard/Formation/Formation";
-import ArticlePage from "@/components/dashboard/Article/Article";
 import Home from "@/components/dashboard/Home/Home";
 import { requireAdminAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
-import RecordPage from "@/components/dashboard/record/Record";
+import { useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import styles from "./admin.module.scss";
 // Additional Page Components
 
@@ -20,7 +16,7 @@ const AdminPage = () => {
       case 0:
         return <Home />;
       default:
-        return <Application />;
+        return <Home />;
     }
   };
   return (

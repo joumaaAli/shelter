@@ -167,10 +167,12 @@ const HomePage = () => {
             <Form.Group className="my-1" controlId="spaceForPeople">
               <Form.Label>المساحة المتاحة للأشخاص</Form.Label>
               <Form.Control
-                type="text"
+                type="number" // Make the input type number for integer input
                 defaultValue={selectedHome?.spaceForPeople || ""}
+                min="1" // Ensure only positive values are allowed
               />
             </Form.Group>
+
             <Form.Group className="my-1" controlId="additionnalInformation">
               <Form.Label>معلومات إضافية</Form.Label>
               <Form.Control
