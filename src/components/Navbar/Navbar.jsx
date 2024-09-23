@@ -1,18 +1,29 @@
-import React, { use, useEffect, useState } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
-import styles from "./Navbar.module.scss";
-import { path } from "@/utils/routes";
 import { HandleLogout } from "@/services/userServices";
-import { useRouter } from "next/router";
+import { path } from "@/utils/routes";
 import { createClient } from "@/utils/supabase/component";
-import Image from "next/image";
-import Logo from "@/utils/img/logo.png";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import styles from "./Navbar.module.scss";
 
 const NavBar = () => {
   const supabase = createClient();
   const router = useRouter();
   const [user, setUser] = useState(null);
 
+  // Navigation links as a list of objects
+  const navLinks = [
+    { label: "الرئيسية", href: path.home }, // Home = الرئيسية
+    { label: "عرض المركبات", href: path.fahrzeugangebot }, // Fahrzeugangebot = عرض المركبات
+    { label: "خدمات", href: path.services }, // Services = خدمات
+    { label: "معلومات عنا", href: path.aboutUs }, // Über uns = معلومات عنا
+    { label: "اتصل بنا", href: path.contact }, // Kontakt = اتصل بنا
+  ];
+
+  const adminLinks = [
+    { label: "لوحة التحكم", href: path.admin }, // Dashboard = لوحة التحكم
+    { label: "تسجيل الخروج", href: path.home, isLogout: true }, // Logout = تسجيل الخروج
+  ];
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
@@ -42,69 +53,53 @@ const NavBar = () => {
   }, [supabase]);
 
   return (
-    <Navbar bg="light" expand="lg" className={styles.navbar}>
+    <Navbar bg="light" expand="lg" className={styles.navbar} dir="rtl">
       <Container className={styles.navbarContainer}>
-        <Navbar.Brand>
-          <Image src={Logo} alt="Logo" width={50} height={50} />
-        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto d-flex align-items-center">
-            <Nav.Link
-              className={`${styles.navLink} ${
-                router.pathname === path.fahrzeugangebot ? styles.active : ""
-              }`}
-              href={path.home}
-            >
-              Fahrzeugangebot
-            </Nav.Link>
-            <Nav.Link
-              className={`${styles.navLink} ${
-                router.pathname === path.services ? styles.active : ""
-              }`}
-              href={path.services}
-            >
-              Services
-            </Nav.Link>
-            <Nav.Link
-              className={`${styles.navLink} ${
-                router.pathname === path.aboutUs ? styles.active : ""
-              }`}
-              href={path.aboutUs}
-            >
-              Über uns
-            </Nav.Link>
-            <Nav.Link
-              className={`${styles.navLink} ${
-                router.pathname === path.contact ? styles.active : ""
-              }`}
-              href={path.contact}
-            >
-              Kontakt
-            </Nav.Link>
-
-            {user && (
+          <Nav className=" d-flex align-items-center">
+            {/* Render general navigation links */}
+            {navLinks.map((link, index) => (
               <Nav.Link
+                key={index}
                 className={`${styles.navLink} ${
-                  router.pathname === path.admin ? styles.active : ""
+                  router.pathname === link.href ? styles.active : ""
                 }`}
-                href={path.admin}
+                href={link.href}
               >
-                Dashboard
+                {link.label}
               </Nav.Link>
-            )}
+            ))}
 
-            {user ? (
-              <p
-                className={`${styles.navLink} m-0 p-0`}
-                onClick={() => {
-                  HandleLogout();
-                  router.push(path.home);
-                }}
-              >
-                Logout
-              </p>
-            ) : (
+            {/* Render admin/dashboard-related links if user is logged in */}
+            {user &&
+              adminLinks.map((link, index) =>
+                link.isLogout ? (
+                  <p
+                    key={index}
+                    className={`${styles.navLink} m-0 p-0`}
+                    onClick={() => {
+                      HandleLogout();
+                      router.push(link.href);
+                    }}
+                  >
+                    {link.label}
+                  </p>
+                ) : (
+                  <Nav.Link
+                    key={index}
+                    className={`${styles.navLink} ${
+                      router.pathname === link.href ? styles.active : ""
+                    }`}
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Nav.Link>
+                )
+              )}
+
+            {/* Show login link if no user is logged in */}
+            {!user && (
               <Nav.Link className={styles.navLink} href={path.auth.login}>
                 Login
               </Nav.Link>

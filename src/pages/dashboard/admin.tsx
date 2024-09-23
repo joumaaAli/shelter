@@ -4,7 +4,7 @@ import Application from "@/components/dashboard/Application/Application";
 import Formation from "@/components/dashboard/Formation/Formation";
 import ArticlePage from "@/components/dashboard/Article/Article";
 import Home from "@/components/dashboard/Home/Home";
-import { requireAuthentication } from "@/layouts/layout";
+import { requireAdminAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
 import RecordPage from "@/components/dashboard/record/Record";
 import styles from "./admin.module.scss";
@@ -52,5 +52,5 @@ const AdminPage = () => {
 export default AdminPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  return await requireAuthentication(context);
+  return await requireAdminAuthentication(context);
 };

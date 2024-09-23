@@ -60,3 +60,34 @@ export const requireNoAuthentication = async (context) => {
     },
   };
 };
+
+export const requireAdminAuthentication = async (context) => {
+  const supabase = createClient(context);
+
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data.user) {
+    return {
+      redirect: {
+        destination: path.auth.login,
+        permanent: false,
+      },
+    };
+  }
+
+  const user = data.user;
+  if (user.app_metadata?.role !== "super-admin") {
+    return {
+      redirect: {
+        destination: path.home, // Create this page to handle unauthorized access
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user,
+    },
+  };
+};

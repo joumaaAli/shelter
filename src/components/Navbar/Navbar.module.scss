@@ -9,6 +9,13 @@
   background-color: $secondary !important;
 }
 
+.navbarContainer {
+  display: flex;
+  justify-content: flex-end; /* Align the content to the right */
+  flex-direction: row-reverse; /* Ensure links start from the right in RTL */
+  width: 100%;
+}
+
 .navLink {
   color: #c9c1c1;
   font-weight: 300;
@@ -20,6 +27,7 @@
   margin-left: 2px;
   margin-right: 2px;
   cursor: pointer;
+  text-align: right; /* Ensure the text is right-aligned */
 }
 
 .navLink:hover {
