@@ -1,0 +1,50 @@
+.card {
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #005783;
+  h1 {
+    color: white;
+  }
+  label {
+    color: white;
+  }
+}
+
+.login-card {
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  width: 400px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #005783;
+  h1 {
+    color: white;
+  }
+  label {
+    color: white;
+  }
+  p {
+    color: red;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+  }
+  .login-card {
+    width: 100%;
+  }
+}

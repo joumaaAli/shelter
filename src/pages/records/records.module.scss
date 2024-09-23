@@ -1,0 +1,9 @@
+.ellipsis-text {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  font-size: 15px;
+}

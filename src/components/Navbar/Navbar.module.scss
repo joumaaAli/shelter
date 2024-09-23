@@ -1,0 +1,32 @@
+/* NavBar.module.css */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+@import "../../styles/_variables.scss";
+
+.navbar {
+  font-family: "Roboto", sans-serif;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  background-color: $secondary !important;
+}
+
+.navLink {
+  color: #c9c1c1;
+  font-weight: 300;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  transition: color 0.3s, background-color 0.3s;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-left: 2px;
+  margin-right: 2px;
+  cursor: pointer;
+}
+
+.navLink:hover {
+  color: $primary;
+}
+
+.active {
+  color: $primary;
+  font-weight: bold;
+}

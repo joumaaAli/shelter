@@ -1,0 +1,46 @@
+@import "./variables.scss";
+
+.btn-danger {
+  color: white !important;
+}
+
+.btn-primary {
+  color: $primary !important;
+  background-color: white !important;
+  min-width: 100px;
+  border: 1px solid $primary !important;
+  height: 50px;
+}
+
+.btn-primary:hover {
+  color: white !important;
+  background-color: $primary !important;
+}
+
+.btn-secondary {
+  color: white !important;
+  background-color: $secondary !important;
+  min-width: 100px;
+  border: 1px solid $secondary !important;
+  height: 50px;
+}
+
+.btn-secondary:hover {
+  color: white !important;
+  background-color: $primary !important;
+}
+
+body {
+  background-color: $body-bg;
+  color: $body-color;
+}
+
+@import "~bootstrap/scss/bootstrap";
+
+html,
+body,
+#__next {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}

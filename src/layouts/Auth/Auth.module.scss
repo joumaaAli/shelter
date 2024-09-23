@@ -1,0 +1,18 @@
+.main {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  background-image: url("../../utils/img/avatar.jpg");
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 400px) {
+  .main {
+    height: auto;
+    background-image: none;
+    margin: 0 5px;
+  }
+}

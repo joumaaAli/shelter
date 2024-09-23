@@ -1,0 +1,173 @@
+@import "../../styles/variables.scss";
+
+.aboutUsCard h3 {
+  color: #262626;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.aboutUsCard p {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #666666;
+}
+
+.go-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  background-color: #00838d;
+  border-radius: 0 4px 0 32px;
+}
+
+.go-arrow {
+  margin-top: -4px;
+  margin-right: -4px;
+  font-family: courier, sans;
+}
+
+.aboutUsCard {
+  display: block;
+  position: relative;
+  background-color: $secondary;
+  border-radius: 4px;
+  padding: 32px 24px;
+  text-decoration: none;
+  z-index: 0;
+  overflow: hidden;
+  width: 100%;
+  transition: all 0.3s ease-out;
+  height: 250px;
+  cursor: pointer;
+
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -16px;
+    right: -16px;
+    background: $primary;
+    height: 32px;
+    width: 32px;
+    border-radius: 32px;
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    transition: transform 0.25s ease-out;
+  }
+
+  &:hover:before {
+    transform: scale(30);
+  }
+}
+
+.ourServices {
+  background-color: white;
+}
+
+.aboutUsCard p {
+  color: white;
+}
+
+.aboutUsCard:hover {
+  p {
+    transition: all 0.3s ease-out;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  h3 {
+    transition: all 0.3s ease-out;
+    color: $primary;
+  }
+}
+
+.aboutUsImage {
+  width: 220px;
+  height: 180px;
+  object-fit: contain;
+}
+
+.car-card {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.text-section {
+  h1 {
+    font-weight: bold;
+  }
+
+  p {
+    color: #333;
+  }
+}
+
+.about-page-title-1 {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  color: $primary;
+  margin-block: 32px;
+}
+
+.about-section-1 {
+  background-color: $secondary;
+}
+
+.about-page-desc-1 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  color: white;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.about-section-2 {
+  background-color: $primary;
+  display: flex;
+  padding: 32px;
+  width: 100%;
+  margin: 0;
+}
+
+.about-page-title-2 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 48px;
+  color: #262626;
+}
+
+.about-page-desc {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #666666;
+  margin-bottom: 32px;
+  display: contents;
+  display: inline;
+}
+
+.about-page-desc-2 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #666666;
+  margin-bottom: 32px;
+}
+
+.about-page-link {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  color: $primary;
+  text-decoration: none;
+  display: contents;
+}

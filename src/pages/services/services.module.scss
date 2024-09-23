@@ -1,0 +1,40 @@
+.heroSection {
+  position: relative;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.heroImage {
+  filter: brightness(0.7); /* Adjust the image brightness if necessary */
+}
+
+.heroText {
+  position: absolute;
+  z-index: 1;
+}
+
+.contactSection {
+  background-color: #f8f9fa;
+  padding: 40px 0;
+  text-align: left;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}

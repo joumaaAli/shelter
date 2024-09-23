@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  name          String?
+  email         String   @unique
+  emailVerified DateTime @default(now()) @map("email_verified")
+  image         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
+  password      String
+  role          Role     @default(USER)
+
+  @@map("users")
+}
+
+model Praticien {
+  orderNumber   String      @id
+  firstName     String
+  lastName      String
+  RPPSNumber    String?
+  cabinetNumber String
+  mobileNumber  String
+  email         String      @unique
+  cityId        Int
+  status        Status      @default(PENDING)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @default(now()) @updatedAt @map("updated_at")
+  city          City        @relation(fields: [cityId], references: [id])
+  materiels     Materiel[]  @relation("MaterielToPraticien")
+  specialties   Specialty[] @relation("PraticienToSpecialty")
+}
+
+model City {
+  id         Int         @id @default(autoincrement())
+  name       String
+  praticiens Praticien[]
+}
+
+model Specialty {
+  id         Int         @id @default(autoincrement())
+  name       String
+  praticiens Praticien[] @relation("PraticienToSpecialty")
+}
+
+model Materiel {
+  id         Int         @id @default(autoincrement())
+  name       String
+  praticiens Praticien[] @relation("MaterielToPraticien")
+}
+
+model Formation {
+  id          Int      @id @default(autoincrement())
+  theme       String
+  startDate   DateTime
+  endDate     DateTime
+  location    String
+  organism    String
+  phoneNumber String
+  email       String
+  profileImg  String
+}
+
+model Article {
+  id          Int      @id @default(autoincrement())
+  text       String
+  photo      String
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  PENDING
+}
+
+model Record {
+  id     Int      @id @default(autoincrement())
+  date   DateTime
+  doctors Doctor[] @relation("RecordToDoctor")
+}
+
+
+
+model Doctor {
+  id         Int      @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  phoneNumber String
+  email      String
+  records    Record[] @relation("RecordToDoctor")
+}
+
