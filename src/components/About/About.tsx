@@ -1,12 +1,14 @@
-import AboutUsImage from "@/utils/img/about-us.jpg";
-import Image from "next/image";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import style from "./About.module.scss";
+import Link from "next/link";
 
 function About() {
   const infoData = [
-    "لوضع اعلان اضغط هنا",
-    "للاطلاع على الاعلانات الموجودة اضغط هنا",
+    {
+      title: "لوضع اعلان اضغط هنا",
+      link: "/add",
+    },
+    { title: "للاطلاع على الاعلانات الموجودة اضغط هنا", link: "/" },
   ];
 
   return (
@@ -21,13 +23,18 @@ function About() {
       </div>
 
       <div className={style.ourServices}>
-        <div className="container my-4 d-flex align-items-center justify-content-center"></div>
         <Row className="mx-2">
           {infoData.map((info, index) => (
-            <Col key={index} lg={6} md={6} className="my-3">
-              <a key={index} className={style.aboutUsCard}>
-                <p className="small text-center">{info}</p>
-              </a>
+            <Col lg={6} md={6} className="my-3">
+              <Link
+                key={index}
+                href={info.link}
+                className="text-decoration-none"
+              >
+                <div className={style.aboutUsCard}>
+                  <p className="small text-center">{info?.title}</p>
+                </div>
+              </Link>
             </Col>
           ))}
         </Row>

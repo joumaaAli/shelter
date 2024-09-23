@@ -1,4 +1,5 @@
 // pages/api/homes/create.ts
+
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import createClient from "@/utils/supabase/api";
@@ -39,6 +40,7 @@ export default async function handler(
           phoneNumber,
           spaceForPeople,
           additionnalInformation,
+          userId: session.user.id, // Associate house with the user
         },
       });
       return res.status(201).json(house);

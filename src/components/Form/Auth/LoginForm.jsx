@@ -27,11 +27,19 @@ const LoginForm = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const { error } = await handleLogin(values.email, values.password);
+      const { error, result: userRole } = await handleLogin(
+        values.email,
+        values.password
+      );
       if (error) {
         alert(error);
       } else {
-        router.push(path.admin);
+        // Redirect based on user role
+        if (userRole) {
+          router.push(path.admin); // Redirect to admin dashboard
+        } else {
+          router.push(path.myhouse); // Redirect to myhouse for regular users
+        }
       }
     },
   });

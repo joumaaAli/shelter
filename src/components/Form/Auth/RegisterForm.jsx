@@ -16,7 +16,7 @@ import { path } from "@/utils/routes";
 import { handleRegister } from "@/services/userServices";
 
 const validationSchema = yup.object({
-  password: yup.string().required("Requis"),
+  password: yup.string().required("مطلوب"),
 });
 
 const RegisterForm = ({ id, rawId }) => {
@@ -37,14 +37,14 @@ const RegisterForm = ({ id, rawId }) => {
   });
 
   return (
-    <Card className={style["register-card"]}>
-      <h1>Inscription</h1>
+    <Card className={style["register-card"]} dir="rtl">
+      <h1>التسجيل</h1>
       <p>
-        Votre identifiant est : <strong>{rawId}</strong>
+        السجل الخاص فيك : <strong>{rawId}</strong>
       </p>
       <Form onSubmit={formik.handleSubmit} className="p-4">
         <FormGroup className="mb-3">
-          <FormLabel>Mot de passe</FormLabel>
+          <FormLabel>كلمة المرور</FormLabel>
           <FormControl
             type="password"
             name="password"
@@ -62,7 +62,7 @@ const RegisterForm = ({ id, rawId }) => {
             variant="primary"
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            S'inscrire
+            التسجيل
           </Button>
         </div>
       </Form>

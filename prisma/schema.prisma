@@ -12,6 +12,9 @@ model User {
   password  String   // password field
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+    houses    House[]  @relation("UserHouses")
+
 }
 
 model Praticien {
@@ -96,10 +99,16 @@ model Doctor {
 }
 
 model House {
-  id        Int      @id @default(autoincrement())
-  phoneNumber String
-  spaceForPeople String
-  address   String
-  additionnalInformation String?
-  name      String?
+  id                      Int      @id @default(autoincrement())
+  userId                  String
+  name                    String?
+  address                 String
+  phoneNumber             String
+  spaceForPeople          String
+  additionnalInformation  String?
+  taken                   Boolean  @default(false)
+
+  user                    User     @relation(fields: [userId], references: [id], name: "UserHouses")
+
+  @@index([userId]) // Optional: For faster queries on userId
 }

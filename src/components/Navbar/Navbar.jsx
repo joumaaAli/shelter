@@ -22,8 +22,8 @@ const NavBar = () => {
 
   const adminLinks = [
     { label: "لوحة التحكم", href: path.admin }, // Dashboard = لوحة التحكم
-    { label: "تسجيل الخروج", href: path.home, isLogout: true }, // Logout = تسجيل الخروج
   ];
+
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
@@ -52,6 +52,8 @@ const NavBar = () => {
     };
   }, [supabase]);
 
+  const isAdmin = user?.role === "super-admin"; // Check if the user is an admin
+
   return (
     <Navbar bg="light" expand="lg" className={styles.navbar} dir="rtl">
       <Container className={styles.navbarContainer}>
@@ -71,38 +73,44 @@ const NavBar = () => {
               </Nav.Link>
             ))}
 
-            {/* Render admin/dashboard-related links if user is logged in */}
+            {/* Render admin/dashboard-related links only for admin users */}
             {user &&
-              adminLinks.map((link, index) =>
-                link.isLogout ? (
-                  <p
-                    key={index}
-                    className={`${styles.navLink} m-0 p-0`}
-                    onClick={() => {
-                      HandleLogout();
-                      router.push(link.href);
-                    }}
-                  >
-                    {link.label}
-                  </p>
-                ) : (
-                  <Nav.Link
-                    key={index}
-                    className={`${styles.navLink} ${
-                      router.pathname === link.href ? styles.active : ""
-                    }`}
-                    href={link.href}
-                  >
-                    {link.label}
-                  </Nav.Link>
-                )
-              )}
+              isAdmin &&
+              adminLinks.map((link, index) => (
+                <Nav.Link
+                  key={index}
+                  className={`${styles.navLink} ${
+                    router.pathname === link.href ? styles.active : ""
+                  }`}
+                  href={link.href}
+                >
+                  {link.label}
+                </Nav.Link>
+              ))}
 
-            {/* Show login link if no user is logged in */}
+            {/* Show logout option for both admin and normal users */}
+            {user && (
+              <p
+                className={`${styles.navLink} m-0 p-0`}
+                onClick={() => {
+                  HandleLogout();
+                  router.push(path.home);
+                }}
+              >
+                تسجيل الخروج
+              </p>
+            )}
+
+            {/* Show login and register links if no user is logged in */}
             {!user && (
-              <Nav.Link className={styles.navLink} href={path.auth.login}>
-                Login
-              </Nav.Link>
+              <>
+                <Nav.Link className={styles.navLink} href={path.auth.login}>
+                  تسجيل الدخول
+                </Nav.Link>
+                <Nav.Link className={styles.navLink} href={path.auth.register}>
+                  التسجيل
+                </Nav.Link>
+              </>
             )}
           </Nav>
         </Navbar.Collapse>

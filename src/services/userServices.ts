@@ -13,8 +13,22 @@ export interface RegisterResponse {
 export const handleLogin = async (email: string, password: string) => {
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  return { error: error?.message, result: !error };
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return { error: error.message, result: null };
+  }
+
+  // Fetch user session to get the role
+  const { data: sessionData } = await supabase.auth.getSession();
+
+  return {
+    error: null,
+    result: sessionData?.session?.user?.email?.includes("admin"),
+  }; // return user role
 };
 
 export const HandleLogout = async () => {

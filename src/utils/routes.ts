@@ -12,4 +12,5 @@ export const path = {
   associations: "/associations",
   actualites: "/actualites",
   records: "/records",
+  myhouse: "/my-house",
 };

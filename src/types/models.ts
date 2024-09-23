@@ -62,6 +62,7 @@ interface House {
   address: string;
   additionnalInformation: string | null;
   name: string | null;
+  taken: boolean;
 }
 
 export type {

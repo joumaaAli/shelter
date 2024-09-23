@@ -38,7 +38,9 @@
 }
 
 .aboutUsCard {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   background-color: $secondary;
   border-radius: 4px;
@@ -49,6 +51,7 @@
   width: 100%;
   transition: all 0.3s ease-out;
   height: 250px;
+  text-decoration: none;
   cursor: pointer;
 
   &:before {
@@ -77,6 +80,7 @@
 
 .aboutUsCard p {
   color: white;
+  text-decoration: none !important;
 }
 
 .aboutUsCard:hover {
