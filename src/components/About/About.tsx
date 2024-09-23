@@ -21,10 +21,8 @@ function About() {
         <div className="container h-100 d-flex align-items-center justify-content-center flex-column py-2">
           <h1 className={style["about-page-title-1"]}>Who are we ?</h1>
           <p className={style["about-page-desc-1"]}>
-            Les unions régionales des professionnels de santé rassemblent les
-            représentants des professionnels de santé libéraux. Elles ont été
-            créées par le décret du 02.06.2010 art 4031 notre mission est de
-            contribuer à l&apos;organisation de l&apos;offre de santé régionale.
+            تهدف هذه المنصة الى توحيد جميع اعلانات البيوت التي تعرض لاستقبال
+            اهلنا النازحين
           </p>
         </div>
       </div>

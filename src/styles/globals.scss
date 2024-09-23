@@ -7,9 +7,10 @@
 .btn-primary {
   color: $primary !important;
   background-color: white !important;
-  min-width: 100px;
+  width: 100% !important; /* Le bouton prendra toute la largeur disponible */
   border: 1px solid $primary !important;
-  height: 50px;
+  height: 100px;
+  direction: rtl;
 }
 
 .btn-primary:hover {
