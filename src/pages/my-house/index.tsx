@@ -135,7 +135,7 @@ const MyHousesPage = () => {
     {
       name: "Phone Number",
       selector: (row: any) =>
-        (
+        row?.phoneNumber ? (
           <div
             style={{
               direction: "ltr",
@@ -143,9 +143,11 @@ const MyHousesPage = () => {
               margin: 0,
             }}
           >
-            {row?.phoneNumber}
+            {row.phoneNumber}
           </div>
-        ) || "",
+        ) : (
+          ""
+        ),
       sortable: true,
     },
     {
