@@ -23,7 +23,7 @@ model House {
   name                    String?
   address                 String
   phoneNumber             String
-  spaceForPeople          Int
+  spaceForPeople          Int?
   additionnalInformation  String?
   taken                   Boolean  @default(false)
 
