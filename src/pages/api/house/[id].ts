@@ -50,7 +50,6 @@ export default async function handler(
       taken,
       regionId,
     } = req.body;
-    console.log(req.body);
     try {
       const updatedHouse = await prisma.house.update({
         where: { id: houseId },
