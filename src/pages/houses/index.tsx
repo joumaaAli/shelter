@@ -192,7 +192,6 @@ const PublicHousesPage = () => {
         data={houses}
         highlightOnHover
         pointerOnHover
-        pagination
         paginationPerPage={20}
         paginationRowsPerPageOptions={[5, 10, 15, 20]}
         noDataComponent="لم يتم العثور على أي منازل"

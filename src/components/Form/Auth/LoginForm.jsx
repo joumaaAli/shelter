@@ -60,7 +60,7 @@ const LoginForm = () => {
             <p>هذه الصفحة متاحة فقط للمستخدمين المسجلين</p>
             <Form onSubmit={formik.handleSubmit} className="p-4">
               <FormGroup className="mb-3">
-                <FormLabel>البريد الالكتروني</FormLabel>
+                <FormLabel>اسم المستخدم</FormLabel>
                 <FormControl
                   name="email"
                   value={formik.values.email}

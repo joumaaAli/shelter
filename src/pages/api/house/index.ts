@@ -25,11 +25,13 @@ export default async function handler(
     const regionId = req.query.regionId ? Number(req.query.regionId) : null;
 
     try {
-      const whereClause: any = {
-        name: {
+      const whereClause: any = {};
+
+      if (search) {
+        whereClause.address = {
           contains: search,
-        },
-      };
+        };
+      }
 
       if (regionId) {
         whereClause.regionId = regionId;
