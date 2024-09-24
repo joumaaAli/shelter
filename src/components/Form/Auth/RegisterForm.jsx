@@ -3,11 +3,11 @@
 import { useFormik } from "formik";
 import {
   Button,
-  Card,
+  Card, Col, Container,
   Form,
   FormControl,
   FormGroup,
-  FormLabel,
+  FormLabel, Row,
 } from "react-bootstrap";
 import * as yup from "yup";
 import style from "./Form.module.scss";
@@ -27,7 +27,7 @@ const RegisterForm = ({ id, rawId }) => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const { error } = await handleRegister(id, values.password);
+      const {error} = await handleRegister(id, values.password);
       if (error) {
         alert(error);
       } else {
@@ -37,36 +37,42 @@ const RegisterForm = ({ id, rawId }) => {
   });
 
   return (
-    <Card className={style["register-card"]} dir="rtl">
-      <h1>التسجيل</h1>
-      <p>
-        السجل الخاص فيك : <strong>{rawId}</strong>
-      </p>
-      <Form onSubmit={formik.handleSubmit} className="p-4">
-        <FormGroup className="mb-3">
-          <FormLabel>كلمة المرور</FormLabel>
-          <FormControl
-            type="password"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            isInvalid={!!formik.errors.password}
-          />
-          <FormControl.Feedback type="invalid">
-            {formik.errors.password}
-          </FormControl.Feedback>
-        </FormGroup>
-        <div className="w-100 d-flex justify-content-between">
-          <Button
-            type="submit"
-            variant="primary"
-            disabled={!formik.isValid || formik.isSubmitting}
-          >
-            التسجيل
-          </Button>
-        </div>
-      </Form>
-    </Card>
+      <Container fluid className={style.main}>
+        <Row className="justify-content-center align-items-center" style={{height: '100vh', display: 'flex', flex: 1}}>
+          <Col xs={12} className={`${style.column} text-center`}>
+            <Card className={style["login-card"]}>
+              <h1>التسجيل</h1>
+              <p>
+                السجل الخاص فيك : <strong>{rawId}</strong>
+              </p>
+              <Form onSubmit={formik.handleSubmit} className="p-4">
+                <FormGroup className="mb-3">
+                  <FormLabel>كلمة المرور</FormLabel>
+                  <FormControl
+                      type="password"
+                      name="password"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      isInvalid={!!formik.errors.password}
+                  />
+                  <FormControl.Feedback type="invalid">
+                    {formik.errors.password}
+                  </FormControl.Feedback>
+                </FormGroup>
+                <div className="w-100 d-flex justify-content-between">
+                  <Button
+                      type="submit"
+                      variant="primary"
+                      disabled={!formik.isValid || formik.isSubmitting}
+                  >
+                    التسجيل
+                  </Button>
+                </div>
+              </Form>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
   );
 };
 

@@ -13,11 +13,9 @@ const NavBar = () => {
 
   // Navigation links as a list of objects
   const navLinks = [
-    { label: "الرئيسية", href: path.home }, // Home = الرئيسية
-    { label: "عرض المركبات", href: path.fahrzeugangebot }, // Fahrzeugangebot = عرض المركبات
-    { label: "خدمات", href: path.services }, // Services = خدمات
-    { label: "معلومات عنا", href: path.aboutUs }, // Über uns = معلومات عنا
-    { label: "اتصل بنا", href: path.contact }, // Kontakt = اتصل بنا
+    { label: "الرئيسية", href: path.home },
+    { label: "معلومات عنا", href: path.aboutUs },
+    { label: "اتصل بنا", href: path.contact },
   ];
 
   const adminLinks = [

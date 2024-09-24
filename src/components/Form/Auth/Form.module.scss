@@ -1,3 +1,8 @@
+.main {
+  display: flex;
+  width: 100%;
+}
+
 .card {
   padding: 20px;
   margin: 20px;
@@ -8,7 +13,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #005783;
+  background-color: #2b2d30;
   h1 {
     color: white;
   }
@@ -18,16 +23,15 @@
 }
 
 .login-card {
-  padding: 20px;
-  margin: 20px;
+  background-color: rgba(123, 105, 92, 0.6);
+  backdrop-filter: blur(10px);
   border-radius: 10px;
+  padding: 20px;
+  border: 1px solid rgba(123, 105, 92, 0.2);
+  height: 500px;
   width: 400px;
-  height: 600px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: #005783;
   h1 {
     color: white;
   }
@@ -38,6 +42,13 @@
     color: red;
     text-align: center;
   }
+}
+.column{
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
 
 .register-card {
