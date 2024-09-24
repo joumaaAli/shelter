@@ -1,4 +1,5 @@
 import Home from "@/components/dashboard/Home/Home";
+import SheltersPage from "@/components/dashboard/Shelter/Shelter";
 import { requireAdminAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
@@ -8,13 +9,18 @@ import styles from "./admin.module.scss";
 
 const AdminPage = () => {
   const [activePage, setActivePage] = useState(0);
-  const tabs = [{ id: 0, label: "منازل" }];
+  const tabs = [
+    { id: 0, label: "منازل" },
+    { id: 1, label: "الملاجئ" },
+  ];
   // Function to render the selected component
 
   const renderComponent = () => {
     switch (activePage) {
       case 0:
         return <Home />;
+      case 1:
+        return <SheltersPage />;
       default:
         return <Home />;
     }

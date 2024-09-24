@@ -33,8 +33,21 @@ model House {
   @@index([regionId]) // Index for filtering by region
 }
 
+model Shelter {
+  id        Int      @id @default(autoincrement())
+  name      String
+  regionId  Int?     // Foreign key to the Region model
+  region    Region?  @relation(fields: [regionId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([regionId])
+}
+
+
 model Region {
   id     Int      @id @default(autoincrement())
   name   String   @unique
   houses House[]  @relation("HouseRegion")
+  shelters Shelter[]
 }
