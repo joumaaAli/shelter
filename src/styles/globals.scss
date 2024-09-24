@@ -33,6 +33,11 @@ html, body {
 .btn-secondary:hover {
   color: white !important;
   background-color: $primary !important;
+  border: 1px solid $primary !important;
+}
+
+.btn-danger {
+  min-width: 100px;
 }
 
 body {
