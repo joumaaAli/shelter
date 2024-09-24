@@ -6,9 +6,9 @@ import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import tableStyle from "@/styles/tableStyle";
 import style from "@/pages/my-house/my-house.module.scss";
-import {HouseType} from "@/utils/interfaces/houseType";
-import {Shelter} from "@/utils/interfaces/shelter";
-import {Region} from "@/utils/interfaces/region";
+import { HouseType } from "@/utils/interfaces/houseType";
+import { Shelter } from "@/utils/interfaces/shelter";
+import { Region } from "@/utils/interfaces/region";
 
 const SheltersFilterPage = () => {
   const [shelters, setShelters] = useState<never[]>([]);
@@ -25,9 +25,8 @@ const SheltersFilterPage = () => {
     const response = await fetchShelters(selectedRegion || undefined);
     if (response.success) {
       const filteredShelters = response.data.filter((shelter: Shelter) => {
-            shelter.name.toLowerCase().includes(searchTerm.toLowerCase());
-          }
-      );
+        return shelter.name.toLowerCase().includes(searchTerm.toLowerCase());
+      });
       setShelters(filteredShelters);
     } else {
       console.error("Failed to fetch shelters:", response.error);
@@ -55,59 +54,58 @@ const SheltersFilterPage = () => {
       sortable: true,
     },
   ];
-
   return (
-      <Container fluid>
-        <h1 className="my-4">الملاجئ</h1>
-        <Row className="mb-4">
-          <Col md={6}>
-            <Input
-                type="text"
-                placeholder="ابحث باسم الملاجئ"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </Col>
-          <Col md={4}>
-            <Form.Control
-                as="select"
-                value={selectedRegion || ""}
-                onChange={(e) => setSelectedRegion(Number(e.target.value))}
-            >
-              <option value="">المناطق</option>
-              {regions.map((region: Region) => (
-                  <option key={region.id} value={region.id}>
-                    {region.name}
-                  </option>
-              ))}
-            </Form.Control>
-          </Col>
-          <Col md={2}>
-            <Button
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedRegion(null);
-                }}
-                variant="secondary"
-            >
-              مسح البحث
-            </Button>
-          </Col>
-        </Row>
+    <Container fluid>
+      <h1 className="my-4">الملاجئ</h1>
+      <Row className="mb-4">
+        <Col md={6} className="mb-4">
+          <Input
+            type="text"
+            placeholder="ابحث باسم الملاجئ"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Col>
+        <Col md={4} className="mb-4">
+          <Form.Control
+            as="select"
+            value={selectedRegion || ""}
+            onChange={(e) => setSelectedRegion(Number(e.target.value))}
+          >
+            <option value="">المناطق</option>
+            {regions.map((region: Region) => (
+              <option key={region.id} value={region.id}>
+                {region.name}
+              </option>
+            ))}
+          </Form.Control>
+        </Col>
+        <Col md={2}>
+          <Button
+            onClick={() => {
+              setSearchTerm("");
+              setSelectedRegion(null);
+            }}
+            variant="secondary"
+          >
+            مسح البحث
+          </Button>
+        </Col>
+      </Row>
 
-        <Row>
-          <Col>
-            <DataTable
-                className={style.houseTable}
-                columns={columns}
-                data={shelters}
-                highlightOnHover
-                noDataComponent="لم يتم العثور على أية ملاجئ"
-                customStyles={tableStyle}
-            />
-          </Col>
-        </Row>
-      </Container>
+      <Row>
+        <Col>
+          <DataTable
+            className={style.houseTable}
+            columns={columns}
+            data={shelters}
+            highlightOnHover
+            noDataComponent="لم يتم العثور على أية ملاجئ"
+            customStyles={tableStyle}
+          />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
