@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { path } from "@/utils/routes";
 import { handleRegister } from "@/services/userServices";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import Link from "next/link";
 
 const validationSchema = yup.object({
   password: yup.string().required("مطلوب"),
@@ -61,6 +62,18 @@ const RegisterForm = ({ id, rawId }) => {
             <p>
               السجل الخاص فيك : <strong>{rawId}</strong>
             </p>
+            <p>
+              يمكنك من خلال هذه المنصة ادراج بيوت متاحة بنفسك، كما يمكنك تعديل
+              هذه المعلومات فيما بعد( تعديل رقم الهاتف، وضع معلومات اضافية،
+              الغاء الاعلان في حال امتلئ المنزل). لذالك، تقوم المنصة باعطائك
+              الرقم التالي عشوائيا (على شكل user1234) ، لانشاء حساب تتمكن من
+              خلاله التحكم بالمعلومات التي تقوم بادراجها. عليك فقط ان تختار كلمة
+              مرور والاحتفاظ بها وباسم المستخدم لتتمكن من التحكم لاحقا
+              بالاعلانات التي تضعها.
+            </p>
+            <Link href={path.auth.login}>
+              <p>لديك حساب ؟</p>
+            </Link>
             <Form onSubmit={formik.handleSubmit} className="p-4">
               <FormGroup className="mb-3">
                 <FormLabel>كلمة المرور</FormLabel>

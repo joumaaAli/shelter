@@ -28,7 +28,7 @@
   border-radius: 10px;
   padding: 20px;
   border: 1px solid rgba(123, 105, 92, 0.2);
-  height: 500px;
+  height: 700px;
   width: 400px;
   align-items: center;
   justify-content: space-around;
@@ -39,11 +39,10 @@
     color: white;
   }
   p {
-    color: red;
     text-align: center;
   }
 }
-.column{
+.column {
   width: 100%;
   display: flex;
   flex: 1;

@@ -15,6 +15,7 @@ import * as yup from "yup";
 import style from "./Form.module.scss"; // Make sure this is where your CSS is
 import { useRouter } from "next/router";
 import { path } from "@/utils/routes";
+import Link from "next/link";
 
 // Validation schema
 const validationSchema = yup.object({
@@ -57,7 +58,15 @@ const LoginForm = () => {
         <Col xs={12} className="text-center">
           <Card className={style["login-card"]}>
             <h1>تسجيل الدخول</h1>
-            <p>هذه الصفحة متاحة فقط للمستخدمين المسجلين</p>
+            <p>
+              اسم المستخدم هو الرقم العشوائي الذي عينته لك المنصة عند انشاء
+              الحساب. (على شكل user1234). وكلمة المرور هي الكلمة التي اخترتها
+              عند انشاء الحساب. ان لم تكن تمتلك هذه المعلومات عليك انشاء حساب
+              للتمكن من ادراج بيوت متاحة..
+            </p>
+            <Link href={path.auth.register}>
+              <p>انشاء حساب جديد</p>
+            </Link>
             <Form onSubmit={formik.handleSubmit} className="p-4">
               <FormGroup className="mb-3">
                 <FormLabel>اسم المستخدم</FormLabel>
