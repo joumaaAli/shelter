@@ -18,6 +18,7 @@ export default async function handler(
     }
   } else {
     res.setHeader("Allow", ["GET"]);
+    await prisma.$disconnect();
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

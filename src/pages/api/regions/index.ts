@@ -13,9 +13,12 @@ export default async function handler(
       return res.status(200).json(regions);
     } catch (error) {
       return res.status(500).json({ error });
+    } finally {
+      await prisma.$disconnect();
     }
   } else {
     res.setHeader("Allow", ["GET"]);
+    await prisma.$disconnect();
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

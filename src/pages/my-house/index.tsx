@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-  fetchHouses,
+  fetchHouses, // Updated to fetch user's houses
   addHouse,
   updateHouse,
   deleteHouse,
@@ -22,8 +22,8 @@ const MyHousesPage = () => {
   const [selectedHouse, setSelectedHouse] = useState<HouseType | null>(null);
   const [modalShow, setModalShow] = useState(false);
 
-  const fetchUserHouses = async () => {
-    const response = await fetchHouses(search);
+  const fetchUserHousesData = async () => {
+    const response = await fetchHouses(search); // Ensure this function fetches user's houses
     if (response.success) {
       setHouses(response.data);
     } else {
@@ -32,7 +32,7 @@ const MyHousesPage = () => {
   };
 
   useEffect(() => {
-    fetchUserHouses();
+    fetchUserHousesData();
     const fetchRegionsData = async () => {
       const response = await fetchRegions();
       if (response.success) {
@@ -46,52 +46,79 @@ const MyHousesPage = () => {
 
   const handleAddOrUpdateHouse = async (e: any) => {
     e.preventDefault();
-    const houseData = {
+    const houseData: any = {
       name: e.target.name.value,
       address: e.target.address.value,
       phoneNumber: e.target.phoneNumber.value,
-      spaceForPeople: e.target.spaceForPeople.value,
-      additionnalInformation: e.target.additionnalInformation.value,
-      taken: e.target.taken.checked, // Ensure checkbox is captured correctly
-      regionId: e.target.region.value, // Capture selected region ID
-      id: selectedHouse?.id,
-      region: regions.find(
-        (region) => region.id === Number(e.target.region.value)
-      ),
+      spaceForPeople: parseInt(e.target.spaceForPeople.value),
+      additionalInformation: e.target.additionalInformation.value,
+      taken: e.target.taken.checked,
+      regionId: e.target.region.value ? parseInt(e.target.region.value) : null,
     };
 
     if (selectedHouse) {
-      await updateHouse(houseData as HouseType);
-      Swal.fire({
-        title: "Success!",
-        text: "House updated successfully",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      houseData.id = selectedHouse.id;
+    }
+
+    if (selectedHouse) {
+      const response = await updateHouse(houseData as HouseType);
+      if (response.success) {
+        Swal.fire({
+          title: "Success!",
+          text: "House updated successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to update house",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     } else {
-      await addHouse(houseData);
-      Swal.fire({
-        title: "Success!",
-        text: "House added successfully",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      const response = await addHouse(houseData);
+      if (response.success) {
+        Swal.fire({
+          title: "Success!",
+          text: "House added successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to add house",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     }
 
     setModalShow(false);
     setSelectedHouse(null);
-    await fetchUserHouses();
+    await fetchUserHousesData();
   };
 
   const handleDeleteHouse = async (id: number) => {
-    await deleteHouse(id);
-    Swal.fire({
-      title: "Success!",
-      text: "House deleted successfully",
-      icon: "success",
-      confirmButtonText: "OK",
-    });
-    await fetchUserHouses();
+    const response = await deleteHouse(id);
+    if (response.success) {
+      Swal.fire({
+        title: "Success!",
+        text: "House deleted successfully",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+      await fetchUserHousesData();
+    } else {
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to delete house",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   const columns = [
@@ -117,7 +144,12 @@ const MyHousesPage = () => {
     },
     {
       name: "Taken",
-      selector: (row: HouseType) => (row.taken ? "Yes" : "No"),
+      selector: (row: HouseType) => (row.taken ? "نعم" : "كلا"),
+      sortable: true,
+    },
+    {
+      name: "Region",
+      selector: (row: HouseType) => row.region?.name || "",
       sortable: true,
     },
     {
@@ -201,6 +233,7 @@ const MyHousesPage = () => {
               <Form.Control
                 type="text"
                 defaultValue={selectedHouse?.name || ""}
+                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="address">
@@ -208,6 +241,7 @@ const MyHousesPage = () => {
               <Form.Control
                 type="text"
                 defaultValue={selectedHouse?.address || ""}
+                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="phoneNumber">
@@ -215,16 +249,19 @@ const MyHousesPage = () => {
               <Form.Control
                 type="text"
                 defaultValue={selectedHouse?.phoneNumber || ""}
+                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="spaceForPeople">
               <Form.Label>Space For People</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 defaultValue={selectedHouse?.spaceForPeople || ""}
+                min="1"
+                required
               />
             </Form.Group>
-            <Form.Group className="my-1" controlId="additionnalInformation">
+            <Form.Group className="my-1" controlId="additionalInformation">
               <Form.Label>Additional Information</Form.Label>
               <Form.Control
                 type="text"
@@ -242,7 +279,8 @@ const MyHousesPage = () => {
               <Form.Label>Select Region</Form.Label>
               <Form.Control
                 as="select"
-                defaultValue={selectedHouse?.region?.id || ""}
+                defaultValue={selectedHouse?.regionId || ""}
+                required
               >
                 <option value="">Select a region</option>
                 {regions.map((region) => (

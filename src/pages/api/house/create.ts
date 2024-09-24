@@ -51,9 +51,12 @@ export default async function handler(
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error });
+    } finally {
+      await prisma.$disconnect();
     }
   } else {
     res.setHeader("Allow", ["POST"]);
+    await prisma.$disconnect();
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

@@ -46,9 +46,12 @@ export default async function handler(
     } catch (error) {
       console.error("Error fetching houses:", error);
       return res.status(500).json({ error: "Failed to fetch houses" });
+    } finally {
+      await prisma.$disconnect();
     }
   } else {
     res.setHeader("Allow", ["GET"]);
+    await prisma.$disconnect();
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

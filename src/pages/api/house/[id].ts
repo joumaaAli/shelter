@@ -76,9 +76,12 @@ export default async function handler(
       return res.status(200).json({ data: "Home deleted" });
     } catch (error) {
       return res.status(500).json({ error: "Failed to delete home" });
+    } finally {
+      await prisma.$disconnect();
     }
   } else {
     res.setHeader("Allow", ["PUT", "DELETE"]);
+    await prisma.$disconnect();
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

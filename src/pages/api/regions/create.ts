@@ -19,9 +19,12 @@ export default async function handler(
       return res.status(201).json(region);
     } catch (error) {
       return res.status(500).json({ error: "Failed to create region" });
+    } finally {
+      await prisma.$disconnect();
     }
   } else {
     res.setHeader("Allow", ["POST"]);
+    await prisma.$disconnect();
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
