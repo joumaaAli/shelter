@@ -1,7 +1,7 @@
 // import { Image } from "react-bootstrap";
 import Image from "next/image";
 import Carousel from "react-bootstrap/Carousel";
-import HeaderImage from "@/utils/img/slide11.jpg";
+import HeaderImage from "@/utils/img/slide1.jpg";
 import HeaderImage2 from "@/utils/img/slide22.jpg";
 import HeaderImage3 from "@/utils/img/slide33.jpg";
 
