@@ -4,10 +4,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // Ignores ESLint errors during build
   },
-  webpack: (config) => {
-    // Custom webpack configuration
-    return config;
-  },
 };
 
 export default nextConfig;
