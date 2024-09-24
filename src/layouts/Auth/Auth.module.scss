@@ -1,12 +1,14 @@
 .main {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100vh;
-  background-image: url("../../utils/img/avatar.jpg");
-  background-position: right;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full viewport height */
+  background-image: url("../../utils/img/picture-register.jpg");
+  background-position: center; /* Center the background */
   background-repeat: no-repeat;
   background-size: cover;
+  overflow: hidden; /* Prevent scrolling */
+  padding-top: 56px; /* Adjust for navbar height */
 }
 
 @media (max-width: 400px) {
