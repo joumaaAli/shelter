@@ -14,7 +14,6 @@ const NavBar = () => {
   const [role, setRole] = useState(null);
   const navLinks = [
     { label: "الرئيسية", href: path.home },
-    { label: "اتصل بنا", href: path.contact },
     { label: "المنازل", href: path.houses },
     { label: "الملاجئ", href: path.shelters },
   ];
