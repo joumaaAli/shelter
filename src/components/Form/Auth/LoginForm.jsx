@@ -18,8 +18,8 @@ import { path } from "@/utils/routes";
 
 // Validation schema
 const validationSchema = yup.object({
-  email: yup.string().email("Email invalide").required("Requis"),
-  password: yup.string().required("Requis"),
+  email: yup.string().required("مطلوب"),
+  password: yup.string().required("مطلوب"),
 });
 
 const LoginForm = () => {
@@ -62,7 +62,6 @@ const LoginForm = () => {
               <FormGroup className="mb-3">
                 <FormLabel>البريد الالكتروني</FormLabel>
                 <FormControl
-                  type="email"
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}

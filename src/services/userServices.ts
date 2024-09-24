@@ -14,9 +14,12 @@ export interface RegisterResponse {
 
 export const handleLogin = async (email: string, password: string) => {
   const supabase = createClient();
-
+  let newEmail = email;
+  if (!email.includes("@")) {
+    newEmail = email + "@example.com";
+  }
   const { data, error } = await supabase.auth.signInWithPassword({
-    email,
+    email: newEmail,
     password,
   });
 
