@@ -9,15 +9,32 @@ const PublicHousesPage = () => {
   const [houses, setHouses] = useState<HouseType[]>([]);
   const [searchAddress, setSearchAddress] = useState("");
   const [filterSpace, setFilterSpace] = useState<number | null>(null);
+  const [regions, setRegions] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await filterHouses(searchAddress, filterSpace || undefined);
+      const data = await filterHouses(
+        searchAddress,
+        filterSpace || undefined,
+        selectedRegion || undefined
+      );
       setHouses(data.data);
     };
 
     fetchData();
-  }, [searchAddress, filterSpace]);
+  }, [searchAddress, filterSpace, selectedRegion]);
+
+  useEffect(() => {
+    // Fetch regions to populate the dropdown
+    async function fetchRegions() {
+      const response = await fetch("/api/regions");
+      const regionData = await response.json();
+      setRegions(regionData);
+    }
+
+    fetchRegions();
+  }, []);
 
   const columns = [
     {
@@ -38,6 +55,11 @@ const PublicHousesPage = () => {
     {
       name: "المساحة المتاحة للأشخاص",
       selector: (row: HouseType) => row.spaceForPeople || "",
+      sortable: true,
+    },
+    {
+      name: "المنطقة",
+      selector: (row: HouseType) => row.region?.name || "",
       sortable: true,
     },
   ];
@@ -63,6 +85,20 @@ const PublicHousesPage = () => {
             onChange={(e) => setFilterSpace(parseInt(e.target.value) || null)}
             className="w-100 my-2"
           />
+        </Col>
+        <Col lg="6" md="6" className="mx-0 mb-2" sm="12">
+          <Input
+            type="select"
+            value={selectedRegion || ""}
+            onChange={(e) => setSelectedRegion(Number(e.target.value) || null)}
+          >
+            <option value="">اختر المنطقة</option>
+            {regions.map((region: any) => (
+              <option key={region.id} value={region.id}>
+                {region.name}
+              </option>
+            ))}
+          </Input>
         </Col>
       </Row>
       <DataTable

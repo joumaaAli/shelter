@@ -13,4 +13,5 @@ export const path = {
   actualites: "/actualites",
   records: "/records",
   myhouse: "/my-house",
+  houses: "/houses",
 };

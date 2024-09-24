@@ -1,5 +1,3 @@
-// pages/api/homes/index.ts
-
 import { NextApiRequest, NextApiResponse } from "next";
 import createClient from "@/utils/supabase/api";
 import { PrismaClient } from "@prisma/client";
@@ -11,7 +9,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const supabase = createClient(req, res);
-
   const {
     data: { session },
     error,
@@ -25,9 +22,7 @@ export default async function handler(
 
   if (req.method === "GET") {
     const search = (req.query.search as string) || "";
-
-    // Assume that the role is stored in user metadata, typically under `session.user.user_metadata.role`
-    const isAdmin = session?.user?.email?.includes("admin");
+    const regionId = req.query.regionId ? Number(req.query.regionId) : null;
 
     try {
       const whereClause: any = {
@@ -36,14 +31,15 @@ export default async function handler(
         },
       };
 
-      // If the user is not an admin, only show their own houses
-      if (!isAdmin) {
-        whereClause.userId = session.user.id;
+      if (regionId) {
+        whereClause.regionId = regionId;
       }
 
-      // Fetch houses based on the role (admin sees all, others see only their houses)
       const houses = await prisma.house.findMany({
         where: whereClause,
+        include: {
+          region: true,
+        },
       });
 
       return res.status(200).json(houses);

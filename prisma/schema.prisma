@@ -9,26 +9,32 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid()) 
-  password  String   // password field
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   houses    House[]  @relation("UserHouses")
-
 }
-
 
 model House {
   id                      Int      @id @default(autoincrement())
-  userId                  String?  // Make this field optional by adding "?"
+  userId                  String?  
+  regionId                Int?     // Foreign key to the Region model
   name                    String?
   address                 String
   phoneNumber             String
-  spaceForPeople          Int      // This is already an integer
+  spaceForPeople          Int
   additionnalInformation  String?
   taken                   Boolean  @default(false)
 
-  user                    User?    @relation(fields: [userId], references: [id], name: "UserHouses") // Relation to User is now optional
+  user                    User?    @relation(fields: [userId], references: [id], name: "UserHouses")
+  region                  Region?  @relation(fields: [regionId], references: [id], name: "HouseRegion")
 
   @@index([userId])
+  @@index([regionId]) // Index for filtering by region
+}
+
+model Region {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  houses House[]  @relation("HouseRegion")
 }

@@ -32,6 +32,8 @@ export default async function handler(
       additionnalInformation,
     } = req.body;
 
+    const isAdmin = session?.user?.app_metadata?.role == "super-admin";
+
     try {
       const house = await prisma.house.create({
         data: {
@@ -40,9 +42,7 @@ export default async function handler(
           phoneNumber,
           spaceForPeople: parseInt(spaceForPeople),
           additionnalInformation,
-          userId: session?.user?.email?.includes("admin")
-            ? null
-            : session.user.id, // Associate house with the user
+          userId: isAdmin ? null : session.user.id, // Associate house with the user
         },
       });
       return res.status(201).json(house);

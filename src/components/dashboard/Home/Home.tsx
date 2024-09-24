@@ -4,7 +4,9 @@ import {
   addHouse,
   updateHouse,
   deleteHouse,
-} from "@/services/house"; // إضافة الخدمات للتعامل مع المنازل
+  // Fetch regions service
+} from "@/services/house";
+import { fetchRegions } from "@/services/region";
 import { House as HouseType } from "@/types/models";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import DataTable from "react-data-table-component";
@@ -13,6 +15,7 @@ import Swal from "sweetalert2";
 
 const HomePage = () => {
   const [homes, setHomes] = useState<HouseType[]>([]);
+  const [regions, setRegions] = useState<any[]>([]); // State for regions
   const [search, setSearch] = useState("");
   const [selectedHome, setSelectedHome] = useState<HouseType | null>(null);
   const [modalShow, setModalShow] = useState(false);
@@ -21,6 +24,13 @@ const HomePage = () => {
     fetchHouses(search).then((data: any) => {
       setHomes(data.data);
     });
+
+    async function fetchRegionsData() {
+      const response = await fetchRegions();
+      setRegions(response.data);
+    }
+
+    fetchRegionsData();
   }, [search]);
 
   const handleAddHome = async (e: any) => {
@@ -32,6 +42,8 @@ const HomePage = () => {
       spaceForPeople: e.target.spaceForPeople.value,
       additionnalInformation: e.target.additionnalInformation.value,
       taken: false,
+      regionId: e.target.region.value, // Capture selected region ID
+      region: null,
     };
     await addHouse(newHome);
     setModalShow(false);
@@ -167,18 +179,31 @@ const HomePage = () => {
             <Form.Group className="my-1" controlId="spaceForPeople">
               <Form.Label>المساحة المتاحة للأشخاص</Form.Label>
               <Form.Control
-                type="number" // Make the input type number for integer input
+                type="number"
                 defaultValue={selectedHome?.spaceForPeople || ""}
-                min="1" // Ensure only positive values are allowed
+                min="1"
               />
             </Form.Group>
-
             <Form.Group className="my-1" controlId="additionnalInformation">
               <Form.Label>معلومات إضافية</Form.Label>
               <Form.Control
                 type="text"
                 defaultValue={selectedHome?.additionnalInformation || ""}
               />
+            </Form.Group>
+            <Form.Group className="my-1" controlId="region">
+              <Form.Label>اختر المنطقة</Form.Label>
+              <Form.Control
+                as="select"
+                defaultValue={selectedHome?.region?.id || ""}
+              >
+                <option value="">اختر المنطقة</option>
+                {regions?.map((region) => (
+                  <option key={region.id} value={region.id}>
+                    {region.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Button variant="primary" type="submit" className="my-2">
               {selectedHome ? "حفظ التعديلات" : "إضافة منزل"}

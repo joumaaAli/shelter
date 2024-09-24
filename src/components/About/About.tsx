@@ -1,14 +1,15 @@
 import { Col, Container, Row } from "react-bootstrap";
 import style from "./About.module.scss";
 import Link from "next/link";
+import { path } from "@/utils/routes";
 
 function About() {
   const infoData = [
     {
       title: "لوضع اعلان اضغط هنا",
-      link: "/add",
+      link: path.myhouse,
     },
-    { title: "للاطلاع على الاعلانات الموجودة اضغط هنا", link: "/" },
+    { title: "للاطلاع على الاعلانات الموجودة اضغط هنا", link: path.houses },
   ];
 
   return (
