@@ -62,7 +62,7 @@ export const handleRegister = async (email: string, password: string) => {
     // Create a new user in the Prisma `User` table with the same ID
     await supabase
       .from("User")
-      .insert({ id: supabaseUserId, password, updatedAt: new Date() });
+      .insert({ id: supabaseUserId, password: "...", updatedAt: new Date() });
   } catch (error) {
     return { error: "Failed to create user in Prisma" };
   }
