@@ -44,12 +44,12 @@ const SheltersFilterPage = () => {
   // Table columns for the DataTable
   const columns = [
     {
-      name: "Shelter Name",
+      name: "اسم المأوى",
       selector: (row: any) => row.name,
       sortable: true,
     },
     {
-      name: "Region",
+      name: "المنطقة",
       selector: (row: any) => row.region?.name || "No region", // Display region name if available
       sortable: true,
     },
@@ -73,7 +73,7 @@ const SheltersFilterPage = () => {
             value={selectedRegion || ""}
             onChange={(e) => setSelectedRegion(Number(e.target.value))}
           >
-            <option value="">All Regions</option>
+            <option value="">كل المناطق</option>
             {regions.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
@@ -89,7 +89,7 @@ const SheltersFilterPage = () => {
             }}
             variant="secondary"
           >
-            Clear Filters
+            مسح البحث
           </Button>
         </Col>
       </Row>
@@ -99,9 +99,6 @@ const SheltersFilterPage = () => {
           <DataTable
             columns={columns}
             data={shelters}
-            pagination
-            paginationPerPage={5}
-            paginationRowsPerPageOptions={[5, 10, 15]}
             highlightOnHover
             noDataComponent="No shelters found"
           />
