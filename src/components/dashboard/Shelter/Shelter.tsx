@@ -37,7 +37,10 @@ const SheltersPage = () => {
 
   const handleAddShelter = async (e: any) => {
     e.preventDefault();
-    const response = await addShelter(newShelterName, selectedRegion);
+    const response = await addShelter(
+      newShelterName,
+      selectedRegion || undefined
+    );
     if (response.success) {
       Swal.fire({
         title: "Success!",
