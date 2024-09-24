@@ -33,7 +33,7 @@ function About() {
               <Link
                 key={index}
                 href={info.link}
-                className="text-decoration-none"
+                className="text-decoration-none "
               >
                 <div className={style.aboutUsCard}>
                   <p className="small text-center">{info?.title}</p>
