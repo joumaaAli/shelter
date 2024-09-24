@@ -4,7 +4,6 @@ import {
   addHouse,
   updateHouse,
   deleteHouse,
-  // Fetch regions service
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
 import { House as HouseType } from "@/types/models";
@@ -33,20 +32,46 @@ const HomePage = () => {
     fetchRegionsData();
   }, [search]);
 
-  const handleAddHome = async (e: any) => {
+  const handleAddOrEditHome = async (e: any) => {
     e.preventDefault();
-    const newHome = {
+    const homeData: any = {
       name: e.target.name.value,
       address: e.target.address.value,
       phoneNumber: e.target.phoneNumber.value,
       spaceForPeople: e.target.spaceForPeople.value,
-      additionnalInformation: e.target.additionnalInformation.value,
-      taken: false,
+      additionalInformation: e.target.additionalInformation.value,
+      taken: e.target.taken.checked, // Updated line
       regionId: e.target.region.value, // Capture selected region ID
       region: null,
     };
-    await addHouse(newHome);
+
+    if (selectedHome) {
+      // Only include 'id' when editing an existing house
+      homeData.id = selectedHome.id;
+    }
+
+    if (selectedHome) {
+      // Editing an existing house
+      await updateHouse(homeData);
+      Swal.fire({
+        title: "تم التحديث!",
+        text: "تم تعديل المنزل بنجاح",
+        icon: "success",
+        confirmButtonText: "حسناً",
+      });
+    } else {
+      // Adding a new house
+      await addHouse(homeData);
+      Swal.fire({
+        title: "تمت الإضافة!",
+        text: "تم إضافة المنزل بنجاح",
+        icon: "success",
+        confirmButtonText: "حسناً",
+      });
+    }
+
     setModalShow(false);
+    setSelectedHome(null); // Clear selection after submission
     await fetchHouses(search).then((data) => setHomes(data.data));
   };
 
@@ -80,6 +105,16 @@ const HomePage = () => {
     {
       name: "المساحة المتاحة للأشخاص",
       selector: (row: HouseType) => row.spaceForPeople || "",
+      sortable: true,
+    },
+    {
+      name: "تم الحجز",
+      selector: (row: HouseType) => (row.taken ? "نعم" : "لا"),
+      sortable: true,
+    },
+    {
+      name: "المنطقة",
+      selector: (row: HouseType) => row.region?.name || "",
       sortable: true,
     },
     {
@@ -143,7 +178,7 @@ const HomePage = () => {
         highlightOnHover
         pointerOnHover
         pagination
-        paginationPerPage={5}
+        paginationPerPage={10}
         paginationRowsPerPageOptions={[5, 10, 15, 20]}
         noDataComponent="لم يتم العثور على أي منازل"
       />
@@ -154,12 +189,13 @@ const HomePage = () => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleAddHome}>
+          <Form onSubmit={handleAddOrEditHome}>
             <Form.Group className="my-1" controlId="name">
               <Form.Label>الاسم</Form.Label>
               <Form.Control
                 type="text"
                 defaultValue={selectedHome?.name || ""}
+                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="address">
@@ -167,6 +203,7 @@ const HomePage = () => {
               <Form.Control
                 type="text"
                 defaultValue={selectedHome?.address || ""}
+                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="phoneNumber">
@@ -174,6 +211,7 @@ const HomePage = () => {
               <Form.Control
                 type="text"
                 defaultValue={selectedHome?.phoneNumber || ""}
+                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="spaceForPeople">
@@ -182,9 +220,10 @@ const HomePage = () => {
                 type="number"
                 defaultValue={selectedHome?.spaceForPeople || ""}
                 min="1"
+                required
               />
             </Form.Group>
-            <Form.Group className="my-1" controlId="additionnalInformation">
+            <Form.Group className="my-1" controlId="additionalInformation">
               <Form.Label>معلومات إضافية</Form.Label>
               <Form.Control
                 type="text"
@@ -195,7 +234,8 @@ const HomePage = () => {
               <Form.Label>اختر المنطقة</Form.Label>
               <Form.Control
                 as="select"
-                defaultValue={selectedHome?.region?.id || ""}
+                defaultValue={selectedHome?.regionId || ""}
+                required
               >
                 <option value="">اختر المنطقة</option>
                 {regions?.map((region) => (
@@ -204,6 +244,13 @@ const HomePage = () => {
                   </option>
                 ))}
               </Form.Control>
+            </Form.Group>
+            <Form.Group className="my-1" controlId="taken">
+              <Form.Check
+                type="checkbox"
+                label="تم الحجز"
+                defaultChecked={selectedHome?.taken || false}
+              />
             </Form.Group>
             <Button variant="primary" type="submit" className="my-2">
               {selectedHome ? "حفظ التعديلات" : "إضافة منزل"}

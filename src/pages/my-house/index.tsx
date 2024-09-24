@@ -4,7 +4,6 @@ import {
   addHouse,
   updateHouse,
   deleteHouse,
-  // Fetch regions service
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
 import { House as HouseType } from "@/types/models";
@@ -18,7 +17,7 @@ import style from "./my-house.module.scss";
 
 const MyHousesPage = () => {
   const [houses, setHouses] = useState<HouseType[]>([]);
-  const [regions, setRegions] = useState<any[]>([]); // State for regions
+  const [regions, setRegions] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [selectedHouse, setSelectedHouse] = useState<HouseType | null>(null);
   const [modalShow, setModalShow] = useState(false);
@@ -53,7 +52,7 @@ const MyHousesPage = () => {
       phoneNumber: e.target.phoneNumber.value,
       spaceForPeople: e.target.spaceForPeople.value,
       additionnalInformation: e.target.additionnalInformation.value,
-      taken: e.target.taken.checked,
+      taken: e.target.taken.checked, // Ensure checkbox is captured correctly
       regionId: e.target.region.value, // Capture selected region ID
       id: selectedHouse?.id,
       region: regions.find(

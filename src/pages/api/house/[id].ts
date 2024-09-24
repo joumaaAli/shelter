@@ -32,8 +32,12 @@ export default async function handler(
     where: { id: houseId },
   });
 
+  const admin = session?.user?.app_metadata?.role == "super-admin";
+
   if (!house || house.userId !== session.user.id) {
-    return res.status(403).json({ error: "Forbidden: Access denied" });
+    if (!admin) {
+      return res.status(403).json({ error: "Forbidden: Access denied" });
+    }
   }
 
   if (req.method === "PUT") {
@@ -44,8 +48,9 @@ export default async function handler(
       spaceForPeople,
       additionnalInformation,
       taken,
+      regionId,
     } = req.body;
-
+    console.log(req.body);
     try {
       const updatedHouse = await prisma.house.update({
         where: { id: houseId },
@@ -53,14 +58,15 @@ export default async function handler(
           name,
           address,
           phoneNumber,
-          spaceForPeople,
+          spaceForPeople: parseInt(spaceForPeople),
           additionnalInformation,
           taken,
+          regionId: parseInt(regionId),
         },
       });
       return res.status(200).json({ data: updatedHouse });
     } catch (error) {
-      return res.status(500).json({ error: "Failed to update home" });
+      return res.status(500).json({ error });
     }
   } else if (req.method === "DELETE") {
     try {

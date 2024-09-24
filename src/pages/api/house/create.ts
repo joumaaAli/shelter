@@ -30,6 +30,7 @@ export default async function handler(
       phoneNumber,
       spaceForPeople,
       additionnalInformation,
+      regionId,
     } = req.body;
 
     const isAdmin = session?.user?.app_metadata?.role == "super-admin";
@@ -42,6 +43,7 @@ export default async function handler(
           phoneNumber,
           spaceForPeople: parseInt(spaceForPeople),
           additionnalInformation,
+          regionId: parseInt(regionId),
           userId: isAdmin ? null : session.user.id, // Associate house with the user
         },
       });
