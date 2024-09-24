@@ -2,8 +2,10 @@ import { filterHouses } from "@/services/house";
 import { House as HouseType } from "@/types/models";
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import DataTable from "react-data-table-component";
+import DataTable, {TableStyles} from "react-data-table-component";
 import { Input } from "reactstrap";
+import style from "./houses.module.scss";
+import {Region} from "@/utils/interfaces/region";
 
 const PublicHousesPage = () => {
   const [houses, setHouses] = useState<HouseType[]>([]);
@@ -11,6 +13,76 @@ const PublicHousesPage = () => {
   const [filterSpace, setFilterSpace] = useState<number | null>(null);
   const [regions, setRegions] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
+
+  const tableCustomStyles: TableStyles = {
+    headRow: {
+      style: {
+        border: 'none',
+        color:'#223336',
+        backgroundColor: '#f8f9fa',
+      },
+    },
+    rows: {
+      style: {
+        border: 'none !important',
+        backgroundColor: 'transparent',
+        '&:nth-child(even)': {
+          backgroundColor: '#f1f3f5',
+        },
+        '&:hover': {
+          backgroundColor: '#e9ecef',
+        },
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: '16px',
+        paddingRight: '16px',
+        fontSize: '14px',
+        color: '#343a40',
+      },
+    },
+    noData: {
+      style: {
+        color: '#6c757d',
+        fontSize: '16px',
+        textAlign: 'center',
+        padding: '20px 0',
+      },
+    },
+    pagination: {
+      style: {
+        boxShadow: '0 2px 2px rgba(0, 0, 0, 0.07)',
+        backgroundColor: '#fff',
+        borderTop: 'none',
+        borderRadius: '10px',
+        padding: '10px',
+        display: 'flex',
+        justifyContent: 'center', // Center pagination controls
+        alignItems: 'center',
+      },
+      pageButtonsStyle: {
+        width: '40px',
+        height: '40px',
+        borderRadius: '6px',
+        padding: '5px',
+        margin: '0 5px',
+        cursor: 'pointer',
+        backgroundColor: '#599a68',
+        color: '#fff',
+        transition: 'background-color 0.3s ease',
+
+        '&:hover:not(:disabled)': {
+          backgroundColor: '#3b6645',
+        },
+
+        '&:disabled': {
+          backgroundColor: '#e0e0e0',
+          cursor: 'not-allowed',
+        },
+      },
+    },
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,10 +137,10 @@ const PublicHousesPage = () => {
   ];
 
   return (
-    <div className="d-flex w-100 align-items-center flex-column">
-      <h1 className="text-align-center my-4">عرض المنازل</h1>
+    <div className="d-flex w-100 align-items-center flex-column p-4">
+      <h1 className="w-100 text-align-center my-4">عرض المنازل</h1>
       <Row className="w-100 d-flex justify-content-start align-items-center">
-        <Col lg="6" md="6" className="mx-0" sm="12">
+        <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
           <Input
             type="text"
             placeholder="البحث بالعناوين"
@@ -77,7 +149,7 @@ const PublicHousesPage = () => {
             className="w-100 my-2"
           />
         </Col>
-        <Col lg="6" md="6" className="mx-0 mb-2" sm="12">
+        <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
           <Input
             type="number"
             placeholder="البحث بالمساحة المتاحة للأشخاص"
@@ -86,14 +158,14 @@ const PublicHousesPage = () => {
             className="w-100 my-2"
           />
         </Col>
-        <Col lg="6" md="6" className="mx-0 mb-2" sm="12">
+        <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
           <Input
             type="select"
             value={selectedRegion || ""}
             onChange={(e) => setSelectedRegion(Number(e.target.value) || null)}
           >
             <option value="">اختر المنطقة</option>
-            {regions.map((region: any) => (
+            {regions.map((region: Region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>
@@ -102,14 +174,16 @@ const PublicHousesPage = () => {
         </Col>
       </Row>
       <DataTable
-        columns={columns}
-        data={houses}
-        highlightOnHover
-        pointerOnHover
-        pagination
-        paginationPerPage={5}
-        paginationRowsPerPageOptions={[5, 10, 15, 20]}
-        noDataComponent="لم يتم العثور على أي منازل"
+          className={style.houseTable}
+          columns={columns}
+          data={houses}
+          highlightOnHover
+          pointerOnHover
+          pagination
+          paginationPerPage={5}
+          paginationRowsPerPageOptions={[5, 10, 15, 20]}
+          noDataComponent="لم يتم العثور على أي منازل"
+          customStyles={tableCustomStyles}
       />
     </div>
   );

@@ -1,0 +1,70 @@
+.houseTable {
+  // Custom background for the entire table container
+  background-color: #f8f9fa; // or any other color you prefer
+  border-radius: 5px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+
+  // Override the background for the actual table element
+  .rdt_Table {
+    background-color: inherit !important; // Force table background to match container
+  }
+
+  // Table head (header) styles
+  .rdt_TableHead {
+    background-color: #343a40 !important; // Dark header background
+    color: #fff !important;
+  }
+
+  .rdt_TableHeadRow {
+    background-color: #343a40 !important; // Ensure it's applied
+    color: #fff !important;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    .rdt_TableCol {
+      padding: 12px 16px;
+    }
+  }
+
+  // Table row styling
+  .rdt_TableBody {
+    .rdt_TableRow {
+      background-color: transparent !important; // Ensure row background is transparent or as needed
+      transition: background-color 0.2s ease;
+
+      &:nth-child(even) {
+        background-color: #f1f3f5 !important; // Alternating row colors
+      }
+
+      &:hover {
+        background-color: #e9ecef !important; // Hover effect
+      }
+
+      .rdt_TableCell {
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #343a40 !important; // Cell text color
+      }
+    }
+  }
+
+  // Pagination styles
+  .rdt_Pagination {
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  // No data message
+  .rdt_NoData {
+    color: #6c757d !important;
+    font-size: 16px;
+    text-align: center;
+    padding: 20px 0;
+  }
+}
