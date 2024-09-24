@@ -38,3 +38,57 @@
   color: $primary;
   font-weight: bold;
 }
+
+.offcanvas {
+  background-color: $secondary !important; // Light background color
+  color: #c9c1c1; // Dark text color
+  width: 500px;
+
+  &.show {
+    .offcanvas-header {
+      border-bottom: 1px solid #e9ecef; // Add a bottom border for separation
+      display: flex; // Use flex to control alignment
+      justify-content: space-between; // Space out items
+      align-items: end; // Center items vertically
+      flex: 1;
+    }
+
+    .offcanvas-body {
+      padding: 1.5rem; // Adjust body padding
+      overflow-y: auto; // Allow scrolling if content overflows
+      max-height: calc(100vh - 56px); // Make it responsive to view height
+      align-items: center; // Center items vertically
+      justify-content: flex-start;
+    }
+
+    .nav-link {
+      color: #007bff; // Default link color
+      font-weight: 500; // Slightly bolder links
+      padding: 0.5rem 1rem; // Add padding for better click area
+      transition: background-color 0.2s ease, color 0.2s ease; // Smooth transitions
+
+      &:hover {
+        background-color: #e9ecef; // Light hover effect
+        color: #0056b3; // Darker link color on hover
+      }
+
+      &.active {
+        font-weight: bold; // Make active links bolder
+        color: #0056b3; // Different color for active link
+      }
+    }
+
+    .close-btn {
+      color: #343a40; // Close button color
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #dc3545; // Red color on hover
+      }
+    }
+  }
+}
+
+.bs-btn-close {
+  padding: 1rem 1.5rem;
+}

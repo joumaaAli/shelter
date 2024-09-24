@@ -4,44 +4,47 @@ import { createClient } from "@/utils/supabase/component";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import Offcanvas from 'react-bootstrap/Offcanvas';
 import styles from "./Navbar.module.scss";
 
 const NavBar = () => {
   const supabase = createClient();
   const router = useRouter();
   const [user, setUser] = useState(null);
-
-  // Navigation links as a list of objects
+  const [role, setRole] = useState(null);
   const navLinks = [
-    { label: "الرئيسية", href: path.home },
-    { label: "معلومات عنا", href: path.aboutUs },
-    { label: "اتصل بنا", href: path.contact },
+    {label: "الرئيسية", href: path.home},
+    {label: "اتصل بنا", href: path.contact},
+    {label: "المنازل", href: path.houses},
+    {label: "الملاجئ", href: path.myhouse},
   ];
 
   const adminLinks = [
-    { label: "لوحة التحكم", href: path.admin }, // Dashboard = لوحة التحكم
+    {label: "لوحة التحكم", href: path.admin},
   ];
 
   useEffect(() => {
     const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
+      const {data} = await supabase.auth.getSession();
       if (data?.session) {
         setUser(data.session.user);
+        if (data.session.user.app_metadata.role === 'super-admin') {
+          setRole(data.session.user.app_metadata.role);
+        }
       }
     };
 
     // Initial session fetch
     getSession();
 
-    // Subscribe to session changes (login/logout)
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session) {
-          setUser(session.user);
-        } else {
-          setUser(null); // No session means user is logged out
+    const {data: authListener} = supabase.auth.onAuthStateChange(
+        (event, session) => {
+          if (session) {
+            setUser(session.user);
+          } else {
+            setUser(null);
+          }
         }
-      }
     );
 
     // Cleanup subscription on component unmount
@@ -50,70 +53,81 @@ const NavBar = () => {
     };
   }, [supabase]);
 
-  const isAdmin = user?.role === "super-admin"; // Check if the user is an admin
+  const isAdmin = role === "super-admin";
 
   return (
-    <Navbar bg="light" expand="lg" className={styles.navbar} dir="rtl">
-      <Container className={styles.navbarContainer}>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className=" d-flex align-items-center">
-            {/* Render general navigation links */}
-            {navLinks.map((link, index) => (
-              <Nav.Link
-                key={index}
-                className={`${styles.navLink} ${
-                  router.pathname === link.href ? styles.active : ""
-                }`}
-                href={link.href}
-              >
-                {link.label}
-              </Nav.Link>
-            ))}
+      <Navbar bg="light" expand="lg" className={styles.navbar} dir="rtl">
+        <Container className={styles.navbarContainer}>
+          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Navbar.Offcanvas
+                id="offcanvasNavbar-expand-lg"
+                aria-labelledby="offcanvasNavbarLabel-expand-lg"
+                placement="end"
+                className={styles.offcanvas}
+            >
+              <Offcanvas.Header closeButton className={styles.offcanvasHeader}>
+                <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg" className="ms-auto">
+                  المحتوى
+                </Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <Nav className=" d-flex align-items-start">
+                  {navLinks.map((link, index) => (
+                      <Nav.Link
+                          key={index}
+                          className={`${styles.navLink} ${
+                              router.pathname === link.href ? styles.active : ""
+                          }`}
+                          href={link.href}
+                      >
+                        {link.label}
+                      </Nav.Link>
+                  ))}
 
-            {/* Render admin/dashboard-related links only for admin users */}
-            {user &&
-              isAdmin &&
-              adminLinks.map((link, index) => (
-                <Nav.Link
-                  key={index}
-                  className={`${styles.navLink} ${
-                    router.pathname === link.href ? styles.active : ""
-                  }`}
-                  href={link.href}
-                >
-                  {link.label}
-                </Nav.Link>
-              ))}
+                  {user &&
+                      isAdmin &&
+                      adminLinks.map((link, index) => (
+                          <Nav.Link
+                              key={index}
+                              className={`${styles.navLink} ${
+                                  router.pathname === link.href ? styles.active : ""
+                              }`}
+                              href={link.href}
+                          >
+                            {link.label}
+                          </Nav.Link>
+                      ))}
 
-            {/* Show logout option for both admin and normal users */}
-            {user && (
-              <p
-                className={`${styles.navLink} m-0 p-0`}
-                onClick={() => {
-                  HandleLogout();
-                  router.push(path.home);
-                }}
-              >
-                تسجيل الخروج
-              </p>
-            )}
+                  {user && (
+                      <>
+                      <Nav.Link className={styles.navLink}
+                          onClick={() => {
+                            HandleLogout();
+                            router.push(path.home);
+                          }}
+                      >
+                        تسجيل الخروج
+                      </Nav.Link>
+                      </>
+                  )}
 
-            {/* Show login and register links if no user is logged in */}
-            {!user && (
-              <>
-                <Nav.Link className={styles.navLink} href={path.auth.login}>
-                  تسجيل الدخول
-                </Nav.Link>
-                <Nav.Link className={styles.navLink} href={path.auth.register}>
-                  التسجيل
-                </Nav.Link>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+                  {!user && (
+                      <>
+                        <Nav.Link className={styles.navLink} href={path.auth.login}>
+                          تسجيل الدخول
+                        </Nav.Link>
+                        <Nav.Link className={styles.navLink} href={path.auth.register}>
+                          إنشاء حساب
+                        </Nav.Link>
+                      </>
+                  )}
+                </Nav>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
   );
 };
 
