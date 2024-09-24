@@ -217,7 +217,7 @@ const MyHousesPage = () => {
             onChange={(e) => setRegionFilter(e.target.value || null)}
             className="w-100 my-2"
           >
-            <option value="">Filter by region</option>
+            <option value="">كل المناطق</option>
             {regions.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
