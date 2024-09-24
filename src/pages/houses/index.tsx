@@ -123,15 +123,21 @@ const PublicHousesPage = () => {
       name: "رقم الهاتف",
       selector: (row: any) =>
         row?.phoneNumber ? (
-          <div
+          <a
+            href={`https://wa.me/+961${row.phoneNumber}`}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
-              direction: "ltr",
+              direction: "ltr", // Ensure the phone number is displayed LTR
+              unicodeBidi: "embed", // Embed LTR context to avoid mixing with RTL
               textAlign: "left",
               margin: 0,
+              color: "#007bff",
+              textDecoration: "none",
             }}
           >
             {row.phoneNumber}
-          </div>
+          </a>
         ) : (
           ""
         ),
