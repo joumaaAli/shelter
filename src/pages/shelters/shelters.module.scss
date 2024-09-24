@@ -1,1 +1,25 @@
 @import "../../styles/dataTable.scss";
+
+.customRow {
+  margin: inherit;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.customButton{
+  padding-left: 0;
+  display: flex;
+  flex: 1;
+  justify-content: end;
+}
+
+.tableRow{
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  padding: 10px;
+}

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { fetchShelters } from "@/services/shelter";
 import { fetchRegions } from "@/services/region";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import tableStyle from "@/styles/tableStyle";
-import style from "@/pages/my-house/my-house.module.scss";
+import style from "@/pages/shelters/shelters.module.scss";
 import { HouseType } from "@/utils/interfaces/houseType";
 import { Shelter } from "@/utils/interfaces/shelter";
 import { Region } from "@/utils/interfaces/region";
@@ -55,57 +55,54 @@ const SheltersFilterPage = () => {
     },
   ];
   return (
-    <Container fluid>
-      <h1 className="my-4">الملاجئ</h1>
-      <Row className="mb-4">
-        <Col md={6} className="mb-4">
-          <Input
-            type="text"
-            placeholder="ابحث باسم الملاجئ"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </Col>
-        <Col md={4} className="mb-4">
-          <Form.Control
-            as="select"
-            value={selectedRegion || ""}
-            onChange={(e) => setSelectedRegion(Number(e.target.value))}
-          >
-            <option value="">المناطق</option>
-            {regions.map((region: Region) => (
-              <option key={region.id} value={region.id}>
-                {region.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Col>
-        <Col md={2}>
-          <Button
-            onClick={() => {
-              setSearchTerm("");
-              setSelectedRegion(null);
-            }}
-            variant="secondary"
-          >
-            مسح البحث
-          </Button>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          <DataTable
+      <div className="d-flex w-100 align-items-center flex-column p-4">
+        <h1 className="w-100 text-align-center my-4">الملاجئ</h1>
+        <Row className={style.customRow}>
+          <Col sm={6} xs={6} className={"p-0"}>
+            <Input
+                type="text"
+                placeholder="ابحث باسم الملاجئ"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-100 my-2"
+            />
+          </Col>
+          <Col sm={4} xs={6}>
+            <Form.Control
+                as="select"
+                value={selectedRegion || ""}
+                onChange={(e) => setSelectedRegion(Number(e.target.value))}
+                className="w-100 my-2 ml-0"
+            >
+              <option value="">المناطق</option>
+              {regions.map((region: Region) => (
+                  <option key={region.id} value={region.id}>
+                    {region.name}
+                  </option>
+              ))}
+            </Form.Control>
+          </Col>
+          <Col sm={2} xs={6} className={style.customButton}>
+            <Button
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedRegion(null);
+                }}
+                variant="secondary"
+            >
+              مسح البحث
+            </Button>
+          </Col>
+        </Row>
+        <DataTable
             className={style.houseTable}
             columns={columns}
             data={shelters}
             highlightOnHover
             noDataComponent="لم يتم العثور على أية ملاجئ"
             customStyles={tableStyle}
-          />
-        </Col>
-      </Row>
-    </Container>
+        />
+      </div>
   );
 };
 

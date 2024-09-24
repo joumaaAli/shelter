@@ -7,7 +7,7 @@ import {
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
 import { House as HouseType } from "@/types/models";
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
@@ -15,10 +15,12 @@ import { requireAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
 import style from "./my-house.module.scss";
 import tableStyle from "@/styles/tableStyle";
+import {Address} from "@/utils/interfaces/address";
+import {Region} from "aws-sdk/clients/es";
 
 const MyHousesPage = () => {
   const [houses, setHouses] = useState<HouseType[]>([]);
-  const [regions, setRegions] = useState<any[]>([]);
+  const [regions, setRegions] = useState<never[]>([]);
   const [search, setSearch] = useState("");
   const [regionFilter, setRegionFilter] = useState<string | null>(null); // Region filter state
   const [selectedHouse, setSelectedHouse] = useState<HouseType | null>(null);
@@ -31,6 +33,7 @@ const MyHousesPage = () => {
     );
     if (response.success) {
       setHouses(response.data);
+      console.log('response', response.data);
     } else {
       console.error("Failed to fetch houses:", response.error);
     }
@@ -137,12 +140,12 @@ const MyHousesPage = () => {
   const columns = [
     {
       name: "العنوان",
-      selector: (row: any) => row.address || "",
+      selector: (row: Address) => row.address || "",
       sortable: true,
     },
     {
       name: "المنطقة",
-      selector: (row: any) => row.region?.name || "",
+      selector: (row: Region) => row?.name || "",
       sortable: true,
     },
     {
@@ -168,6 +171,13 @@ const MyHousesPage = () => {
         <Row className="w-100">
           <Col className={style.tableRow}>
             <Button
+                variant={row.taken ? "warning" : "success"}
+                onClick={() => handleToggleTaken(row)}
+                size="sm"
+            >
+              {row.taken ? "متاح" : "تم الحجز"}
+            </Button>
+            <Button
               onClick={() => {
                 setSelectedHouse(row);
                 setModalShow(true);
@@ -183,13 +193,6 @@ const MyHousesPage = () => {
               size="sm"
             >
               إلغاء
-            </Button>
-            <Button
-              variant={row.taken ? "warning" : "success"}
-              onClick={() => handleToggleTaken(row)}
-              size="sm"
-            >
-              {row.taken ? "متاح" : "تم الحجز"}
             </Button>
           </Col>
         </Row>
@@ -210,7 +213,7 @@ const MyHousesPage = () => {
             className="w-100 my-2"
           />
         </Col>
-        <Col sm={4} xs={6} className={"p-0"}>
+        <Col sm={4} xs={6}>
           <Form.Control
             as="select"
             value={regionFilter || ""}

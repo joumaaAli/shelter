@@ -40,6 +40,17 @@ html, body {
   min-width: 100px;
 }
 
+.btn-warning {
+  min-width: 70px;
+}
+
+.btn-success {
+  background-color: #acacad !important;
+  border-color: #acacad !important;
+  min-width: 70px;
+}
+
+
 body {
   background-color: $body-bg;
   color: $body-color;
