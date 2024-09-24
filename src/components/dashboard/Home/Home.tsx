@@ -89,39 +89,69 @@ const HomePage = () => {
   const columns = [
     {
       name: "الاسم",
-      selector: (row: HouseType) => row.name || "",
+      selector: (row: any) => row.name || "",
       sortable: true,
     },
     {
       name: "العنوان",
-      selector: (row: HouseType) => row.address || "",
+      selector: (row: any) => row.address || "",
       sortable: true,
     },
     {
       name: "رقم الهاتف",
-      selector: (row: HouseType) => row.phoneNumber || "",
+      selector: (row: any) => {
+        if (row?.phoneNumber) {
+          // Remove spaces and add +961 prefix
+          const cleanedPhoneNumber = row.phoneNumber.replace(/\s+/g, ""); // Remove any spaces
+          const lebanonPhoneNumber = `+961${
+            cleanedPhoneNumber.startsWith("0")
+              ? cleanedPhoneNumber.slice(1)
+              : cleanedPhoneNumber
+          }`; // Add +961 prefix, removing the leading zero if it exists
+
+          return (
+            <a
+              href={`https://wa.me/${lebanonPhoneNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                direction: "ltr", // Ensure the phone number is displayed LTR
+                unicodeBidi: "embed", // Embed LTR context to avoid mixing with RTL
+                textAlign: "left",
+                margin: 0,
+                color: "#007bff",
+                textDecoration: "none",
+              }}
+            >
+              {row.phoneNumber}
+            </a>
+          );
+        } else {
+          return "";
+        }
+      },
       sortable: true,
     },
     {
       name: "المساحة المتاحة للأشخاص",
-      selector: (row: HouseType) => row.spaceForPeople || "",
+      selector: (row: any) => row.spaceForPeople || "",
       sortable: true,
     },
     {
       name: "تم الحجز",
-      selector: (row: HouseType) => (row.taken ? "نعم" : "لا"),
+      selector: (row: any) => (row.taken ? "نعم" : "لا"),
       sortable: true,
     },
     {
       name: "المنطقة",
-      selector: (row: HouseType) => row.region?.name || "",
+      selector: (row: any) => row.region?.name || "",
       sortable: true,
     },
     {
       name: "الإجراءات",
       button: true,
       minWidth: "400px",
-      cell: (row: HouseType) => (
+      cell: (row: any) => (
         <Row className="w-100">
           <Col>
             <Button

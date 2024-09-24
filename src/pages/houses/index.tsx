@@ -121,28 +121,40 @@ const PublicHousesPage = () => {
     },
     {
       name: "رقم الهاتف",
-      selector: (row: any) =>
-        row?.phoneNumber ? (
-          <a
-            href={`https://wa.me/+961${row.phoneNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              direction: "ltr", // Ensure the phone number is displayed LTR
-              unicodeBidi: "embed", // Embed LTR context to avoid mixing with RTL
-              textAlign: "left",
-              margin: 0,
-              color: "#007bff",
-              textDecoration: "none",
-            }}
-          >
-            {row.phoneNumber}
-          </a>
-        ) : (
-          ""
-        ),
+      selector: (row: any) => {
+        if (row?.phoneNumber) {
+          // Remove spaces and add +961 prefix
+          const cleanedPhoneNumber = row.phoneNumber.replace(/\s+/g, ""); // Remove any spaces
+          const lebanonPhoneNumber = `+961${
+            cleanedPhoneNumber.startsWith("0")
+              ? cleanedPhoneNumber.slice(1)
+              : cleanedPhoneNumber
+          }`; // Add +961 prefix, removing the leading zero if it exists
+
+          return (
+            <a
+              href={`https://wa.me/${lebanonPhoneNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                direction: "ltr", // Ensure the phone number is displayed LTR
+                unicodeBidi: "embed", // Embed LTR context to avoid mixing with RTL
+                textAlign: "left",
+                margin: 0,
+                color: "#007bff",
+                textDecoration: "none",
+              }}
+            >
+              {row.phoneNumber}
+            </a>
+          );
+        } else {
+          return "";
+        }
+      },
       sortable: true,
     },
+
     {
       name: "المساحة المتاحة للأشخاص",
       selector: (row: HouseType) => row.spaceForPeople || "",
