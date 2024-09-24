@@ -111,17 +111,28 @@ const PublicHousesPage = () => {
   const columns = [
     {
       name: "الاسم",
-      selector: (row: HouseType) => row.name || "",
+      selector: (row: any) => row.name || "",
       sortable: true,
     },
     {
       name: "العنوان",
-      selector: (row: HouseType) => row.address || "",
+      selector: (row: any) => row.address || "",
       sortable: true,
     },
     {
       name: "رقم الهاتف",
-      selector: (row: HouseType) => row.phoneNumber || "",
+      selector: (row: any) =>
+        (
+          <div
+            style={{
+              direction: "ltr",
+              textAlign: "left",
+              margin: 0,
+            }}
+          >
+            {row?.phoneNumber}
+          </div>
+        ) || "",
       sortable: true,
     },
     {

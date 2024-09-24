@@ -124,39 +124,50 @@ const MyHousesPage = () => {
   const columns = [
     {
       name: "Name",
-      selector: (row: HouseType) => row.name || "",
+      selector: (row: any) => row.name || "",
       sortable: true,
     },
     {
       name: "Address",
-      selector: (row: HouseType) => row.address || "",
+      selector: (row: any) => row.address || "",
       sortable: true,
     },
     {
       name: "Phone Number",
-      selector: (row: HouseType) => row.phoneNumber || "",
+      selector: (row: any) =>
+        (
+          <div
+            style={{
+              direction: "ltr",
+              textAlign: "left",
+              margin: 0,
+            }}
+          >
+            {row?.phoneNumber}
+          </div>
+        ) || "",
       sortable: true,
     },
     {
       name: "Space For People",
-      selector: (row: HouseType) => row.spaceForPeople || "",
+      selector: (row: any) => row.spaceForPeople || "",
       sortable: true,
     },
     {
       name: "Taken",
-      selector: (row: HouseType) => (row.taken ? "نعم" : "كلا"),
+      selector: (row: any) => (row.taken ? "نعم" : "كلا"),
       sortable: true,
     },
     {
       name: "Region",
-      selector: (row: HouseType) => row.region?.name || "",
+      selector: (row: any) => row.region?.name || "",
       sortable: true,
     },
     {
       name: "Actions",
       button: true,
       minWidth: "400px",
-      cell: (row: HouseType) => (
+      cell: (row: any) => (
         <Row className="w-100">
           <Col>
             <Button
