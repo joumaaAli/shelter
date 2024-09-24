@@ -7,24 +7,27 @@ import {
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
 import { House as HouseType } from "@/types/models";
-import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
-import { requireAuthentication } from "@/layouts/layout";
-import { GetServerSideProps } from "next";
 import style from "./my-house.module.scss";
 import tableStyle from "@/styles/tableStyle";
+import { GetServerSideProps } from "next";
+import { requireAuthentication } from "@/layouts/layout";
 
 const MyHousesPage = () => {
   const [houses, setHouses] = useState<HouseType[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [search, setSearch] = useState("");
-  const [regionFilter, setRegionFilter] = useState<string | null>(null); // Region filter state
+  const [regionFilter, setRegionFilter] = useState<string | null>(null);
   const [selectedHouse, setSelectedHouse] = useState<HouseType | null>(null);
   const [modalShow, setModalShow] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state for data fetching
+  const [formLoading, setFormLoading] = useState(false); // Loading state for form submission
 
   const fetchUserHousesData = async () => {
+    setLoading(true); // Start loading
     const response = await fetchHouses(
       search,
       regionFilter ? parseInt(regionFilter) : undefined
@@ -34,6 +37,7 @@ const MyHousesPage = () => {
     } else {
       console.error("Failed to fetch houses:", response.error);
     }
+    setLoading(false); // Stop loading
   };
 
   useEffect(() => {
@@ -51,6 +55,7 @@ const MyHousesPage = () => {
 
   const handleAddOrUpdateHouse = async (e: any) => {
     e.preventDefault();
+    setFormLoading(true); // Start form loading
     const houseData: any = {
       name: e.target.name.value,
       address: e.target.address.value,
@@ -71,43 +76,42 @@ const MyHousesPage = () => {
 
     if (response.success) {
       Swal.fire({
-        title: "Success!",
-        text: selectedHouse
-          ? "House updated successfully"
-          : "House added successfully",
+        title: "نجاح!",
+        text: selectedHouse ? "تم تعديل المنزل بنجاح" : "تم إضافة المنزل بنجاح",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "حسناً",
       });
     } else {
       Swal.fire({
-        title: "Error!",
-        text: selectedHouse ? "Failed to update house" : "Failed to add house",
+        title: "خطأ!",
+        text: selectedHouse ? "فشل في تعديل المنزل" : "فشل في إضافة المنزل",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "حسناً",
       });
     }
 
     setModalShow(false);
     setSelectedHouse(null);
     await fetchUserHousesData();
+    setFormLoading(false); // Stop form loading
   };
 
   const handleDeleteHouse = async (id: number) => {
     const response = await deleteHouse(id);
     if (response.success) {
       Swal.fire({
-        title: "Success!",
-        text: "House deleted successfully",
+        title: "نجاح!",
+        text: "تم حذف المنزل بنجاح",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "حسناً",
       });
       await fetchUserHousesData();
     } else {
       Swal.fire({
-        title: "Error!",
-        text: "Failed to delete house",
+        title: "خطأ!",
+        text: "فشل في حذف المنزل",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "حسناً",
       });
     }
   };
@@ -118,18 +122,18 @@ const MyHousesPage = () => {
 
     if (response.success) {
       Swal.fire({
-        title: "Success!",
-        text: `House marked as ${updatedHouse.taken ? "taken" : "available"}`,
+        title: "نجاح!",
+        text: `تم ${updatedHouse.taken ? "حجز" : "إلغاء حجز"} المنزل`,
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "حسناً",
       });
       await fetchUserHousesData();
     } else {
       Swal.fire({
-        title: "Error!",
-        text: "Failed to update house status",
+        title: "خطأ!",
+        text: "فشل في تحديث حالة المنزل",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "حسناً",
       });
     }
   };
@@ -151,8 +155,8 @@ const MyHousesPage = () => {
       sortable: true,
     },
     {
-      name: "مأخوذ",
-      selector: (row: any) => (row.taken ? "نعم" : "كلا"),
+      name: "تم الحجز",
+      selector: (row: any) => (row.taken ? "نعم" : "لا"),
       sortable: true,
     },
     {
@@ -161,7 +165,7 @@ const MyHousesPage = () => {
       sortable: true,
     },
     {
-      name: "",
+      name: "الإجراءات",
       button: true,
       minWidth: "400px",
       cell: (row: HouseType) => (
@@ -182,14 +186,14 @@ const MyHousesPage = () => {
               onClick={() => handleDeleteHouse(row.id)}
               size="sm"
             >
-              إلغاء
+              حذف
             </Button>
             <Button
               variant={row.taken ? "warning" : "success"}
               onClick={() => handleToggleTaken(row)}
               size="sm"
             >
-              {row.taken ? "متاح" : "تم الحجز"}
+              {row.taken ? "إلغاء الحجز" : "تم الحجز"}
             </Button>
           </Col>
         </Row>
@@ -201,7 +205,7 @@ const MyHousesPage = () => {
     <div className="d-flex w-100 align-items-center flex-column p-4">
       <h1 className="w-100 text-align-center my-4">منازلي</h1>
       <Row className={style.customRow}>
-        <Col sm={6} xs={6} className={"p-0"}>
+        <Col sm={6} xs={12} className={"p-0"}>
           <Input
             type="text"
             placeholder="ابحث بالعنوان"
@@ -237,26 +241,105 @@ const MyHousesPage = () => {
           </Button>
         </Col>
       </Row>
-      <DataTable
-        className={style.houseTable}
-        columns={columns}
-        data={houses}
-        highlightOnHover
-        pointerOnHover
-        paginationPerPage={5}
-        paginationRowsPerPageOptions={[5, 10, 15, 20]}
-        noDataComponent="لم يتم العثور على أي منازل"
-        customStyles={tableStyle}
-      />
+      {loading ? (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">جاري التحميل...</span>
+        </Spinner>
+      ) : (
+        <DataTable
+          className={style.houseTable}
+          columns={columns}
+          data={houses}
+          highlightOnHover
+          pointerOnHover
+          paginationPerPage={5}
+          paginationRowsPerPageOptions={[5, 10, 15, 20]}
+          noDataComponent="لم يتم العثور على أي منازل"
+          customStyles={tableStyle}
+        />
+      )}
       <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {selectedHouse ? "Edit House" : "Add House"}
+            {selectedHouse ? "تعديل المنزل" : "إضافة منزل"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddOrUpdateHouse}>
-            {/* Your form fields */}
+            <Form.Group className="my-1" controlId="name">
+              <Form.Label>الاسم</Form.Label>
+              <Form.Control
+                type="text"
+                defaultValue={selectedHouse?.name || ""}
+              />
+            </Form.Group>
+            <Form.Group className="my-1" controlId="address">
+              <Form.Label>العنوان</Form.Label>
+              <Form.Control
+                type="text"
+                defaultValue={selectedHouse?.address || ""}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="my-1" controlId="phoneNumber">
+              <Form.Label>رقم الهاتف</Form.Label>
+              <Form.Control
+                type="text"
+                defaultValue={selectedHouse?.phoneNumber || ""}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="my-1" controlId="spaceForPeople">
+              <Form.Label>عدد الأشخاص</Form.Label>
+              <Form.Control
+                type="number"
+                defaultValue={selectedHouse?.spaceForPeople || ""}
+                min="1"
+              />
+            </Form.Group>
+            <Form.Group className="my-1" controlId="additionalInformation">
+              <Form.Label>معلومات إضافية</Form.Label>
+              <Form.Control
+                type="text"
+                defaultValue={selectedHouse?.additionnalInformation || ""}
+              />
+            </Form.Group>
+            <Form.Group className="my-1" controlId="taken">
+              <Form.Check
+                type="checkbox"
+                label="تم الحجز"
+                defaultChecked={selectedHouse?.taken || false}
+              />
+            </Form.Group>
+            <Form.Group className="my-1" controlId="region">
+              <Form.Label>كل المناطق</Form.Label>
+              <Form.Control
+                as="select"
+                defaultValue={selectedHouse?.regionId || ""}
+                required
+              >
+                <option value="">كل المناطق</option>
+                {regions.map((region) => (
+                  <option key={region.id} value={region.id}>
+                    {region.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Button
+              variant="primary"
+              type="submit"
+              className="my-2"
+              disabled={formLoading} // Disable button during form loading
+            >
+              {formLoading ? (
+                <Spinner as="span" animation="border" size="sm" />
+              ) : selectedHouse ? (
+                "حفظ التعديلات"
+              ) : (
+                "إضافة منزل"
+              )}
+            </Button>
           </Form>
         </Modal.Body>
       </Modal>

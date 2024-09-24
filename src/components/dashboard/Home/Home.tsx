@@ -7,72 +7,83 @@ import {
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
 import { House as HouseType } from "@/types/models";
-import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
 
 const HomePage = () => {
   const [homes, setHomes] = useState<HouseType[]>([]);
-  const [regions, setRegions] = useState<any[]>([]); // State for regions
+  const [regions, setRegions] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [selectedHome, setSelectedHome] = useState<HouseType | null>(null);
   const [modalShow, setModalShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
-    fetchHouses(search).then((data: any) => {
-      setHomes(data.data);
-    });
+    async function loadData() {
+      setLoading(true);
+      try {
+        const housesData = await fetchHouses(search);
+        setHomes(housesData.data);
+      } finally {
+        setLoading(false);
+      }
+    }
 
     async function fetchRegionsData() {
       const response = await fetchRegions();
       setRegions(response.data);
     }
 
+    loadData();
     fetchRegionsData();
   }, [search]);
 
   const handleAddOrEditHome = async (e: any) => {
     e.preventDefault();
+    setFormLoading(true);
     const homeData: any = {
       name: e.target.name.value,
       address: e.target.address.value,
       phoneNumber: e.target.phoneNumber.value,
       spaceForPeople: e.target.spaceForPeople.value,
       additionalInformation: e.target.additionalInformation.value,
-      taken: e.target.taken.checked, // Updated line
-      regionId: e.target.region.value, // Capture selected region ID
+      taken: e.target.taken.checked,
+      regionId: e.target.region.value,
       region: null,
     };
 
     if (selectedHome) {
-      // Only include 'id' when editing an existing house
       homeData.id = selectedHome.id;
     }
 
-    if (selectedHome) {
-      // Editing an existing house
-      await updateHouse(homeData);
-      Swal.fire({
-        title: "تم التحديث!",
-        text: "تم تعديل المنزل بنجاح",
-        icon: "success",
-        confirmButtonText: "حسناً",
-      });
-    } else {
-      // Adding a new house
-      await addHouse(homeData);
-      Swal.fire({
-        title: "تمت الإضافة!",
-        text: "تم إضافة المنزل بنجاح",
-        icon: "success",
-        confirmButtonText: "حسناً",
-      });
-    }
+    try {
+      if (selectedHome) {
+        await updateHouse(homeData);
+        Swal.fire({
+          title: "تم التحديث!",
+          text: "تم تعديل المنزل بنجاح",
+          icon: "success",
+          confirmButtonText: "حسناً",
+        });
+      } else {
+        await addHouse(homeData);
+        Swal.fire({
+          title: "تمت الإضافة!",
+          text: "تم إضافة المنزل بنجاح",
+          icon: "success",
+          confirmButtonText: "حسناً",
+        });
+      }
 
-    setModalShow(false);
-    setSelectedHome(null); // Clear selection after submission
-    await fetchHouses(search).then((data) => setHomes(data.data));
+      setModalShow(false);
+      setSelectedHome(null);
+      await fetchHouses(search).then((data) => setHomes(data.data));
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   const handleDeleteHome = async (id: number) => {
@@ -84,6 +95,28 @@ const HomePage = () => {
       confirmButtonText: "حسناً",
     });
     await fetchHouses(search).then((data) => setHomes(data.data));
+  };
+
+  const handleToggleTaken = async (home: HouseType) => {
+    const updatedHome = { ...home, taken: !home.taken };
+    const response = await updateHouse(updatedHome);
+
+    if (response.success) {
+      Swal.fire({
+        title: "نجاح!",
+        text: `تم ${updatedHome.taken ? "حجز" : "إلغاء حجز"} المنزل`,
+        icon: "success",
+        confirmButtonText: "حسناً",
+      });
+      await fetchHouses(search).then((data) => setHomes(data.data));
+    } else {
+      Swal.fire({
+        title: "خطأ!",
+        text: "فشل في تحديث حالة المنزل",
+        icon: "error",
+        confirmButtonText: "حسناً",
+      });
+    }
   };
 
   const columns = [
@@ -101,13 +134,12 @@ const HomePage = () => {
       name: "رقم الهاتف",
       selector: (row: any) => {
         if (row?.phoneNumber) {
-          // Remove spaces and add +961 prefix
-          const cleanedPhoneNumber = row.phoneNumber.replace(/\s+/g, ""); // Remove any spaces
+          const cleanedPhoneNumber = row.phoneNumber.replace(/\s+/g, "");
           const lebanonPhoneNumber = `+961${
             cleanedPhoneNumber.startsWith("0")
               ? cleanedPhoneNumber.slice(1)
               : cleanedPhoneNumber
-          }`; // Add +961 prefix, removing the leading zero if it exists
+          }`;
 
           return (
             <a
@@ -115,8 +147,8 @@ const HomePage = () => {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                direction: "ltr", // Ensure the phone number is displayed LTR
-                unicodeBidi: "embed", // Embed LTR context to avoid mixing with RTL
+                direction: "ltr",
+                unicodeBidi: "embed",
                 textAlign: "left",
                 margin: 0,
                 color: "#007bff",
@@ -148,6 +180,11 @@ const HomePage = () => {
       sortable: true,
     },
     {
+      name: "معلومات إضافية",
+      selector: (row: any) => row.additionalInformation || "",
+      sortable: true,
+    },
+    {
       name: "الإجراءات",
       button: true,
       minWidth: "400px",
@@ -172,6 +209,15 @@ const HomePage = () => {
               size="sm"
             >
               حذف
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              variant={row.taken ? "warning" : "success"}
+              onClick={() => handleToggleTaken(row)}
+              size="sm"
+            >
+              {row.taken ? "إلغاء الحجز" : "تم الحجز"}
             </Button>
           </Col>
         </Row>
@@ -202,15 +248,23 @@ const HomePage = () => {
           </Button>
         </Col>
       </Row>
-      <DataTable
-        columns={columns}
-        data={homes}
-        highlightOnHover
-        pointerOnHover
-        paginationPerPage={10}
-        paginationRowsPerPageOptions={[5, 10, 15, 20]}
-        noDataComponent="لم يتم العثور على أي منازل"
-      />
+
+      {loading ? (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">جاري التحميل...</span>
+        </Spinner>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={homes}
+          highlightOnHover
+          pointerOnHover
+          paginationPerPage={10}
+          paginationRowsPerPageOptions={[5, 10, 15, 20]}
+          noDataComponent="لم يتم العثور على أي منازل"
+        />
+      )}
+
       <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
@@ -224,7 +278,6 @@ const HomePage = () => {
               <Form.Control
                 type="text"
                 defaultValue={selectedHome?.name || ""}
-                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="address">
@@ -249,7 +302,6 @@ const HomePage = () => {
                 type="number"
                 defaultValue={selectedHome?.spaceForPeople || ""}
                 min="1"
-                required
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="additionalInformation">
@@ -281,8 +333,19 @@ const HomePage = () => {
                 defaultChecked={selectedHome?.taken || false}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="my-2">
-              {selectedHome ? "حفظ التعديلات" : "إضافة منزل"}
+            <Button
+              variant="primary"
+              type="submit"
+              className="my-2"
+              disabled={formLoading}
+            >
+              {formLoading ? (
+                <Spinner as="span" animation="border" size="sm" />
+              ) : selectedHome ? (
+                "حفظ التعديلات"
+              ) : (
+                "إضافة منزل"
+              )}
             </Button>
           </Form>
         </Modal.Body>

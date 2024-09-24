@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchShelters } from "@/services/shelter";
 import { fetchRegions } from "@/services/region";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import tableStyle from "@/styles/tableStyle";
@@ -12,9 +12,10 @@ import { Region } from "@/utils/interfaces/region";
 
 const SheltersFilterPage = () => {
   const [shelters, setShelters] = useState<never[]>([]);
-  const [regions, setRegions] = useState<never[]>([]);
+  const [regions, setRegions] = useState<Region[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchAllRegions();
@@ -22,6 +23,7 @@ const SheltersFilterPage = () => {
   }, [searchTerm, selectedRegion]);
 
   const fetchAllShelters = async () => {
+    setLoading(true); // Set loading to true before fetching data
     const response = await fetchShelters(selectedRegion || undefined);
     if (response.success) {
       const filteredShelters = response.data.filter((shelter: Shelter) => {
@@ -31,6 +33,7 @@ const SheltersFilterPage = () => {
     } else {
       console.error("Failed to fetch shelters:", response.error);
     }
+    setLoading(false); // Set loading to false after fetching
   };
 
   const fetchAllRegions = async () => {
@@ -54,6 +57,7 @@ const SheltersFilterPage = () => {
       sortable: true,
     },
   ];
+
   return (
     <Container fluid>
       <h1 className="my-4">الملاجئ</h1>
@@ -64,6 +68,7 @@ const SheltersFilterPage = () => {
             placeholder="ابحث باسم الملاجئ"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={loading} // Disable input when loading
           />
         </Col>
         <Col md={4} className="mb-4">
@@ -71,8 +76,9 @@ const SheltersFilterPage = () => {
             as="select"
             value={selectedRegion || ""}
             onChange={(e) => setSelectedRegion(Number(e.target.value))}
+            disabled={loading} // Disable dropdown when loading
           >
-            <option value="">المناطق</option>
+            <option value="">كل المناطق</option>
             {regions.map((region: Region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
@@ -87,24 +93,33 @@ const SheltersFilterPage = () => {
               setSelectedRegion(null);
             }}
             variant="secondary"
+            disabled={loading} // Disable button when loading
           >
             مسح البحث
           </Button>
         </Col>
       </Row>
 
-      <Row>
-        <Col>
-          <DataTable
-            className={style.houseTable}
-            columns={columns}
-            data={shelters}
-            highlightOnHover
-            noDataComponent="لم يتم العثور على أية ملاجئ"
-            customStyles={tableStyle}
-          />
-        </Col>
-      </Row>
+      {loading ? (
+        <Row className="d-flex justify-content-center align-items-center my-4">
+          <Spinner animation="border" role="status">
+            <span className="sr-only"></span>
+          </Spinner>
+        </Row>
+      ) : (
+        <Row>
+          <Col>
+            <DataTable
+              className={style.houseTable}
+              columns={columns}
+              data={shelters}
+              highlightOnHover
+              noDataComponent="لم يتم العثور على أية ملاجئ"
+              customStyles={tableStyle}
+            />
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 };
