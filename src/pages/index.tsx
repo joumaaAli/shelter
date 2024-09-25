@@ -1,6 +1,5 @@
 import { path } from "@/utils/routes";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
 
 export default function Home() {
   return (
@@ -17,9 +16,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     redirect: {
       destination: path.home,
       permanent: false,
-    },
-    props: {
-      session: await getSession(context),
     },
   };
 };
