@@ -29,8 +29,8 @@ const MyHousesPage = () => {
   const fetchUserHousesData = async () => {
     setLoading(true); // Start loading
     const response = await fetchHouses(
-      search,
-      regionFilter ? parseInt(regionFilter) : undefined
+        search,
+        regionFilter ? parseInt(regionFilter) : undefined
     );
     if (response.success) {
       setHouses(response.data);
@@ -71,8 +71,8 @@ const MyHousesPage = () => {
     }
 
     const response = selectedHouse
-      ? await updateHouse(houseData as HouseType)
-      : await addHouse(houseData);
+        ? await updateHouse(houseData as HouseType)
+        : await addHouse(houseData);
 
     if (response.success) {
       Swal.fire({
@@ -93,7 +93,7 @@ const MyHousesPage = () => {
     setModalShow(false);
     setSelectedHouse(null);
     await fetchUserHousesData();
-    setFormLoading(false); // Stop form loading
+    setFormLoading(false);
   };
 
   const handleDeleteHouse = async (id: number) => {
@@ -117,7 +117,7 @@ const MyHousesPage = () => {
   };
 
   const handleToggleTaken = async (house: HouseType) => {
-    const updatedHouse = { ...house, taken: !house.taken };
+    const updatedHouse = {...house, taken: !house.taken};
     const response = await updateHouse(updatedHouse);
 
     if (response.success) {
@@ -169,181 +169,186 @@ const MyHousesPage = () => {
       button: true,
       minWidth: "400px",
       cell: (row: HouseType) => (
-        <Row className="w-100">
-          <Col className={style.tableRow}>
-            <Button
-              onClick={() => {
-                setSelectedHouse(row);
-                setModalShow(true);
-              }}
-              variant="secondary"
-              size="sm"
-            >
-              تعديل
-            </Button>
-            <Button
-              variant="danger"
-              onClick={() => handleDeleteHouse(row.id)}
-              size="sm"
-            >
-              حذف
-            </Button>
-            <Button
-              variant={row.taken ? "warning" : "success"}
-              onClick={() => handleToggleTaken(row)}
-              size="sm"
-            >
-              {row.taken ? "إلغاء الحجز" : "تم الحجز"}
-            </Button>
-          </Col>
-        </Row>
+          <Row className="w-100">
+            <Col className={style.tableRow}>
+              <Button
+                  onClick={() => {
+                    setSelectedHouse(row);
+                    setModalShow(true);
+                  }}
+                  variant="secondary"
+                  size="sm"
+              >
+                تعديل
+              </Button>
+              <Button
+                  variant="danger"
+                  onClick={() => handleDeleteHouse(row.id)}
+                  size="sm"
+              >
+                حذف
+              </Button>
+              <Button
+                  variant={row.taken ? "success" : "warning"}
+                  onClick={() => handleToggleTaken(row)}
+                  size="sm"
+              >
+                {row.taken ? "تم الحجز" : "متاح"}
+              </Button>
+            </Col>
+          </Row>
       ),
     },
   ];
 
   return (
-    <div className="d-flex w-100 align-items-center flex-column p-4">
-      <h1 className="w-100 text-align-center my-4">منازلي</h1>
-      <Row className={style.customRow}>
-        <Col sm={6} xs={12} className={"p-0"}>
-          <Input
-            type="text"
-            placeholder="ابحث بالعنوان"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-100 my-2"
-          />
-        </Col>
-        <Col sm={4} xs={6} className={"p-0"}>
-          <Form.Control
-            as="select"
-            value={regionFilter || ""}
-            onChange={(e) => setRegionFilter(e.target.value || null)}
-            className="w-100 my-2"
-          >
-            <option value="">كل المناطق</option>
-            {regions.map((region) => (
-              <option key={region.id} value={region.id}>
-                {region.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Col>
-        <Col sm={2} xs={6} className={style.customButton}>
-          <Button
-            onClick={() => {
-              setSelectedHouse(null);
-              setModalShow(true);
-            }}
-            variant="secondary"
-          >
-            أضف منزل
-          </Button>
-        </Col>
-      </Row>
-      {loading ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">جاري التحميل...</span>
-        </Spinner>
-      ) : (
-        <DataTable
-          className={style.houseTable}
-          columns={columns}
-          data={houses}
-          highlightOnHover
-          pointerOnHover
-          paginationPerPage={5}
-          paginationRowsPerPageOptions={[5, 10, 15, 20]}
-          noDataComponent="لم يتم العثور على أي منازل"
-          customStyles={tableStyle}
-        />
-      )}
-      <Modal show={modalShow} onHide={() => setModalShow(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {selectedHouse ? "تعديل المنزل" : "إضافة منزل"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleAddOrUpdateHouse}>
-            <Form.Group className="my-1" controlId="name">
-              <Form.Label>الاسم</Form.Label>
-              <Form.Control
+      <div className="d-flex w-100 align-items-center flex-column p-4">
+        <h1 className="w-100 text-align-center my-4">منازلي</h1>
+        <p>يمكنك إضافة منزل عبر الضغط على زر "أضف منزل". في حال أردت تعديل معلوماتك إضغط على زر "تعديل". في حال الإلغاء
+          إضغط على زر "حذف".
+          عند إضافتك المنزل، في حال لم يتم حجزه بعد، سيظهر على أنّه متاح. عند حجزه، يمكنك تغيير حاله عبر الضغط على زر
+          متاح و سيتغيّر إلى تم الحجز. في حال أردت التعديل مرة أخرى، كرّر نفس الخطوات وستتغيّر حالةالمنزل.
+        </p>
+        <Row className={style.customRow}>
+          <Col sm={6} xs={12} className={"p-0"}>
+            <Input
                 type="text"
-                defaultValue={selectedHouse?.name || ""}
-              />
-            </Form.Group>
-            <Form.Group className="my-1" controlId="address">
-              <Form.Label>العنوان</Form.Label>
-              <Form.Control
-                type="text"
-                defaultValue={selectedHouse?.address || ""}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="my-1" controlId="phoneNumber">
-              <Form.Label>رقم الهاتف</Form.Label>
-              <Form.Control
-                type="text"
-                defaultValue={selectedHouse?.phoneNumber || ""}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="my-1" controlId="spaceForPeople">
-              <Form.Label>عدد الأشخاص</Form.Label>
-              <Form.Control
-                type="number"
-                defaultValue={selectedHouse?.spaceForPeople || ""}
-                min="1"
-              />
-            </Form.Group>
-            <Form.Group className="my-1" controlId="additionalInformation">
-              <Form.Label>معلومات إضافية</Form.Label>
-              <Form.Control
-                type="text"
-                defaultValue={selectedHouse?.additionnalInformation || ""}
-              />
-            </Form.Group>
-            <Form.Group className="my-1" controlId="taken">
-              <Form.Check
-                type="checkbox"
-                label="تم الحجز"
-                defaultChecked={selectedHouse?.taken || false}
-              />
-            </Form.Group>
-            <Form.Group className="my-1" controlId="region">
-              <Form.Label>كل المناطق</Form.Label>
-              <Form.Control
+                placeholder="ابحث بالعنوان"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-100 my-2"
+            />
+          </Col>
+          <Col sm={4} xs={6} className={style.customColumn}>
+            <Form.Control
                 as="select"
-                defaultValue={selectedHouse?.regionId || ""}
-                required
-              >
-                <option value="">كل المناطق</option>
-                {regions.map((region) => (
+                value={regionFilter || ""}
+                onChange={(e) => setRegionFilter(e.target.value || null)}
+                className="w-100 my-2"
+            >
+              <option value="">كل المناطق</option>
+              {regions.map((region) => (
                   <option key={region.id} value={region.id}>
                     {region.name}
                   </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+              ))}
+            </Form.Control>
+          </Col>
+          <Col sm={2} xs={6} className={style.customButton}>
             <Button
-              variant="primary"
-              type="submit"
-              className="my-2"
-              disabled={formLoading} // Disable button during form loading
+                onClick={() => {
+                  setSelectedHouse(null);
+                  setModalShow(true);
+                }}
+                variant="secondary"
             >
-              {formLoading ? (
-                <Spinner as="span" animation="border" size="sm" />
-              ) : selectedHouse ? (
-                "حفظ التعديلات"
-              ) : (
-                "إضافة منزل"
-              )}
+              أضف منزل
             </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </div>
+          </Col>
+        </Row>
+        {loading ? (
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">جاري التحميل...</span>
+            </Spinner>
+        ) : (
+            <DataTable
+                className={style.houseTable}
+                columns={columns}
+                data={houses}
+                highlightOnHover
+                pointerOnHover
+                paginationPerPage={5}
+                paginationRowsPerPageOptions={[5, 10, 15, 20]}
+                noDataComponent="لم يتم العثور على أي منازل"
+                customStyles={tableStyle}
+            />
+        )}
+        <Modal show={modalShow} onHide={() => setModalShow(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {selectedHouse ? "تعديل المنزل" : "إضافة منزل"}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleAddOrUpdateHouse}>
+              <Form.Group className="my-1" controlId="name">
+                <Form.Label>الاسم</Form.Label>
+                <Form.Control
+                    type="text"
+                    defaultValue={selectedHouse?.name || ""}
+                />
+              </Form.Group>
+              <Form.Group className="my-1" controlId="address">
+                <Form.Label>العنوان</Form.Label>
+                <Form.Control
+                    type="text"
+                    defaultValue={selectedHouse?.address || ""}
+                    required
+                />
+              </Form.Group>
+              <Form.Group className="my-1" controlId="phoneNumber">
+                <Form.Label>رقم الهاتف</Form.Label>
+                <Form.Control
+                    type="text"
+                    defaultValue={selectedHouse?.phoneNumber || ""}
+                    required
+                />
+              </Form.Group>
+              <Form.Group className="my-1" controlId="spaceForPeople">
+                <Form.Label>عدد الأشخاص</Form.Label>
+                <Form.Control
+                    type="number"
+                    defaultValue={selectedHouse?.spaceForPeople || ""}
+                    min="1"
+                />
+              </Form.Group>
+              <Form.Group className="my-1" controlId="additionalInformation">
+                <Form.Label>معلومات إضافية</Form.Label>
+                <Form.Control
+                    type="text"
+                    defaultValue={selectedHouse?.additionnalInformation || ""}
+                />
+              </Form.Group>
+              <Form.Group className="my-1" controlId="taken">
+                <Form.Check
+                    type="checkbox"
+                    label="متاح"
+                    defaultChecked={selectedHouse?.taken || false}
+                />
+              </Form.Group>
+              <Form.Group className="my-1" controlId="region">
+                <Form.Label>كل المناطق</Form.Label>
+                <Form.Control
+                    as="select"
+                    defaultValue={selectedHouse?.regionId || ""}
+                    required
+                >
+                  <option value="">كل المناطق</option>
+                  {regions.map((region) => (
+                      <option key={region.id} value={region.id}>
+                        {region.name}
+                      </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Button
+                  variant="primary"
+                  type="submit"
+                  className="my-2"
+                  disabled={formLoading} // Disable button during form loading
+              >
+                {formLoading ? (
+                    <Spinner as="span" animation="border" size="sm"/>
+                ) : selectedHouse ? (
+                    "حفظ التعديلات"
+                ) : (
+                    "إضافة منزل"
+                )}
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
+      </div>
   );
 };
 

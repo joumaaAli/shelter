@@ -16,11 +16,11 @@ function About() {
     <div className="about-page">
       <Container className="mb-4">
         <div className={`${style["about-section-1"]}`}>
-          <div className="container h-200 d-flex align-items-center justify-content-center flex-column py-2">
+          <div className="container h-200 d-flex align-items-center justify-content-center flex-column py-2 pt-3">
             <p className={style["about-page-desc-1"]}>
-              تهدف هذه المنصة للبحث ولادراج البيوت المتوفرة في خدمة اهلنا
-              النازحين. يمكنك البحث في لائحة البيوت الموجودة او في لائحة الملاحئ
-              المعتمدة، كما يمكنك ادراج بيت متوفر بنفسك.
+              تهدف هذه المنصة للبحث ولإدراج البيوت المتوفرة في خدمة أهلنا
+              النازحين. يمكنك البحث في لائحة البيوت الموجودة أو في لائحة الملاجئ
+              المعتمدة، كما يمكنك إدراج بيت متوفر بنفسك.
             </p>
           </div>
         </div>

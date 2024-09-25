@@ -25,6 +25,7 @@
   display: flex;
   flex: 1;
   justify-content: end;
+  padding-left: 0;
 }
 
 .tableRow{
@@ -32,4 +33,10 @@
   justify-content: end;
   gap: 10px;
   padding: 10px;
+}
+
+@media (max-width: 576px) {
+ .customColumn {
+   padding-right: 0;
+ }
 }

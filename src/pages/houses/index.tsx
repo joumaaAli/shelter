@@ -105,7 +105,7 @@ const PublicHousesPage = () => {
 
   return (
     <div className="d-flex w-100 align-items-center flex-column p-4">
-      <h1 className="w-100 text-align-center my-4">عرض المنازل</h1>
+      <h1 className="w-100 text-align-center my-4">المنازل</h1>
       <Row className="w-100 d-flex justify-content-start align-items-center">
         <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
           <Input
@@ -159,7 +159,7 @@ const PublicHousesPage = () => {
           pointerOnHover
           paginationPerPage={20}
           paginationRowsPerPageOptions={[5, 10, 15, 20]}
-          noDataComponent="لم يتم العثور على أي منازل"
+          noDataComponent="لم يتم العثور على أيَة منازل"
           customStyles={tableStyle}
         />
       )}

@@ -7,18 +7,12 @@ import HeaderImage3 from "@/utils/img/slide33.jpg";
 
 const carouselItems = [
   {
-    title: "Renforcer la Santé par l'Expertise",
-    caption: "Rejoignez une communauté de kinésithérapeutes engagés.",
     imgSrc: HeaderImage,
   },
   {
-    title: "Croissance Professionnelle, Force Collective",
-    caption: "Accédez à des ressources et opportunités exclusives.",
     imgSrc: HeaderImage2,
   },
   {
-    title: "Pour une Excellence en Kinésithérapie",
-    caption: "Défendez, innovez, et dirigez l'avenir des soins.",
     imgSrc: HeaderImage3,
   },
 ];
