@@ -34,7 +34,6 @@ export default async function handler(
     } = req.body;
 
     const isAdmin = session?.user?.app_metadata?.role == "super-admin";
-
     try {
       const house = await prisma.house.create({
         data: {

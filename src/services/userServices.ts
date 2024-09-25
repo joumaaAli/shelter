@@ -1,4 +1,8 @@
+import axiosInstance from "@/utils/axiosInstance";
 import { createClient } from "@/utils/supabase/component";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export interface RegisterData {
   email: string;
@@ -37,7 +41,6 @@ export const handleLogin = async (email: string, password: string) => {
 export const HandleLogout = async () => {
   const supabase = createClient();
   await supabase.auth.signOut();
-  console.log("Logout successful");
 };
 
 export const handleRegister = async (email: string, password: string) => {
@@ -52,17 +55,16 @@ export const handleRegister = async (email: string, password: string) => {
   if (error) {
     return { error };
   }
-
   // After registration in Supabase, create a corresponding record in Prisma
   const supabaseUserId = data?.user?.id;
 
   try {
-    // Create a new user in the Prisma `User` table with the same ID
-    await supabase
-      .from("User")
-      .insert({ id: supabaseUserId, password: "...", updatedAt: new Date() });
+    await axiosInstance.post("/auth/register", {
+      id: supabaseUserId,
+    });
   } catch (error) {
-    return { error: "Failed to create user in Prisma" };
+    console.error("Failed to create user in Prisma", error);
+    return { error: error };
   }
 
   return { data };

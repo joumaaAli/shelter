@@ -24,7 +24,6 @@ export default async function handler(
     const search = (req.query.search as string) || "";
     const regionId = req.query.regionId ? Number(req.query.regionId) : null;
     const isAdmin = session?.user?.app_metadata?.role == "super-admin";
-    console.log("isAdmin", isAdmin);
     try {
       const whereClause: any = {};
 
