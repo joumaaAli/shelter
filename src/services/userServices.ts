@@ -37,7 +37,6 @@ export const handleLogin = async (email: string, password: string) => {
 export const HandleLogout = async () => {
   const supabase = createClient();
   await supabase.auth.signOut();
-  console.log("Logout successful");
 };
 
 export const handleRegister = async (email: string, password: string) => {
