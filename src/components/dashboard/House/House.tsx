@@ -210,6 +210,7 @@ const HousesDashboard = () => {
     },
     {
       name: "Validation",
+      minWidth: "200px",
       selector: (row: any) => (row.validated ? "Validated" : "Not Validated"),
       sortable: true,
       cell: (row: any) => (
