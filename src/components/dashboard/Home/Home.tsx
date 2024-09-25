@@ -119,6 +119,30 @@ const HomePage = () => {
     }
   };
 
+  const handleToggleValidation = async (house: HouseType) => {
+    const updatedHouse = { ...house, validated: !house.validated };
+    const response = await updateHouse(updatedHouse);
+
+    if (response.success) {
+      Swal.fire({
+        title: "Success!",
+        text: `House has been ${
+          updatedHouse.validated ? "validated" : "unvalidated"
+        }`,
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+      await fetchHouses(search).then((data) => setHomes(data.data));
+    } else {
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to update validation status",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
   const columns = [
     {
       name: "الاسم",
@@ -183,6 +207,20 @@ const HomePage = () => {
       name: "معلومات إضافية",
       selector: (row: any) => row.additionnalInformation || "",
       sortable: true,
+    },
+    {
+      name: "Validation",
+      selector: (row: any) => (row.validated ? "Validated" : "Not Validated"),
+      sortable: true,
+      cell: (row: any) => (
+        <Button
+          variant={row.validated ? "success" : "warning"}
+          onClick={() => handleToggleValidation(row)}
+          size="sm"
+        >
+          {row.validated ? "Unvalidate" : "Validate"}
+        </Button>
+      ),
     },
     {
       name: "الإجراءات",

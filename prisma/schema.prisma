@@ -26,6 +26,7 @@ model House {
   spaceForPeople          Int?
   additionnalInformation  String?
   taken                   Boolean  @default(false)
+  validated               Boolean  @default(false)  // New field for validation status
 
   user                    User?    @relation(fields: [userId], references: [id], name: "UserHouses")
   region                  Region?  @relation(fields: [regionId], references: [id], name: "HouseRegion")
@@ -33,6 +34,7 @@ model House {
   @@index([userId])
   @@index([regionId]) // Index for filtering by region
 }
+
 
 model Shelter {
   id        Int      @id @default(autoincrement())

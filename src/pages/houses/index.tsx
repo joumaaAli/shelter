@@ -19,14 +19,17 @@ const PublicHousesPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       const data = await filterHouses(
         searchAddress,
         filterSpace || undefined,
         selectedRegion || undefined
       );
-      setHouses(data.data);
-      setLoading(false); // Set loading to false after fetching
+      const validatedHouses = data.data.filter(
+        (house: HouseType) => house.validated
+      ); // Filter validated houses
+      setHouses(validatedHouses);
+      setLoading(false);
     };
 
     fetchData();
