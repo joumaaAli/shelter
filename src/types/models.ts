@@ -16,4 +16,4 @@ interface Region {
   name: string;
 }
 
-export type { House };
+export type { House, Region };

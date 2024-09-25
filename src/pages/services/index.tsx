@@ -1,93 +1,126 @@
-import { Container, Row, Col, Card } from "react-bootstrap";
-import Image, { StaticImageData } from "next/image";
-import styles from "./services.module.scss";
-import HeroImage from "@/utils/img/slide1.png";
-import Card1 from "@/utils/img/card-1.jpg";
-import Card2 from "@/utils/img/card-2.jpg";
+import { useEffect, useState } from "react";
+import { filterServices } from "@/services/service";
+import { reportService } from "@/services/report";
+import DataTable from "react-data-table-component";
+import { Input } from "reactstrap";
+import { Col, Row, Spinner, Button, Modal, Form } from "react-bootstrap";
+import { Region } from "@/types/models";
 
-interface ServiceCardProps {
-  image: StaticImageData;
-  title: string;
-  text: string;
-}
+const PublicServicesPage = () => {
+  const [services, setServices] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
+  const [regions, setRegions] = useState<Region[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [reportMessage, setReportMessage] = useState("");
+  const [selectedServiceId, setSelectedServiceId] = useState<number | null>(
+    null
+  );
+  const [showModal, setShowModal] = useState(false);
 
-const Services = () => {
-  const servicesData: ServiceCardProps[] = [
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const data = await filterServices(search, selectedRegion || undefined);
+      setServices(data.data || []);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [search, selectedRegion]);
+
+  const handleReportService = async () => {
+    if (!selectedServiceId || !reportMessage) return;
+    await reportService({
+      serviceId: selectedServiceId,
+      message: reportMessage,
+    });
+    setShowModal(false);
+    setReportMessage("");
+  };
+
+  const columns = [
+    { name: "الاسم", selector: (row: any) => row.name || "", sortable: true },
     {
-      image: Card1,
-      title: "Service 1",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      name: "رقم الهاتف",
+      selector: (row: any) => row.phoneNumber || "",
+      sortable: true,
     },
     {
-      image: Card2,
-      title: "Service 2",
-      text: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      name: "المنطقة",
+      selector: (row: any) => row.region?.name || "",
+      sortable: true,
     },
     {
-      image: Card1,
-      title: "Service 3",
-      text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+      name: "الوصف",
+      selector: (row: any) => row.description || "",
+      sortable: true,
     },
     {
-      image: Card2,
-      title: "Service 4",
-      text: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
+      name: "إجراءات",
+      cell: (row: any) => (
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => {
+            setSelectedServiceId(row.id);
+            setShowModal(true);
+          }}
+        >
+          الإبلاغ عن الخدمة
+        </Button>
+      ),
     },
   ];
 
-  const ServiceCard: React.FC<ServiceCardProps> = ({ image, title, text }) => {
-    return (
-      <div className={styles.fadeIn}>
-        <Card>
-          <Image
-            src={image}
-            alt={title}
-            width={500}
-            height={300}
-            className="card-img-top"
-          />
-          <Card.Body>
-            <Card.Title>{title}</Card.Title>
-            <Card.Text>{text}</Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
-    );
-  };
-
   return (
-    <>
-      {/* Hero Section */}
-      <div className={styles.heroSection}>
-        <Image
-          src={HeroImage}
-          alt="Hero Image"
-          layout="fill"
-          objectFit="cover"
-          className={styles.heroImage}
-        />
-        <div className={styles.heroText}>
-          <h1>Our Services</h1>
-          <p>We provide the best services in the industry.</p>
-        </div>
-      </div>
+    <div className="d-flex w-100 flex-column p-4">
+      <h1 className="w-100 text-align-center my-4">الخدمات</h1>
+      <Row className="w-100 justify-content-start">
+        <Col lg="4" md="4" sm="12">
+          <Input
+            type="text"
+            placeholder="ابحث بالخدمات"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </Col>
+      </Row>
+      {loading ? (
+        <Spinner animation="border" role="status" className="my-4">
+          <span className="visually-hidden">جاري التحميل...</span>
+        </Spinner>
+      ) : (
+        <DataTable columns={columns} data={services} pagination />
+      )}
 
-      {/* Services Section */}
-      <Container className="my-5">
-        <Row>
-          {servicesData.map((service, index) => (
-            <Col key={index} md={4} className="mb-4">
-              <ServiceCard
-                image={service.image}
-                title={service.title}
-                text={service.text}
-              />
-            </Col>
-          ))}
-        </Row>
-      </Container>
-    </>
+      {/* Modal for Reporting */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>الإبلاغ عن الخدمة</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="reportMessage">
+            <Form.Label>الرسالة</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={reportMessage}
+              onChange={(e) => setReportMessage(e.target.value)}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            إلغاء
+          </Button>
+          <Button variant="primary" onClick={handleReportService}>
+            إرسال
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 };
 
-export default Services;
+export default PublicServicesPage;

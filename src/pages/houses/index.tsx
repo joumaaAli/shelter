@@ -139,6 +139,7 @@ const PublicHousesPage = () => {
     },
     {
       name: "الإجراءات",
+      minWidth: "400px",
       cell: (row: any) => (
         <Button
           variant="danger"

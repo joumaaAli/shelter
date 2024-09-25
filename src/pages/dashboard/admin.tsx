@@ -1,6 +1,7 @@
 import House from "@/components/dashboard/House/House";
 import SheltersPage from "@/components/dashboard/Shelter/Shelter";
 import ReportsPage from "@/components/dashboard/Reports/Reports";
+import Service from "@/components/dashboard/Service/Service";
 import { requireAdminAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
@@ -14,6 +15,7 @@ const AdminPage = () => {
     { id: 0, label: "منازل" },
     { id: 1, label: "الملاجئ" },
     { id: 2, label: "الإبلاغات" },
+    { id: 3, label: "الخدمات" },
   ];
   // Function to render the selected component
 
@@ -25,6 +27,8 @@ const AdminPage = () => {
         return <SheltersPage />;
       case 2:
         return <ReportsPage />;
+      case 3:
+        return <Service />;
       default:
         return <House />;
     }

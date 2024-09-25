@@ -14,6 +14,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   houses    House[]  @relation("UserHouses")
+  services  Service[]
 }
 
 
@@ -40,8 +41,10 @@ model House {
 model Report {
   id        Int      @id @default(autoincrement())
   message   String
-  houseId   Int      // Foreign key to the House model
-  house     House    @relation(fields: [houseId], references: [id])
+  houseId   Int?      // Foreign key to the House model
+  serviceId Int?      // Foreign key to the Service model
+  house     House?    @relation(fields: [houseId], references: [id])
+  service   Service?  @relation(fields: [serviceId], references: [id])
   createdAt DateTime @default(now())
 }
 
@@ -57,10 +60,28 @@ model Shelter {
   @@index([regionId])
 }
 
+model Service {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  description String
+  phoneNumber String
+  validated Boolean  @default(false)  // Field for validation status
+  userId    String?  // Foreign key to the User model
+  user      User?    @relation(fields: [userId], references: [id])
+  reports   Report[] // One-to-many relation with the Report model
+  regionId  Int?     // Foreign key to the Region model
+  region    Region?  @relation(fields: [regionId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
 
 model Region {
   id     Int      @id @default(autoincrement())
   name   String   @unique
   houses House[]  @relation("HouseRegion")
   shelters Shelter[]
+  services Service[]
+
 }
