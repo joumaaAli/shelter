@@ -33,6 +33,17 @@ const MyHousesPage = () => {
   const [modalShow, setModalShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(debouncedSearch);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [debouncedSearch]);
 
   const fetchUserHousesData = async () => {
     setLoading(true);
@@ -265,8 +276,8 @@ const MyHousesPage = () => {
           <Input
             type="text"
             placeholder="ابحث بالعنوان"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={debouncedSearch}
+            onChange={(e) => setDebouncedSearch(e.target.value)}
             className="w-100 my-2"
           />
         </Col>

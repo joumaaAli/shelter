@@ -15,6 +15,17 @@ const SheltersFilterPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState(searchTerm);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchTerm(debouncedSearch);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [debouncedSearch]);
 
   useEffect(() => {
     fetchAllRegions();
@@ -65,8 +76,8 @@ const SheltersFilterPage = () => {
             <Input
                 type="text"
                 placeholder="ابحث باسم الملاجئ"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={debouncedSearch}
+                onChange={(e) => setDebouncedSearch(e.target.value)}
                 disabled={loading}
                 className="w-100 my-2"
             />
