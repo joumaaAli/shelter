@@ -12,7 +12,7 @@ import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
 
-const HomePage = () => {
+const HousesDashboard = () => {
   const [homes, setHomes] = useState<HouseType[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [search, setSearch] = useState("");
@@ -390,4 +390,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default HousesDashboard;

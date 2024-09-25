@@ -21,22 +21,22 @@
   margin-bottom: 10px;
 }
 
-.customButton{
+.customButton {
   display: flex;
   flex: 1;
-  justify-content: end;
+  justify-content: flex-end;
   padding-left: 0;
 }
 
-.tableRow{
+.tableRow {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   gap: 10px;
   padding: 10px;
 }
 
 @media (max-width: 576px) {
- .customColumn {
-   padding-right: 0;
- }
+  .customColumn {
+    padding-right: 0;
+  }
 }

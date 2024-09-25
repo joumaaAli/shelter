@@ -1,7 +1,5 @@
 import { createClient } from "@/utils/supabase/component";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
 export interface RegisterData {
   email: string;
   password: string;

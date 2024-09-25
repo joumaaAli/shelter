@@ -49,7 +49,7 @@
       border-bottom: 1px solid #e9ecef; // Add a bottom border for separation
       display: flex; // Use flex to control alignment
       justify-content: space-between; // Space out items
-      align-items: end; // Center items vertically
+      align-items: flex-end; // Center items vertically
       flex: 1;
     }
 

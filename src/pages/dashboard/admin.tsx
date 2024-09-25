@@ -1,4 +1,4 @@
-import Home from "@/components/dashboard/Home/Home";
+import House from "@/components/dashboard/House/House";
 import SheltersPage from "@/components/dashboard/Shelter/Shelter";
 import ReportsPage from "@/components/dashboard/Reports/Reports";
 import { requireAdminAuthentication } from "@/layouts/layout";
@@ -20,13 +20,13 @@ const AdminPage = () => {
   const renderComponent = () => {
     switch (activePage) {
       case 0:
-        return <Home />;
+        return <House />;
       case 1:
         return <SheltersPage />;
       case 2:
         return <ReportsPage />;
       default:
-        return <Home />;
+        return <House />;
     }
   };
   return (

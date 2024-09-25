@@ -29,12 +29,8 @@ function About() {
       <div className={style.ourServices}>
         <Row className="mx-2">
           {infoData.map((info, index) => (
-            <Col lg={6} md={6} className="my-3">
-              <Link
-                key={index}
-                href={info.link}
-                className="text-decoration-none "
-              >
+            <Col lg={6} md={6} className="my-3" key={index}>
+              <Link href={info.link} className="text-decoration-none ">
                 <div className={style.aboutUsCard}>
                   <p className="small text-center">{info?.title}</p>
                 </div>
