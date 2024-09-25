@@ -1,17 +1,17 @@
 import { filterHouses } from "@/services/house";
 import { reportHouse } from "@/services/report";
-import { House as HouseType } from "@/types/models";
+import {House, House as HouseType} from "@/types/models";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import style from "./houses.module.scss";
-import { Region } from "@/utils/interfaces/region";
+import { Region } from "@/types/models";
 import tableStyle from "@/styles/tableStyle";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Col, Row, Spinner, Button, Modal, Form } from "react-bootstrap";
 
 const PublicHousesPage = () => {
-  const [houses, setHouses] = useState<any[]>([]);
+  const [houses, setHouses] = useState<House[]>([]);
   const [searchAddress, setSearchAddress] = useState("");
   const [filterSpace, setFilterSpace] = useState<number | null>(null);
   const [regions, setRegions] = useState<Region[]>([]);

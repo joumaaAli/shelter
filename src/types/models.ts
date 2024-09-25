@@ -1,19 +1,37 @@
 interface House {
-  id: number;
-  phoneNumber: string;
-  spaceForPeople: string;
-  address: string;
-  additionnalInformation: string | null;
-  name: string | null;
-  taken: boolean;
-  region: Region | null;
-  regionId: number;
-  validated: boolean;
+  id: string;
+  phoneNumber?: string;
+  spaceForPeople?: number | null;
+  address?: string | null;
+  additionnalInformation?: string | null;
+  name?: string | null;
+  taken?: boolean;
+  region?: Region | null;
+  regionId?: number | null;
+  validated?: boolean;
+}
+
+interface HouseType {
+  id: string;
+  name?: string;
+  region?: Region;
 }
 
 interface Region {
-  id: number;
-  name: string;
+  id: string;
+  name?: string;
 }
 
-export type { House, Region };
+interface Shelter {
+  id: string;
+  name?: string;
+  createdAt?: Date;
+  region?: Region;
+  updatedAt?: Date;
+}
+
+interface Address {
+  address: string;
+}
+
+export type { House, HouseType, Region, Address, Shelter };

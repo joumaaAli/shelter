@@ -6,37 +6,36 @@ import {
   deleteHouse,
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
-import { House as HouseType } from "@/types/models";
+import {House, House as HouseType} from "@/types/models";
 import {
   Button,
   Col,
-  Container,
   Form,
   Modal,
   Row,
   Spinner,
 } from "react-bootstrap";
-import DataTable from "react-data-table-component";
+import DataTable, {TableColumn} from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
 import style from "./my-house.module.scss";
 import tableStyle from "@/styles/tableStyle";
 import { GetServerSideProps } from "next";
 import { requireAuthentication } from "@/layouts/layout";
-import { Region } from "@/utils/interfaces/region";
+import { Region } from "@/types/models";
 
 const MyHousesPage = () => {
-  const [houses, setHouses] = useState<HouseType[]>([]);
+  const [houses, setHouses] = useState<House[]>([]);
   const [regions, setRegions] = useState<Region[]>([]);
   const [search, setSearch] = useState("");
   const [regionFilter, setRegionFilter] = useState<string | null>(null);
   const [selectedHouse, setSelectedHouse] = useState<HouseType | null>(null);
   const [modalShow, setModalShow] = useState(false);
-  const [loading, setLoading] = useState(true); // Loading state for data fetching
-  const [formLoading, setFormLoading] = useState(false); // Loading state for form submission
+  const [loading, setLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
 
   const fetchUserHousesData = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     const response = await fetchHouses(
       search,
       regionFilter ? parseInt(regionFilter) : undefined
@@ -46,7 +45,7 @@ const MyHousesPage = () => {
     } else {
       console.error("Failed to fetch houses:", response.error);
     }
-    setLoading(false); // Stop loading
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -62,17 +61,18 @@ const MyHousesPage = () => {
     fetchRegionsData();
   }, [search, regionFilter]);
 
-  const handleAddOrUpdateHouse = async (e: any) => {
+  const handleAddOrUpdateHouse = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormLoading(true); // Start form loading
-    const houseData: any = {
-      name: e.target.name.value,
-      address: e.target.address.value,
-      phoneNumber: e.target.phoneNumber.value,
-      spaceForPeople: parseInt(e.target.spaceForPeople.value),
-      additionnalInformation: e.target.additionnalInformation.value,
-      taken: e.target.taken.checked,
-      regionId: e.target.region.value ? parseInt(e.target.region.value) : null,
+    setFormLoading(true);
+    const houseData: House = {
+      id: (e.target as HTMLFormElement).id,
+      name: (e.target as HTMLFormElement).name,
+      address: (e.target as HTMLFormElement).address,
+      phoneNumber: (e.target as HTMLFormElement).phoneNumber,
+      spaceForPeople: parseInt((e.target as HTMLFormElement).spaceForPeople),
+      additionnalInformation: (e.target as HTMLFormElement).additionnalInformation,
+      taken: (e.target as HTMLFormElement).taken.checked,
+      regionId: (e.target as HTMLFormElement).region ? parseInt((e.target as HTMLFormElement).region) : null,
     };
 
     if (selectedHouse) {
@@ -147,35 +147,35 @@ const MyHousesPage = () => {
     }
   };
 
-  const columns = [
+  const columns: TableColumn<House>[] = [
     {
       name: "العنوان",
-      selector: (row: any) => row.address || "",
+      selector: (row: House) => row.address || "",
       sortable: true,
     },
     {
       name: "المنطقة",
-      selector: (row: any) => row?.name || "",
+      selector: (row: House) => row?.name || "",
       sortable: true,
     },
     {
       name: "معلومات إضافية",
-      selector: (row: any) => row.additionnalInformation || "",
+      selector: (row: House) => row.additionnalInformation || "",
       sortable: true,
     },
     {
       name: "عدد الأشخاص",
-      selector: (row: any) => row.spaceForPeople || "",
+      selector: (row: House) => row.spaceForPeople || "",
       sortable: true,
     },
     {
       name: "تم الحجز",
-      selector: (row: any) => (row.taken ? "نعم" : "لا"),
+      selector: (row: House) => (row.taken ? "نعم" : "لا"),
       sortable: true,
     },
     {
       name: "رقم الهاتف",
-      selector: (row: any) => {
+      cell: (row: House) => {
         if (row?.phoneNumber) {
           const cleanedPhoneNumber = row.phoneNumber.replace(/\s+/g, "");
           const lebanonPhoneNumber = `+961${
@@ -208,10 +208,15 @@ const MyHousesPage = () => {
       sortable: true,
     },
     {
+      name: "الإثبات",
+      selector: (row: House) => (row.validated ? "مثبت" : "غير مثبت"),
+      sortable: true,
+    },
+    {
       name: "الإجراءات",
       button: true,
-      minWidth: "400px",
-      cell: (row: HouseType) => (
+      minWidth: "350px",
+      cell: (row: House) => (
         <Row className="w-100">
           <Col className={style.tableRow}>
             <Button
@@ -226,7 +231,7 @@ const MyHousesPage = () => {
             </Button>
             <Button
               variant="danger"
-              onClick={() => handleDeleteHouse(row.id)}
+              onClick={() => handleDeleteHouse(Number(row.id))}
               size="sm"
             >
               حذف
@@ -241,19 +246,15 @@ const MyHousesPage = () => {
           </Col>
         </Row>
       ),
-    },
-    {
-      name: "Validation",
-      selector: (row: any) => (row.validated ? "Validated" : "Not Validated"),
-      sortable: true,
-    },
+    }
   ];
-
   return (
     <div className="d-flex w-100 align-items-center flex-column p-4">
       <h1 className="w-100 text-align-center my-4">منازلي</h1>
       <p>
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
         يمكنك إضافة منزل عبر الضغط على زر "أضف منزل". في حال أردت تعديل معلوماتك
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
         إضغط على زر "تعديل". في حال الإلغاء إضغط على زر "حذف". عند إضافتك
         المنزل، في حال لم يتم حجزه بعد، سيظهر على أنّه متاح. عند حجزه، يمكنك
         تغيير حاله عبر الضغط على زر متاح و سيتغيّر إلى تم الحجز. في حال أردت

@@ -1,6 +1,5 @@
 import About from "@/components/About/About";
 import CarouselComponent from "@/components/Carousel/Carousel";
-import { ImageGallery } from "@/components/Images/Images";
 import { Container } from "react-bootstrap";
 import style from "./home.module.scss";
 

@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { fetchShelters } from "@/services/shelter";
 import { fetchRegions } from "@/services/region";
-import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
-import DataTable from "react-data-table-component";
+import { Row, Col, Form, Button, Spinner } from "react-bootstrap";
+import DataTable, {TableColumn} from "react-data-table-component";
 import { Input } from "reactstrap";
 import tableStyle from "@/styles/tableStyle";
 import style from "@/pages/my-house/my-house.module.scss";
-import { HouseType } from "@/utils/interfaces/houseType";
 import { Shelter } from "@/utils/interfaces/shelter";
-import { Region } from "@/utils/interfaces/region";
+import { Region } from "@/types/models";
 
 const SheltersFilterPage = () => {
   const [shelters, setShelters] = useState<never[]>([]);
@@ -45,15 +44,15 @@ const SheltersFilterPage = () => {
     }
   };
 
-  const columns = [
+  const columns: TableColumn<Shelter>[] = [
     {
       name: "اسم الملجأ",
-      selector: (row: HouseType) => row.name,
+      selector: (row: Shelter) => row.name,
       sortable: true,
     },
     {
       name: "المنطقة",
-      selector: (row: HouseType) => row.region?.name || "No region",
+      selector: (row: Shelter) => row.region?.name || "No region",
       sortable: true,
     },
   ];

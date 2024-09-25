@@ -1,4 +1,4 @@
-import {Region} from "@/utils/interfaces/region";
+import {Region} from "@/types/models";
 
 export interface Shelter {
     id: number;
