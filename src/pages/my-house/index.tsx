@@ -7,7 +7,15 @@ import {
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
 import { House as HouseType } from "@/types/models";
-import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
@@ -15,10 +23,11 @@ import style from "./my-house.module.scss";
 import tableStyle from "@/styles/tableStyle";
 import { GetServerSideProps } from "next";
 import { requireAuthentication } from "@/layouts/layout";
+import { Region } from "@/utils/interfaces/region";
 
 const MyHousesPage = () => {
   const [houses, setHouses] = useState<HouseType[]>([]);
-  const [regions, setRegions] = useState<any[]>([]);
+  const [regions, setRegions] = useState<Region[]>([]);
   const [search, setSearch] = useState("");
   const [regionFilter, setRegionFilter] = useState<string | null>(null);
   const [selectedHouse, setSelectedHouse] = useState<HouseType | null>(null);
@@ -146,7 +155,7 @@ const MyHousesPage = () => {
     },
     {
       name: "المنطقة",
-      selector: (row: any) => row.region?.name || "",
+      selector: (row: any) => row?.name || "",
       sortable: true,
     },
     {
@@ -161,7 +170,36 @@ const MyHousesPage = () => {
     },
     {
       name: "رقم الهاتف",
-      selector: (row: any) => row.phoneNumber || "",
+      selector: (row: any) => {
+        if (row?.phoneNumber) {
+          const cleanedPhoneNumber = row.phoneNumber.replace(/\s+/g, "");
+          const lebanonPhoneNumber = `+961${
+            cleanedPhoneNumber.startsWith("0")
+              ? cleanedPhoneNumber.slice(1)
+              : cleanedPhoneNumber
+          }`;
+
+          return (
+            <a
+              href={`https://wa.me/${lebanonPhoneNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                direction: "ltr",
+                unicodeBidi: "embed",
+                textAlign: "left",
+                margin: 0,
+                color: "#007bff",
+                textDecoration: "none",
+              }}
+            >
+              {row.phoneNumber}
+            </a>
+          );
+        } else {
+          return "";
+        }
+      },
       sortable: true,
     },
     {

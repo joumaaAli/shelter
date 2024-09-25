@@ -23,6 +23,7 @@ export default async function handler(
   if (req.method === "GET") {
     const search = (req.query.search as string) || "";
     const regionId = req.query.regionId ? Number(req.query.regionId) : null;
+    const isAdmin = session?.user?.app_metadata?.role == "super-admin";
 
     try {
       const whereClause: any = {};
@@ -31,6 +32,10 @@ export default async function handler(
         whereClause.address = {
           contains: search,
         };
+      }
+
+      if (!isAdmin) {
+        whereClause.userId = session.user.id;
       }
 
       if (regionId) {
