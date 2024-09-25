@@ -1,5 +1,6 @@
 import Home from "@/components/dashboard/Home/Home";
 import SheltersPage from "@/components/dashboard/Shelter/Shelter";
+import ReportsPage from "@/components/dashboard/Reports/Reports";
 import { requireAdminAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
@@ -12,6 +13,7 @@ const AdminPage = () => {
   const tabs = [
     { id: 0, label: "منازل" },
     { id: 1, label: "الملاجئ" },
+    { id: 2, label: "الإبلاغات" },
   ];
   // Function to render the selected component
 
@@ -21,6 +23,8 @@ const AdminPage = () => {
         return <Home />;
       case 1:
         return <SheltersPage />;
+      case 2:
+        return <ReportsPage />;
       default:
         return <Home />;
     }

@@ -35,6 +35,8 @@ export default async function handler(
         whereClause.regionId = regionId;
       }
 
+      whereClause.validated = true;
+
       const houses = await prisma.house.findMany({
         where: whereClause,
         include: {

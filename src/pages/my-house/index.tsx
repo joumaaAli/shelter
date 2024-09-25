@@ -242,6 +242,11 @@ const MyHousesPage = () => {
         </Row>
       ),
     },
+    {
+      name: "Validation",
+      selector: (row: any) => (row.validated ? "Validated" : "Not Validated"),
+      sortable: true,
+    },
   ];
 
   return (

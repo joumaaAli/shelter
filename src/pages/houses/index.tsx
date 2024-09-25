@@ -1,13 +1,14 @@
 import { filterHouses } from "@/services/house";
+import { reportHouse } from "@/services/report";
 import { House as HouseType } from "@/types/models";
 import { useEffect, useState } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import style from "./houses.module.scss";
 import { Region } from "@/utils/interfaces/region";
 import tableStyle from "@/styles/tableStyle";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Col, Row, Spinner, Button, Modal, Form } from "react-bootstrap";
 
 const PublicHousesPage = () => {
   const [houses, setHouses] = useState<any[]>([]);
@@ -16,6 +17,9 @@ const PublicHousesPage = () => {
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [reportMessage, setReportMessage] = useState("");
+  const [selectedHouseId, setSelectedHouseId] = useState<number | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,8 +29,8 @@ const PublicHousesPage = () => {
         filterSpace || undefined,
         selectedRegion || undefined
       );
-      const validatedHouses = data.data.filter(
-        (house: HouseType) => house.validated
+      const validatedHouses = data?.data?.filter(
+        (house: HouseType) => house?.validated
       ); // Filter validated houses
       setHouses(validatedHouses);
       setLoading(false);
@@ -44,6 +48,16 @@ const PublicHousesPage = () => {
 
     fetchRegions();
   }, []);
+
+  const handleReportHouse = async () => {
+    if (!selectedHouseId || !reportMessage) return;
+    await reportHouse({
+      houseId: selectedHouseId,
+      message: reportMessage,
+    });
+    setShowModal(false);
+    setReportMessage("");
+  };
 
   const columns = [
     {
@@ -123,6 +137,21 @@ const PublicHousesPage = () => {
       selector: (row: any) => row.spaceForPeople || "",
       sortable: true,
     },
+    {
+      name: "الإجراءات",
+      cell: (row: any) => (
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => {
+            setSelectedHouseId(row.id);
+            setShowModal(true);
+          }}
+        >
+          إبلاغ عن المنزل
+        </Button>
+      ),
+    },
   ];
 
   return (
@@ -185,6 +214,31 @@ const PublicHousesPage = () => {
           customStyles={tableStyle}
         />
       )}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>إبلاغ عن المنزل</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="reportMessage">
+            <Form.Label>الرسالة</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={reportMessage}
+              onChange={(e) => setReportMessage(e.target.value)}
+              placeholder="اكتب رسالتك هنا"
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            إلغاء
+          </Button>
+          <Button variant="primary" onClick={handleReportHouse}>
+            إرسال
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

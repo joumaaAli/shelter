@@ -71,3 +71,18 @@ export const deleteHouse = async (id: number) => {
     return { success: false, error };
   }
 };
+
+// services/house.ts
+
+export const reportHouse = async (reportData: {
+  houseId: number;
+  message: string;
+}) => {
+  try {
+    const response = await axiosInstance.post("/reports", reportData);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error reporting house:", error);
+    throw error;
+  }
+};

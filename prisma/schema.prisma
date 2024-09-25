@@ -16,6 +16,7 @@ model User {
   houses    House[]  @relation("UserHouses")
 }
 
+
 model House {
   id                      Int      @id @default(autoincrement())
   userId                  String?  
@@ -26,13 +27,22 @@ model House {
   spaceForPeople          Int?
   additionnalInformation  String?
   taken                   Boolean  @default(false)
-  validated               Boolean  @default(false)  // New field for validation status
+  validated               Boolean  @default(false)  // Field for validation status
 
   user                    User?    @relation(fields: [userId], references: [id], name: "UserHouses")
   region                  Region?  @relation(fields: [regionId], references: [id], name: "HouseRegion")
+  reports                 Report[] // One-to-many relation with the Report model
 
   @@index([userId])
   @@index([regionId]) // Index for filtering by region
+}
+
+model Report {
+  id        Int      @id @default(autoincrement())
+  message   String
+  houseId   Int      // Foreign key to the House model
+  house     House    @relation(fields: [houseId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 

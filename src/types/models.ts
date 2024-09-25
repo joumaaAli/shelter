@@ -8,6 +8,7 @@ interface House {
   taken: boolean;
   region: Region | null;
   regionId: number;
+  validated: boolean;
 }
 
 interface Region {
