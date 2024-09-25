@@ -42,7 +42,7 @@
   flex-direction: column;
   justify-content: center;
   position: relative;
-  background-color: $secondary;
+  background-image: $gradient_secondary !important;
   border-radius: 4px;
   padding: 32px 24px;
   text-decoration: none;
@@ -60,7 +60,7 @@
     z-index: -1;
     top: -16px;
     right: -16px;
-    background: $primary;
+    background-image: $gradient_primary !important;
     height: 32px;
     width: 32px;
     border-radius: 32px;
@@ -126,7 +126,7 @@
 }
 
 .about-section-1 {
-  background-color: $primary;
+  background-image: $gradient_primary !important;
   line-height: 48px;
 }
 

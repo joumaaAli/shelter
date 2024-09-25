@@ -81,7 +81,7 @@ const LoginForm = () => {
                 </FormControl.Feedback>
               </FormGroup>
 
-              <FormGroup className="mb-3">
+              <FormGroup className="mb-5">
                 <FormLabel>كلمة المرور</FormLabel>
                 <FormControl
                   type="password"

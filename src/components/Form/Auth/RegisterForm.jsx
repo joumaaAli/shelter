@@ -75,7 +75,7 @@ const RegisterForm = ({ id, rawId }) => {
               <p>لديك حساب ؟</p>
             </Link>
             <Form onSubmit={formik.handleSubmit} className="p-4">
-              <FormGroup className="mb-3">
+              <FormGroup className="mb-5">
                 <FormLabel>كلمة المرور</FormLabel>
                 <FormControl
                   type="password"
