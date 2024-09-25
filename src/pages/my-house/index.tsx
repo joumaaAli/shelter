@@ -70,7 +70,7 @@ const MyHousesPage = () => {
       address: e.target.address.value,
       phoneNumber: e.target.phoneNumber.value,
       spaceForPeople: parseInt(e.target.spaceForPeople.value),
-      additionalInformation: e.target.additionalInformation.value,
+      additionnalInformation: e.target.additionnalInformation.value,
       taken: e.target.taken.checked,
       regionId: e.target.region.value ? parseInt(e.target.region.value) : null,
     };
@@ -160,7 +160,7 @@ const MyHousesPage = () => {
     },
     {
       name: "معلومات إضافية",
-      selector: (row: any) => row.additionalInformation || "",
+      selector: (row: any) => row.additionnalInformation || "",
       sortable: true,
     },
     {
@@ -347,7 +347,7 @@ const MyHousesPage = () => {
                 min="1"
               />
             </Form.Group>
-            <Form.Group className="my-1" controlId="additionalInformation">
+            <Form.Group className="my-1" controlId="additionnalInformation">
               <Form.Label>معلومات إضافية</Form.Label>
               <Form.Control
                 type="text"

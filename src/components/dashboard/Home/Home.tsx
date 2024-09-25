@@ -49,7 +49,7 @@ const HomePage = () => {
       address: e.target.address.value,
       phoneNumber: e.target.phoneNumber.value,
       spaceForPeople: e.target.spaceForPeople.value,
-      additionalInformation: e.target.additionalInformation.value,
+      additionnalInformation: e.target.additionnalInformation.value,
       taken: e.target.taken.checked,
       regionId: e.target.region.value,
       region: null,
@@ -181,7 +181,7 @@ const HomePage = () => {
     },
     {
       name: "معلومات إضافية",
-      selector: (row: any) => row.additionalInformation || "",
+      selector: (row: any) => row.additionnalInformation || "",
       sortable: true,
     },
     {
@@ -259,8 +259,6 @@ const HomePage = () => {
           data={homes}
           highlightOnHover
           pointerOnHover
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[5, 10, 15, 20]}
           noDataComponent="لم يتم العثور على أي منازل"
         />
       )}
@@ -304,7 +302,7 @@ const HomePage = () => {
                 min="1"
               />
             </Form.Group>
-            <Form.Group className="my-1" controlId="additionalInformation">
+            <Form.Group className="my-1" controlId="additionnalInformation">
               <Form.Label>معلومات إضافية</Form.Label>
               <Form.Control
                 type="text"

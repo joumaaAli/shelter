@@ -10,7 +10,7 @@ import tableStyle from "@/styles/tableStyle";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const PublicHousesPage = () => {
-  const [houses, setHouses] = useState<HouseType[]>([]);
+  const [houses, setHouses] = useState<any[]>([]);
   const [searchAddress, setSearchAddress] = useState("");
   const [filterSpace, setFilterSpace] = useState<number | null>(null);
   const [regions, setRegions] = useState<Region[]>([]);
@@ -89,34 +89,35 @@ const PublicHousesPage = () => {
     },
     {
       name: "معلومات إضافية",
-      minWidth: "200px",
-      selector: (row: HouseType) => {
+      selector: (row: any) => {
         const info = row.additionnalInformation || "";
         return (
-          <OverlayTrigger
-            placement="top"
-            overlay={
-              <Tooltip id={`tooltip-${row.id}`}>
-                {info || "لا توجد معلومات إضافية"}
-              </Tooltip>
-            }
-          >
-            <span style={{ cursor: info ? "pointer" : "default" }}>
-              {info.length > 20 ? `${info.slice(0, 20)}...` : info}
-            </span>
-          </OverlayTrigger>
+          <>
+            <OverlayTrigger
+              placement="top"
+              overlay={
+                <Tooltip id={`tooltip-${row.id}`}>
+                  {info || "لا توجد معلومات إضافية"}
+                </Tooltip>
+              }
+            >
+              <span style={{ cursor: info ? "pointer" : "default" }}>
+                {info.length > 20 ? `${info.slice(0, 20)}...` : info}
+              </span>
+            </OverlayTrigger>
+          </>
         );
       },
       sortable: true,
     },
     {
       name: "المنطقة",
-      selector: (row: HouseType) => row.region?.name || "",
+      selector: (row: any) => row.region?.name || "",
       sortable: true,
     },
     {
       name: "المساحة المتاحة للأشخاص",
-      selector: (row: HouseType) => row.spaceForPeople || "",
+      selector: (row: any) => row.spaceForPeople || "",
       sortable: true,
     },
   ];
