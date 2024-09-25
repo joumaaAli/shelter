@@ -56,6 +56,10 @@ body {
   color: $body-color;
 }
 
+input {
+  color: $body-color-dark !important;
+}
+
 @import "~bootstrap/scss/bootstrap";
 
 html,
