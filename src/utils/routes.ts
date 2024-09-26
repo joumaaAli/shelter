@@ -13,7 +13,7 @@ export const path = {
   associations: "/associations",
   actualites: "/actualites",
   records: "/records",
-  myhouse: "/my-house",
+  dashboard: "/dashboard/user",
   houses: "/houses",
   shelters: "/shelters",
 };

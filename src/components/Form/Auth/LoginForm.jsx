@@ -43,7 +43,7 @@ const LoginForm = () => {
         if (userRole) {
           router.push(path.admin); // Redirect to admin dashboard
         } else {
-          router.push(path.myhouse); // Redirect to myhouse for regular users
+          router.push(path.dashboard); // Redirect to dashboard for regular users
         }
       }
     },

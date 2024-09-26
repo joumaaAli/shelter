@@ -1,6 +1,6 @@
 import { filterHouses } from "@/services/house";
 import { reportHouse } from "@/services/report";
-import {House, House as HouseType} from "@/types/models";
+import { House } from "@/types/models";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
@@ -20,18 +20,40 @@ const PublicHousesPage = () => {
   const [reportMessage, setReportMessage] = useState("");
   const [selectedHouseId, setSelectedHouseId] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState(searchAddress);
+  const [debouncedFilterSpace, setDebouncedFilterSpace] = useState<number | null>(filterSpace);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchAddress(debouncedSearch);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setFilterSpace(debouncedFilterSpace);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [debouncedFilterSpace]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const data = await filterHouses(
-        searchAddress,
-        filterSpace || undefined,
-        selectedRegion || undefined
+          searchAddress,
+          filterSpace || undefined,
+          selectedRegion || undefined
       );
       const validatedHouses = data?.data?.filter(
-        (house: HouseType) => house?.validated
-      ); // Filter validated houses
+          (house: House) => house?.validated
+      );
       setHouses(validatedHouses);
       setLoading(false);
     };
@@ -163,8 +185,8 @@ const PublicHousesPage = () => {
           <Input
             type="text"
             placeholder="البحث بالعناوين"
-            value={searchAddress}
-            onChange={(e) => setSearchAddress(e.target.value)}
+            value={debouncedSearch}
+            onChange={(e) => setDebouncedSearch(e.target.value)}
             className="w-100 my-2"
             disabled={loading}
           />
@@ -173,8 +195,8 @@ const PublicHousesPage = () => {
           <Input
             type="number"
             placeholder="البحث بالمساحة المتاحة للأشخاص"
-            value={filterSpace || ""}
-            onChange={(e) => setFilterSpace(parseInt(e.target.value) || null)}
+            value={debouncedFilterSpace || ""}
+            onChange={(e) => setDebouncedFilterSpace(parseInt(e.target.value) || null)}
             className="w-100 my-2"
             disabled={loading}
           />
@@ -187,7 +209,7 @@ const PublicHousesPage = () => {
             disabled={loading}
           >
             <option value="">كل المناطق</option>
-            {regions.map((region: Region) => (
+            {regions!.map((region: Region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>

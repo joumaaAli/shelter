@@ -142,7 +142,7 @@ const ServiceUserDashboard = () => {
             }
           >
             <option value="">اختر منطقة</option>
-            {regions.map((region) => (
+            {regions!.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>
@@ -203,7 +203,7 @@ const ServiceUserDashboard = () => {
                 required
               >
                 <option value="">اختر منطقة</option>
-                {regions.map((region) => (
+                {regions!.map((region) => (
                   <option key={region.id} value={region.id}>
                     {region.name}
                   </option>
