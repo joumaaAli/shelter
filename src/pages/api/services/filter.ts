@@ -35,6 +35,8 @@ export default async function handler(
         whereClause.regionId = regionId;
       }
 
+      whereClause.validated = true; // Only show validated services
+
       const services = await prisma.service.findMany({
         where: whereClause,
         include: {

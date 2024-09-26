@@ -16,11 +16,14 @@ const NavBar = () => {
     { label: "الرئيسية", href: path.home },
     { label: "المنازل", href: path.houses },
     { label: "الملاجئ", href: path.shelters },
+    { label: "الخدمات", href: path.services },
   ];
 
   const adminLinks = [{ label: "لوحة التحكم", href: path.admin }];
 
-  const authentiatedLinks = [{ label: "لوحة التحكم", href: path.myhouse }];
+  const authentiatedLinks = [
+    { label: "لوحة التحكم", href: path.userDashboard },
+  ];
 
   useEffect(() => {
     const getSession = async () => {

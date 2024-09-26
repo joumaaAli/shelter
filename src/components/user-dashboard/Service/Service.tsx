@@ -11,7 +11,7 @@ import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 
-const ServiceAdminDashboard = () => {
+const ServiceUserDashboard = () => {
   const [services, setServices] = useState<any[]>([]);
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedService, setSelectedService] = useState<any | null>(null);
@@ -72,14 +72,6 @@ const ServiceAdminDashboard = () => {
     );
   };
 
-  const handleToggleValidation = async (service: any) => {
-    const updatedService = { ...service, validated: !service.validated };
-    await updateService(updatedService);
-    await fetchServices(search, selectedRegion || undefined).then((data) =>
-      setServices(data.data || [])
-    );
-  };
-
   const columns = [
     {
       name: "الاسم",
@@ -122,14 +114,6 @@ const ServiceAdminDashboard = () => {
               onClick={() => handleDeleteService(row.id)}
             >
               حذف
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              variant={row.validated ? "success" : "warning"}
-              onClick={() => handleToggleValidation(row)}
-            >
-              {row.validated ? "إلغاء التحقق" : "تحقق"}
             </Button>
           </Col>
         </Row>
@@ -240,4 +224,4 @@ const ServiceAdminDashboard = () => {
   );
 };
 
-export default ServiceAdminDashboard;
+export default ServiceUserDashboard;

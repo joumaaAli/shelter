@@ -1,3 +1,15 @@
+@import "@/styles/dataTable.scss";
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 50px;
+  width: 100%;
+  direction: rtl;
+  height: 100vh;
+}
 @import "../../styles/dataTable.scss";
 .wrapper {
   display: flex;
@@ -30,6 +42,36 @@
 .tableRow {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+  padding: 10px;
+}
+
+@media (max-width: 576px) {
+  .customColumn {
+    padding-right: 0;
+  }
+}
+
+.customRow {
+  margin: inherit;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.customButton {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  padding-left: 0;
+}
+
+.tableRow {
+  display: flex;
+  justify-content: flex-start;
   gap: 10px;
   padding: 10px;
 }

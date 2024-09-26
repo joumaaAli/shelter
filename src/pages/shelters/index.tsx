@@ -5,7 +5,7 @@ import { Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import DataTable, {TableColumn} from "react-data-table-component";
 import { Input } from "reactstrap";
 import tableStyle from "@/styles/tableStyle";
-import style from "@/pages/my-house/my-house.module.scss";
+import style from "@/pages/shelters/shelters.module.scss";
 import { Shelter } from "@/utils/interfaces/shelter";
 import { Region } from "@/types/models";
 
@@ -112,23 +112,23 @@ const SheltersFilterPage = () => {
           </Col>
         </Row>
 
-        {loading ? (
-            <Row className="d-flex justify-content-center align-items-center my-4">
-              <Spinner animation="border" role="status">
-                <span className="sr-only"></span>
-              </Spinner>
-            </Row>
-        ) : (
-            <DataTable
-                className={style.houseTable}
-                columns={columns}
-                data={shelters}
-                highlightOnHover
-                noDataComponent="لم يتم العثور على أية ملاجئ"
-                customStyles={tableStyle}
-            />
-        )}
-      </div>
+      {loading ? (
+        <Row className="d-flex justify-content-center align-items-center my-4">
+          <Spinner animation="border" role="status">
+            <span className="sr-only"></span>
+          </Spinner>
+        </Row>
+      ) : (
+        <DataTable
+          className={style.houseTable}
+          columns={columns}
+          data={shelters}
+          highlightOnHover
+          noDataComponent="لم يتم العثور على أية ملاجئ"
+          customStyles={tableStyle}
+        />
+      )}
+    </div>
   );
 };
 

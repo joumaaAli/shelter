@@ -1,6 +1,7 @@
 export const path = {
   home: "/home",
   admin: "/dashboard/admin",
+  userDashboard: "/dashboard/user",
   auth: {
     register: "/auth/register",
     login: "/auth/login",
@@ -12,7 +13,7 @@ export const path = {
   associations: "/associations",
   actualites: "/actualites",
   records: "/records",
-  myhouse: "/my-house",
+  dashboard: "/dashboard/user",
   houses: "/houses",
   shelters: "/shelters",
 };

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
-import DataTable from "react-data-table-component";
 import { fetchReports } from "@/services/report"; // API to fetch reports
+import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
+import DataTable from "react-data-table-component";
 
-const ReportsPage = () => {
+const ReportsAdminDashboard = () => {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -20,13 +20,18 @@ const ReportsPage = () => {
 
   const columns = [
     {
-      name: "المنزل ID",
-      selector: (row: any) => row.houseId || "",
+      name: "ID",
+      selector: (row: any) => row.houseId || row.serviceId || "",
       sortable: true,
     },
     {
       name: "الرسالة",
       selector: (row: any) => row.message || "",
+      sortable: true,
+    },
+    {
+      name: "النوع",
+      selector: (row: any) => (row.houseId ? "منزل" : "خدمة"),
       sortable: true,
     },
     {
@@ -50,4 +55,4 @@ const ReportsPage = () => {
   );
 };
 
-export default ReportsPage;
+export default ReportsAdminDashboard;

@@ -12,7 +12,7 @@ import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
 
-const HousesDashboard = () => {
+const HouseAdminDashboard = () => {
   const [homes, setHomes] = useState<HouseType[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
   const [search, setSearch] = useState("");
@@ -210,6 +210,7 @@ const HousesDashboard = () => {
     },
     {
       name: "Validation",
+      minWidth: "200px",
       selector: (row: any) => (row.validated ? "Validated" : "Not Validated"),
       sortable: true,
       cell: (row: any) => (
@@ -390,4 +391,4 @@ const HousesDashboard = () => {
   );
 };
 
-export default HousesDashboard;
+export default HouseAdminDashboard;

@@ -6,8 +6,8 @@ import { path } from "@/utils/routes";
 function About() {
   const infoData = [
     {
-      title: "لإدراج منزل اضغط هنا",
-      link: path.myhouse,
+      title: "لإدراج منزل وخدمات اضغط هنا",
+      link: path.dashboard,
     },
     { title: "للاطلاع على المنازل الموجودة اضغط هنا", link: path.houses },
   ];
