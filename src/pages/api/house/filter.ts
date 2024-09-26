@@ -13,8 +13,7 @@ export default async function handler(
       ? parseInt(req.query.spaceForPeople as string, 10)
       : null;
     const regionId = req.query.regionId ? Number(req.query.regionId) : null;
-    const free = req.query.free ? Boolean(req.query.free) : null;
-
+    const free = Boolean(req.query.free == "true");
     try {
       const whereClause: any = {
         taken: false, // Only show houses that are not taken
@@ -38,6 +37,7 @@ export default async function handler(
 
       if (free !== null) {
         whereClause.free = free;
+        console.log("free", free);
       }
 
       whereClause.validated = true;

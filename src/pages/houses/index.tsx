@@ -63,7 +63,7 @@ const PublicHousesPage = () => {
     };
 
     fetchData();
-  }, [searchAddress, filterSpace, selectedRegion]);
+  }, [searchAddress, filterSpace, selectedRegion, free]);
 
   useEffect(() => {
     async function fetchRegions() {
@@ -131,6 +131,16 @@ const PublicHousesPage = () => {
       sortable: true,
     },
     {
+      name: "بالمجان",
+      selector: (row: any) => (row.free ? "نعم" : "لا"),
+      sortable: true,
+    },
+    {
+      name: "السعر",
+      selector: (row: any) => (row.price ? `${row.price} $` : "X"),
+      sortable: true,
+    },
+    {
       name: "معلومات إضافية",
       selector: (row: any) => {
         const info = row.additionnalInformation || "";
@@ -163,6 +173,7 @@ const PublicHousesPage = () => {
       selector: (row: any) => row.spaceForPeople || "",
       sortable: true,
     },
+
     {
       name: "الإجراءات",
       minWidth: "400px",
@@ -221,6 +232,15 @@ const PublicHousesPage = () => {
               </option>
             ))}
           </Input>
+        </Col>
+        <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
+          <Input
+            type="checkbox"
+            checked={free}
+            onChange={(e) => setFree(e.target.checked)}
+            disabled={loading}
+          />
+          <label className="mx-2">البحث عن المنازل المجانية</label>
         </Col>
       </Row>
 
