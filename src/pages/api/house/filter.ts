@@ -35,10 +35,14 @@ export default async function handler(
         whereClause.regionId = regionId;
       }
 
-      if (free !== null) {
-        whereClause.free = free;
-        console.log("free", free);
-      }
+      whereClause.OR = [
+        {
+          free: null, // free can be null
+        },
+        {
+          free: free, // free can be the value passed in the query (true/false)
+        },
+      ];
 
       whereClause.validated = true;
 

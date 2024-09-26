@@ -132,7 +132,8 @@ const PublicHousesPage = () => {
     },
     {
       name: "بالمجان",
-      selector: (row: any) => (row.free ? "نعم" : "لا"),
+      selector: (row: any) =>
+        row?.free == null ? "غير معروف" : row?.free ? "نعم" : "لا",
       sortable: true,
     },
     {
@@ -235,12 +236,14 @@ const PublicHousesPage = () => {
         </Col>
         <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
           <Input
-            type="checkbox"
-            checked={free}
-            onChange={(e) => setFree(e.target.checked)}
+            type="select"
+            value={free ? "true" : "false"}
+            onChange={(e) => setFree(e.target.value === "true")}
             disabled={loading}
-          />
-          <label className="mx-2">البحث عن المنازل المجانية</label>
+          >
+            <option value="true">مجاني</option>
+            <option value="false">غير مجاني</option>
+          </Input>
         </Col>
       </Row>
 

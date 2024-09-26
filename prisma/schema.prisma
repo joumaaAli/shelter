@@ -29,7 +29,7 @@ model House {
   additionnalInformation  String?
   taken                   Boolean  @default(false)
   validated               Boolean  @default(false)  // Field for validation status
-  free                    Boolean  @default(true)   // Field for availability status
+  free                    Boolean?  @default(true)   // Field for availability status
   price                   Int?
   user                    User?    @relation(fields: [userId], references: [id], name: "UserHouses")
   region                  Region?  @relation(fields: [regionId], references: [id], name: "HouseRegion")

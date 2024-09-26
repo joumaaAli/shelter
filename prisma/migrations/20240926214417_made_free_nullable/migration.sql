@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "House" ALTER COLUMN "free" DROP NOT NULL;

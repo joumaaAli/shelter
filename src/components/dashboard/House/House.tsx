@@ -279,8 +279,6 @@ const HouseAdminDashboard = () => {
     },
   ];
 
-  console.log(free);
-
   return (
     <div className="d-flex w-100 align-items-center flex-column">
       <h1 className="text-align-center my-4">المنازل</h1>
