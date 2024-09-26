@@ -29,6 +29,16 @@ const PublicServicesPage = () => {
     fetchData();
   }, [search, selectedRegion]);
 
+  useEffect(() => {
+    async function fetchRegions() {
+      const response = await fetch("/api/regions");
+      const regionData = await response.json();
+      setRegions(regionData);
+    }
+
+    fetchRegions();
+  }, []);
+
   const handleReportService = async () => {
     if (!selectedServiceId || !reportMessage) return;
     await reportService({
@@ -76,7 +86,7 @@ const PublicServicesPage = () => {
   return (
     <div className="d-flex w-100 flex-column p-4">
       <h1 className="w-100 text-align-center my-4">الخدمات</h1>
-      <Row className="w-100 justify-content-start">
+      <Row className="w-100 justify-content-start mb-3">
         <Col lg="4" md="4" sm="12">
           <Input
             type="text"
@@ -84,6 +94,20 @@ const PublicServicesPage = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+        </Col>
+        <Col lg="4" md="4" sm="12">
+          <Input
+            type="select"
+            value={selectedRegion || ""}
+            onChange={(e) => setSelectedRegion(Number(e.target.value))}
+          >
+            <option value="">الكل</option>
+            {regions.map((region) => (
+              <option key={region.id} value={region.id}>
+                {region.name}
+              </option>
+            ))}
+          </Input>
         </Col>
       </Row>
       {loading ? (
