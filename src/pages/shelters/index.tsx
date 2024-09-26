@@ -75,7 +75,7 @@ const SheltersFilterPage = () => {
           <Col sm={6} xs={12} className={"p-0"}>
             <Input
                 type="text"
-                placeholder="ابحث باسم الملاجئ"
+                placeholder="ابحث بالملاجئ"
                 value={debouncedSearch}
                 onChange={(e) => setDebouncedSearch(e.target.value)}
                 disabled={loading}
@@ -90,8 +90,8 @@ const SheltersFilterPage = () => {
                 disabled={loading}
                 className="w-100 my-2"
             >
-              <option value="">كل المناطق</option>
-              {regions!.map((region: Region) => (
+              <option value="">ابحث بالمنطقة</option>
+              {regions?.map((region: Region) => (
                   <option key={region.id} value={region.id}>
                     {region.name}
                   </option>
@@ -104,8 +104,8 @@ const SheltersFilterPage = () => {
                   setSearchTerm("");
                   setSelectedRegion(null);
                 }}
-                variant="secondary"
-                disabled={loading} // Disable button when loading
+                variant="info"
+                disabled={loading}
             >
               مسح البحث
             </Button>

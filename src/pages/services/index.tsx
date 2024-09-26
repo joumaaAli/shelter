@@ -103,7 +103,7 @@ const PublicServicesPage = () => {
             onChange={(e) => setSelectedRegion(Number(e.target.value))}
           >
             <option value="">الكل</option>
-            {regions!.map((region) => (
+            {regions?.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>

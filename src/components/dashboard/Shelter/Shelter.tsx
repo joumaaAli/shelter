@@ -126,7 +126,7 @@ const ShelterAdminDashboard = () => {
                 onChange={(e) => setSelectedRegion(Number(e.target.value))}
               >
                 <option value="">Select a region</option>
-                {regions!.map((region) => (
+                {regions?.map((region) => (
                   <option key={region.id} value={region.id}>
                     {region.name}
                   </option>

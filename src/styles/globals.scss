@@ -7,11 +7,12 @@ html, body {
 
 .btn-danger {
   color: white !important;
+  min-width: 100px;
 }
 
 .btn-primary {
-  color: $primary !important;
-  background-color: white !important;
+  color: white !important;
+  background-color: $primary !important;
   width: 100% !important;
   border: 1px solid $primary !important;
   height: 50px;
@@ -20,7 +21,8 @@ html, body {
 
 .btn-primary:hover {
   color: white !important;
-  background-color: $primary !important;
+  border-color: $primary-dark !important;
+  background-color: $primary-dark !important;
 }
 
 .btn-secondary {
@@ -32,12 +34,21 @@ html, body {
 
 .btn-secondary:hover {
   color: white !important;
-  background-color: $primary !important;
-  border: 1px solid $primary !important;
+  background-color: $secondary-light !important;
+  border: 1px solid $secondary-light !important;
 }
 
-.btn-danger {
+.btn-info {
+  color: white !important;
+  background-color: $body-color !important;
   min-width: 100px;
+  border: 1px solid $body-color !important;
+}
+
+.btn-info:hover {
+  color: white !important;
+  background-color: $body-color-dark !important;
+  border: 1px solid $body-color-dark !important;
 }
 
 .btn-warning {

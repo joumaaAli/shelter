@@ -7,8 +7,9 @@ import { Input } from "reactstrap";
 import style from "./houses.module.scss";
 import { Region } from "@/types/models";
 import tableStyle from "@/styles/tableStyle";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import {CloseButton, OverlayTrigger, Tooltip} from "react-bootstrap";
 import { Col, Row, Spinner, Button, Modal, Form } from "react-bootstrap";
+import styles from "@/components/Navbar/Navbar.module.scss";
 
 const PublicHousesPage = () => {
   const [houses, setHouses] = useState<House[]>([]);
@@ -25,6 +26,9 @@ const PublicHousesPage = () => {
     number | null
   >(filterSpace);
   const [free, setFree] = useState<boolean>(true);
+
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -81,7 +85,7 @@ const PublicHousesPage = () => {
       houseId: selectedHouseId,
       message: reportMessage,
     });
-    setShowModal(false);
+    handleClose();
     setReportMessage("");
   };
 
@@ -176,18 +180,18 @@ const PublicHousesPage = () => {
 
     {
       name: "الإجراءات",
-      minWidth: "400px",
+      minWidth: "150px",
       cell: (row: any) => (
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={() => {
-            setSelectedHouseId(row.id);
-            setShowModal(true);
-          }}
-        >
-          إبلاغ عن المنزل
-        </Button>
+            <Button
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  setSelectedHouseId(row.id);
+                  handleShow();
+                }}
+            >
+              الإبلاغ عن المنزل
+            </Button>
       ),
     },
   ];
@@ -199,17 +203,17 @@ const PublicHousesPage = () => {
         <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
           <Input
             type="text"
-            placeholder="البحث بالعناوين"
+            placeholder="ابحث بالعناوين"
             value={debouncedSearch}
             onChange={(e) => setDebouncedSearch(e.target.value)}
-            className="w-100 my-2"
+            className="w-100 my-2 pr-0"
             disabled={loading}
           />
         </Col>
         <Col lg="4" md="4" className="mx-0 mb-2" sm="12">
           <Input
             type="number"
-            placeholder="البحث بالمساحة المتاحة للأشخاص"
+            placeholder="ابحث بالمساحة المتاحة للأشخاص"
             value={debouncedFilterSpace || ""}
             onChange={(e) =>
               setDebouncedFilterSpace(parseInt(e.target.value) || null)
@@ -225,8 +229,8 @@ const PublicHousesPage = () => {
             onChange={(e) => setSelectedRegion(Number(e.target.value) || null)}
             disabled={loading}
           >
-            <option value="">كل المناطق</option>
-            {regions!.map((region: Region) => (
+            <option value="">ابحث بالمنطقة</option>
+            {regions?.map((region: Region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>
@@ -240,7 +244,7 @@ const PublicHousesPage = () => {
             onChange={(e) => setFree(e.target.checked)}
             disabled={loading}
           />
-          <label className="mx-2">البحث عن المنازل المجانية</label>
+          <label className="mx-2">ابحث عن منازل مجانية</label>
         </Col>
       </Row>
 
@@ -263,28 +267,29 @@ const PublicHousesPage = () => {
           customStyles={tableStyle}
         />
       )}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>إبلاغ عن المنزل</Modal.Title>
+      <Modal show={showModal} onHide={() => handleClose()} className={style.modal}>
+        <Modal.Header className={style.modalHeader}>
+          <Modal.Title>الإبلاغ عن المنزل</Modal.Title>
+          <CloseButton onClick={handleClose} aria-label="Hide" className={styles.closeButton} />
         </Modal.Header>
         <Modal.Body>
           <Form.Group controlId="reportMessage">
             <Form.Label>الرسالة</Form.Label>
             <Form.Control
               as="textarea"
-              rows={3}
+              rows={5}
               value={reportMessage}
               onChange={(e) => setReportMessage(e.target.value)}
               placeholder="اكتب رسالتك هنا"
             />
           </Form.Group>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            إلغاء
-          </Button>
-          <Button variant="primary" onClick={handleReportHouse}>
+        <Modal.Footer className={style.modalFooter}>
+          <Button variant="secondary" onClick={handleReportHouse}>
             إرسال
+          </Button>
+          <Button variant="danger" onClick={() => handleClose()}>
+            إلغاء
           </Button>
         </Modal.Footer>
       </Modal>

@@ -11,9 +11,12 @@
 
 .navbarContainer {
   display: flex;
+  background-image: none !important;
+  background-color: transparent !important;
   justify-content: flex-end; /* Align the content to the right */
   flex-direction: row-reverse; /* Ensure links start from the right in RTL */
   width: 100%;
+  margin-right: auto;
 }
 
 .navLink {
@@ -40,9 +43,7 @@
 }
 
 .offcanvas {
-  background-color: $secondary !important; // Light background color
   color: #c9c1c1; // Dark text color
-  width: 500px;
 
   &.show {
     .offcanvas-header {
@@ -91,4 +92,22 @@
 
 .bs-btn-close {
   padding: 1rem 1.5rem;
+}
+
+.closeButton {
+  color: red !important;
+  margin: 0 !important;
+}
+
+.burgerMenu {
+  border: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .navbarContainer {
+    margin-left: 0;
+  }
+  .offcanvas {
+    background-image: $gradient_secondary !important;
+  }
 }

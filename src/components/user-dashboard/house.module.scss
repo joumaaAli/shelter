@@ -35,8 +35,32 @@
   padding: 10px;
 }
 
-@media (max-width: 576px) {
+.checkBoxRow {
+  gap: 100px;
+}
+
+.modalHeader {
+  display: flex;
+  border: none;
+  justify-content: space-between;
+}
+
+.closeButton {
+  margin: 0;
+  display: flex;
+  flex: 1;
+  text-align: right;
+  justify-content: end;
+}
+
+@media screen and (max-width: 576px) {
   .customColumn {
     padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .checkBoxRow {
+    gap: 0;
   }
 }
