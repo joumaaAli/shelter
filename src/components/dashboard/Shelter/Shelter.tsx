@@ -5,7 +5,7 @@ import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 
-const SheltersPage = () => {
+const ShelterAdminDashboard = () => {
   const [shelters, setShelters] = useState<any[]>([]);
   const [regions, setRegions] = useState<any[]>([]); // To store regions
   const [modalShow, setModalShow] = useState(false);
@@ -143,4 +143,4 @@ const SheltersPage = () => {
   );
 };
 
-export default SheltersPage;
+export default ShelterAdminDashboard;

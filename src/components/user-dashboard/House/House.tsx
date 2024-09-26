@@ -6,16 +6,9 @@ import {
   deleteHouse,
 } from "@/services/house";
 import { fetchRegions } from "@/services/region";
-import {House, House as HouseType} from "@/types/models";
-import {
-  Button,
-  Col,
-  Form,
-  Modal,
-  Row,
-  Spinner,
-} from "react-bootstrap";
-import DataTable, {TableColumn} from "react-data-table-component";
+import { House, House as HouseType } from "@/types/models";
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
+import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
 import style from "./my-house.module.scss";
@@ -61,18 +54,20 @@ const MyHousesPage = () => {
     fetchRegionsData();
   }, [search, regionFilter]);
 
-  const handleAddOrUpdateHouse = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddOrUpdateHouse = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     setFormLoading(true);
-    const houseData: House = {
-      id: (e.target as HTMLFormElement).id,
-      name: (e.target as HTMLFormElement).name,
-      address: (e.target as HTMLFormElement).address,
-      phoneNumber: (e.target as HTMLFormElement).phoneNumber,
-      spaceForPeople: parseInt((e.target as HTMLFormElement).spaceForPeople),
-      additionnalInformation: (e.target as HTMLFormElement).additionnalInformation,
-      taken: (e.target as HTMLFormElement).taken.checked,
-      regionId: (e.target as HTMLFormElement).region ? parseInt((e.target as HTMLFormElement).region) : null,
+
+    const houseData: Partial<HouseType> = {
+      name: (e.target as any).name.value,
+      address: (e.target as any).address.value,
+      phoneNumber: (e.target as any).phoneNumber.value,
+      spaceForPeople: (e.target as any).spaceForPeople.value,
+      additionnalInformation: (e.target as any).additionnalInformation.value,
+      taken: (e.target as any).taken.checked,
+      regionId: parseInt((e.target as any).region.value),
     };
 
     if (selectedHouse) {
@@ -246,7 +241,7 @@ const MyHousesPage = () => {
           </Col>
         </Row>
       ),
-    }
+    },
   ];
   return (
     <div className="d-flex w-100 align-items-center flex-column p-4">
@@ -364,7 +359,7 @@ const MyHousesPage = () => {
               <Form.Check
                 type="checkbox"
                 label="متاح"
-                defaultChecked={selectedHouse?.taken || false}
+                defaultChecked={selectedHouse?.taken || true}
               />
             </Form.Group>
             <Form.Group className="my-1" controlId="region">

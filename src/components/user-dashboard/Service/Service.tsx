@@ -72,14 +72,6 @@ const ServiceAdminDashboard = () => {
     );
   };
 
-  const handleToggleValidation = async (service: any) => {
-    const updatedService = { ...service, validated: !service.validated };
-    await updateService(updatedService);
-    await fetchServices(search, selectedRegion || undefined).then((data) =>
-      setServices(data.data || [])
-    );
-  };
-
   const columns = [
     {
       name: "الاسم",
@@ -122,14 +114,6 @@ const ServiceAdminDashboard = () => {
               onClick={() => handleDeleteService(row.id)}
             >
               حذف
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              variant={row.validated ? "success" : "warning"}
-              onClick={() => handleToggleValidation(row)}
-            >
-              {row.validated ? "إلغاء التحقق" : "تحقق"}
             </Button>
           </Col>
         </Row>

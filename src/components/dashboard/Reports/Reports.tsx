@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
-import DataTable from "react-data-table-component";
 import { fetchReports } from "@/services/report"; // API to fetch reports
+import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
+import DataTable from "react-data-table-component";
 
-const ReportsPage = () => {
+const ReportsAdminDashboard = () => {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -50,4 +50,4 @@ const ReportsPage = () => {
   );
 };
 
-export default ReportsPage;
+export default ReportsAdminDashboard;
