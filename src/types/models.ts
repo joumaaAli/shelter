@@ -9,6 +9,8 @@ interface House {
   region?: Region | null;
   regionId?: number | null;
   validated?: boolean;
+  free?: boolean;
+  price?: number | null;
 }
 
 interface HouseType {

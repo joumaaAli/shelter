@@ -27,6 +27,7 @@ const MyHousesPage = () => {
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [free, setFree] = useState(selectedHouse ? selectedHouse.free : true);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -79,6 +80,8 @@ const MyHousesPage = () => {
       additionnalInformation: (e.target as any).additionnalInformation.value,
       taken: (e.target as any).taken.checked,
       regionId: parseInt((e.target as any).region.value),
+      free,
+      price: free ? null : parseInt((e.target as any).price.value),
     };
 
     if (selectedHouse) {
@@ -175,6 +178,16 @@ const MyHousesPage = () => {
       sortable: true,
     },
     {
+      name: "بالمجان",
+      selector: (row: any) => (row.free ? "نعم" : "لا"),
+      sortable: true,
+    },
+    {
+      name: "السعر",
+      selector: (row: any) => (row.price ? `${row.price} $` : "X"),
+      sortable: true,
+    },
+    {
       name: "تم الحجز",
       selector: (row: House) => (row.taken ? "نعم" : "لا"),
       sortable: true,
@@ -229,6 +242,7 @@ const MyHousesPage = () => {
               onClick={() => {
                 setSelectedHouse(row);
                 setModalShow(true);
+                setFree(row.free);
               }}
               variant="secondary"
               size="sm"
@@ -296,6 +310,7 @@ const MyHousesPage = () => {
             onClick={() => {
               setSelectedHouse(null);
               setModalShow(true);
+              setFree(true);
             }}
             variant="secondary"
           >
@@ -320,7 +335,11 @@ const MyHousesPage = () => {
           customStyles={tableStyle}
         />
       )}
-      <Modal show={modalShow} onHide={() => setModalShow(false)}>
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        onExited={() => setFree(true)}
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             {selectedHouse ? "تعديل المنزل" : "إضافة منزل"}
@@ -351,6 +370,24 @@ const MyHousesPage = () => {
                 required
               />
             </Form.Group>
+            <Form.Group className="my-1" controlId="free">
+              <Form.Check
+                type="checkbox"
+                label="بالمجان"
+                defaultChecked={selectedHouse ? selectedHouse.free : true}
+                onChange={() => setFree(!free)}
+              />
+            </Form.Group>
+            {!free && (
+              <Form.Group className="my-1" controlId="price">
+                <Form.Label>السعر</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={selectedHouse?.price || ""}
+                  min="1"
+                />
+              </Form.Group>
+            )}
             <Form.Group className="my-1" controlId="spaceForPeople">
               <Form.Label>عدد الأشخاص</Form.Label>
               <Form.Control
@@ -373,6 +410,7 @@ const MyHousesPage = () => {
                 defaultChecked={selectedHouse?.taken || true}
               />
             </Form.Group>
+
             <Form.Group className="my-1" controlId="region">
               <Form.Label>كل المناطق</Form.Label>
               <Form.Control

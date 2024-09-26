@@ -21,7 +21,10 @@ const PublicHousesPage = () => {
   const [selectedHouseId, setSelectedHouseId] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(searchAddress);
-  const [debouncedFilterSpace, setDebouncedFilterSpace] = useState<number | null>(filterSpace);
+  const [debouncedFilterSpace, setDebouncedFilterSpace] = useState<
+    number | null
+  >(filterSpace);
+  const [free, setFree] = useState<boolean>(true);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -47,12 +50,13 @@ const PublicHousesPage = () => {
     const fetchData = async () => {
       setLoading(true);
       const data = await filterHouses(
-          searchAddress,
-          filterSpace || undefined,
-          selectedRegion || undefined
+        searchAddress,
+        filterSpace || undefined,
+        selectedRegion || undefined,
+        free
       );
       const validatedHouses = data?.data?.filter(
-          (house: House) => house?.validated
+        (house: House) => house?.validated
       );
       setHouses(validatedHouses);
       setLoading(false);
@@ -196,7 +200,9 @@ const PublicHousesPage = () => {
             type="number"
             placeholder="البحث بالمساحة المتاحة للأشخاص"
             value={debouncedFilterSpace || ""}
-            onChange={(e) => setDebouncedFilterSpace(parseInt(e.target.value) || null)}
+            onChange={(e) =>
+              setDebouncedFilterSpace(parseInt(e.target.value) || null)
+            }
             className="w-100 my-2"
             disabled={loading}
           />

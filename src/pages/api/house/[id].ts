@@ -50,6 +50,8 @@ export default async function handler(
       taken,
       regionId,
       validated,
+      free,
+      price,
     } = req.body;
     try {
       const updatedHouse = await prisma.house.update({
@@ -63,6 +65,8 @@ export default async function handler(
           taken,
           regionId: parseInt(regionId),
           validated,
+          free,
+          price: parseInt(price),
         },
       });
       return res.status(200).json({ data: updatedHouse });

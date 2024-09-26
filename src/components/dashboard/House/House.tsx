@@ -20,6 +20,7 @@ const HouseAdminDashboard = () => {
   const [modalShow, setModalShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
+  const [free, setFree] = useState(selectedHome ? selectedHome.free : true);
 
   useEffect(() => {
     async function loadData() {
@@ -53,6 +54,8 @@ const HouseAdminDashboard = () => {
       taken: e.target.taken.checked,
       regionId: e.target.region.value,
       region: null,
+      free: free,
+      price: free ? null : e.target.price.value,
     };
 
     if (selectedHome) {
@@ -189,6 +192,16 @@ const HouseAdminDashboard = () => {
       sortable: true,
     },
     {
+      name: "بالمجان",
+      selector: (row: any) => (row.free ? "نعم" : "لا"),
+      sortable: true,
+    },
+    {
+      name: "السعر",
+      selector: (row: any) => (row.price ? `${row.price} $` : "X"),
+      sortable: true,
+    },
+    {
       name: "المساحة المتاحة للأشخاص",
       selector: (row: any) => row.spaceForPeople || "",
       sortable: true,
@@ -207,6 +220,7 @@ const HouseAdminDashboard = () => {
       name: "معلومات إضافية",
       selector: (row: any) => row.additionnalInformation || "",
       sortable: true,
+      minWidth: "200px",
     },
     {
       name: "Validation",
@@ -234,6 +248,7 @@ const HouseAdminDashboard = () => {
               onClick={() => {
                 setSelectedHome(row);
                 setModalShow(true);
+                setFree(row.free);
               }}
               variant="secondary"
               size="sm"
@@ -264,6 +279,8 @@ const HouseAdminDashboard = () => {
     },
   ];
 
+  console.log(free);
+
   return (
     <div className="d-flex w-100 align-items-center flex-column">
       <h1 className="text-align-center my-4">المنازل</h1>
@@ -279,7 +296,11 @@ const HouseAdminDashboard = () => {
         </Col>
         <Col lg="6" md="6" className="mx-0 mb-2" sm="12">
           <Button
-            onClick={() => setModalShow(true)}
+            onClick={() => {
+              setModalShow(true);
+              setFree(true);
+              setSelectedHome(null);
+            }}
             className="w-100"
             variant="primary"
           >
@@ -302,7 +323,14 @@ const HouseAdminDashboard = () => {
         />
       )}
 
-      <Modal show={modalShow} onHide={() => setModalShow(false)}>
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        onExit={() => {
+          setSelectedHome(null);
+          setFree(false);
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             {selectedHome ? "تعديل المنزل" : "إضافة منزل"}
@@ -363,6 +391,24 @@ const HouseAdminDashboard = () => {
                 ))}
               </Form.Control>
             </Form.Group>
+            <Form.Group className="my-1" controlId="free">
+              <Form.Check
+                type="checkbox"
+                label="بالمجان"
+                defaultChecked={selectedHome ? selectedHome.free : true}
+                onChange={() => setFree(!free)}
+              />
+            </Form.Group>
+            {!free && (
+              <Form.Group className="my-1" controlId="price">
+                <Form.Label>السعر</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={selectedHome?.price || ""}
+                  min="1"
+                />
+              </Form.Group>
+            )}
             <Form.Group className="my-1" controlId="taken">
               <Form.Check
                 type="checkbox"

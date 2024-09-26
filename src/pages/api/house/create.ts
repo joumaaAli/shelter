@@ -31,6 +31,8 @@ export default async function handler(
       spaceForPeople,
       additionnalInformation,
       regionId,
+      free,
+      price,
     } = req.body;
 
     const isAdmin = session?.user?.app_metadata?.role == "super-admin";
@@ -43,7 +45,9 @@ export default async function handler(
           spaceForPeople: parseInt(spaceForPeople),
           additionnalInformation,
           regionId: parseInt(regionId),
-          userId: isAdmin ? null : session.user.id, // Associate house with the user
+          userId: isAdmin ? null : session.user.id,
+          free,
+          price: parseInt(price),
         },
       });
       return res.status(201).json(house);

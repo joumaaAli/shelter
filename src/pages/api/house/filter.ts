@@ -13,6 +13,7 @@ export default async function handler(
       ? parseInt(req.query.spaceForPeople as string, 10)
       : null;
     const regionId = req.query.regionId ? Number(req.query.regionId) : null;
+    const free = req.query.free ? Boolean(req.query.free) : null;
 
     try {
       const whereClause: any = {
@@ -33,6 +34,10 @@ export default async function handler(
 
       if (regionId) {
         whereClause.regionId = regionId;
+      }
+
+      if (free !== null) {
+        whereClause.free = free;
       }
 
       whereClause.validated = true;

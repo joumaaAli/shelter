@@ -19,7 +19,8 @@ export const fetchHouses = async (search: string = "", regionId?: number) => {
 export const filterHouses = async (
   search: string = "",
   spaceForPeople?: number,
-  regionId?: number
+  regionId?: number,
+  free?: boolean
 ) => {
   try {
     const response = await axiosInstance.get(homePath + "/filter", {
@@ -27,6 +28,7 @@ export const filterHouses = async (
         search,
         spaceForPeople,
         regionId, // Include regionId for filtering by region
+        free,
       },
     });
     return { success: true, data: response.data };
