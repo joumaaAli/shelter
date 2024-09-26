@@ -22,10 +22,14 @@ export default async function handler(
 
   if (req.method === "POST") {
     // Create a new report
-    const { houseId, message } = req.body;
+    const { houseId, message, serviceId } = req.body;
 
-    if (!houseId || !message) {
-      return res.status(400).json({ error: "Missing houseId or message" });
+    if (!houseId && !serviceId) {
+      return res.status(400).json({ error: "Missing houseId or serviceId" });
+    }
+
+    if (!message) {
+      return res.status(400).json({ error: "Missing message" });
     }
 
     try {
@@ -33,6 +37,7 @@ export default async function handler(
         data: {
           houseId,
           message,
+          serviceId,
         },
       });
       return res.status(201).json(newReport);

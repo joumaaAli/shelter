@@ -40,7 +40,7 @@ export const reportService = async (reportData: {
   message: string;
 }) => {
   try {
-    const response = await axiosInstance.post("/reports/services", reportData);
+    const response = await axiosInstance.post("/reports", reportData);
     return { success: true, data: response.data };
   } catch (error) {
     console.error("Error reporting service:", error);

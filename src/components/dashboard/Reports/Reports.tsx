@@ -20,13 +20,18 @@ const ReportsAdminDashboard = () => {
 
   const columns = [
     {
-      name: "المنزل ID",
-      selector: (row: any) => row.houseId || "",
+      name: "ID",
+      selector: (row: any) => row.houseId || row.serviceId || "",
       sortable: true,
     },
     {
       name: "الرسالة",
       selector: (row: any) => row.message || "",
+      sortable: true,
+    },
+    {
+      name: "النوع",
+      selector: (row: any) => (row.houseId ? "منزل" : "خدمة") || "",
       sortable: true,
     },
     {

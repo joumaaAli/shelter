@@ -68,6 +68,7 @@ const PublicServicesPage = () => {
     },
     {
       name: "إجراءات",
+      minWidth: "200px",
       cell: (row: any) => (
         <Button
           variant="danger"
