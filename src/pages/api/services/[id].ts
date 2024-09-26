@@ -1,3 +1,5 @@
+//services/[id].ts
+
 import createClient from "@/utils/supabase/api";
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";

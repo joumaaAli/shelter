@@ -1,3 +1,5 @@
+//services/create.ts
+
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import createClient from "@/utils/supabase/api";
@@ -21,21 +23,22 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
-    const { name, phoneNumber, description, regionId } = req.body;
+    const { name, phoneNumber, description, regionId, subcategoryId } =
+      req.body;
 
-    // Check for required fields
-    if (!phoneNumber || !description || !regionId) {
+    if (!phoneNumber || !description || !regionId || !subcategoryId) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
     try {
       const service = await prisma.service.create({
         data: {
-          name: name || null, // name is optional
+          name: name || null,
           phoneNumber,
           description,
           regionId: parseInt(regionId),
-          userId: session.user.id, // Associate service with the logged-in user
+          subcategoryId: parseInt(subcategoryId),
+          userId: session.user.id,
         },
       });
       res.status(201).json(service);
