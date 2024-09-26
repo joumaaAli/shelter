@@ -11,7 +11,7 @@ import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 
-const ServiceAdminDashboard = () => {
+const ServiceUserDashboard = () => {
   const [services, setServices] = useState<any[]>([]);
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedService, setSelectedService] = useState<any | null>(null);
@@ -224,4 +224,4 @@ const ServiceAdminDashboard = () => {
   );
 };
 
-export default ServiceAdminDashboard;
+export default ServiceUserDashboard;

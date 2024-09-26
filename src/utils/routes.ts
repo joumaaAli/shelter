@@ -1,6 +1,7 @@
 export const path = {
   home: "/home",
   admin: "/dashboard/admin",
+  userDashboard: "/dashboard/user",
   auth: {
     register: "/auth/register",
     login: "/auth/login",

@@ -1,4 +1,5 @@
 import House from "@/components/user-dashboard/House/House";
+import ServiceUserDashboard from "@/components/user-dashboard/Service/Service";
 import { requireAuthentication } from "@/layouts/layout";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
@@ -7,14 +8,18 @@ import styles from "./admin.module.scss";
 
 const UserDashboardPage = () => {
   const [activePage, setActivePage] = useState(0);
-  const tabs = [{ id: 0, label: "منازل" }];
+  const tabs = [
+    { id: 0, label: "منازل" },
+    { id: 1, label: "خدمات" },
+  ];
   // Function to render the selected component
 
   const renderComponent = () => {
     switch (activePage) {
       case 0:
         return <House />;
-
+      case 1:
+        return <ServiceUserDashboard />;
       default:
         return <House />;
     }

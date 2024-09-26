@@ -21,7 +21,9 @@ const NavBar = () => {
 
   const adminLinks = [{ label: "لوحة التحكم", href: path.admin }];
 
-  const authentiatedLinks = [{ label: "لوحة التحكم", href: path.myhouse }];
+  const authentiatedLinks = [
+    { label: "لوحة التحكم", href: path.userDashboard },
+  ];
 
   useEffect(() => {
     const getSession = async () => {
