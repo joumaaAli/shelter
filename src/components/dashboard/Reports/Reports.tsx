@@ -31,7 +31,7 @@ const ReportsAdminDashboard = () => {
     },
     {
       name: "النوع",
-      selector: (row: any) => (row.houseId ? "منزل" : "خدمة") || "",
+      selector: (row: any) => (row.houseId ? "منزل" : "خدمة"),
       sortable: true,
     },
     {
