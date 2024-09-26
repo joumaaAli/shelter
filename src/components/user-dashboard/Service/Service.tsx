@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
+import style from "../house.module.scss";
 
 const ServiceUserDashboard = () => {
   const [services, setServices] = useState<any[]>([]);
@@ -123,23 +124,25 @@ const ServiceUserDashboard = () => {
 
   return (
     <div className="d-flex flex-column p-4">
-      <h1>لوحة التحكم للخدمات</h1>
-      <Row className="mb-4">
-        <Col md="6">
+      <h1 className="w-100 text-align-center my-4">خدماتي</h1>
+      <Row className={style.customRow}>
+        <Col sm={6} xs={12} className={"p-0"}>
           <Input
             type="text"
             placeholder="ابحث في الخدمات"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            className="w-100 my-2"
           />
         </Col>
-        <Col md="6">
+        <Col sm={4} xs={6} className={style.customColumn}>
           <Form.Control
             as="select"
             value={selectedRegion || ""}
             onChange={(e) =>
               setSelectedRegion(parseInt(e.target.value) || null)
             }
+            className="w-100 my-2"
           >
             <option value="">اختر منطقة</option>
             {regions!.map((region) => (
@@ -149,15 +152,18 @@ const ServiceUserDashboard = () => {
             ))}
           </Form.Control>
         </Col>
-      </Row>
+        <Col sm={2} xs={6} className={style.customButton}>
       <Button
         onClick={() => {
           setSelectedService(null);
           setModalShow(true);
         }}
+        variant={"secondary"}
       >
         إضافة خدمة
       </Button>
+        </Col>
+      </Row>
       {loading ? (
         <Spinner animation="border" />
       ) : (
@@ -210,7 +216,7 @@ const ServiceUserDashboard = () => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Button type="submit" variant="primary" disabled={formLoading}>
+            <Button type="submit" variant="primary" disabled={formLoading} className="my-2 mt-3">
               {formLoading ? (
                 <Spinner as="span" animation="border" size="sm" />
               ) : (
