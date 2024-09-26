@@ -158,7 +158,7 @@ const ServiceAdminDashboard = () => {
             }
           >
             <option value="">اختر منطقة</option>
-            {regions.map((region) => (
+            {regions!.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>
@@ -219,7 +219,7 @@ const ServiceAdminDashboard = () => {
                 required
               >
                 <option value="">اختر منطقة</option>
-                {regions.map((region) => (
+                {regions!.map((region) => (
                   <option key={region.id} value={region.id}>
                     {region.name}
                   </option>

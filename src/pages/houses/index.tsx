@@ -209,7 +209,7 @@ const PublicHousesPage = () => {
             disabled={loading}
           >
             <option value="">كل المناطق</option>
-            {regions.map((region: Region) => (
+            {regions!.map((region: Region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>

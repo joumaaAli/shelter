@@ -284,7 +284,7 @@ const MyHousesPage = () => {
             className="w-100 my-2"
           >
             <option value="">كل المناطق</option>
-            {regions.map((region) => (
+            {regions!.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
               </option>
@@ -381,7 +381,7 @@ const MyHousesPage = () => {
                 required
               >
                 <option value="">كل المناطق</option>
-                {regions.map((region) => (
+                {regions!.map((region) => (
                   <option key={region.id} value={region.id}>
                     {region.name}
                   </option>
