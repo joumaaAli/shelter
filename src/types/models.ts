@@ -13,10 +13,22 @@ interface House {
   price?: number | null;
 }
 
+interface Category {
+  id: string;
+  name?: string;
+  subcategories?: SubCategory[];
+}
+
 interface HouseType {
   id: string;
   name?: string;
   region?: Region;
+}
+
+interface SubCategory {
+  id: string;
+  name?: string;
+  category?: Category;
 }
 
 interface Region {
@@ -36,4 +48,12 @@ interface Address {
   address: string;
 }
 
-export type { House, HouseType, Region, Address, Shelter };
+export type {
+  House,
+  HouseType,
+  Region,
+  Address,
+  Shelter,
+  Category,
+  SubCategory,
+};

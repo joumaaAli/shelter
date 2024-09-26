@@ -1,3 +1,4 @@
+import { fetchCategories } from "@/services/cateogires";
 import { fetchRegions } from "@/services/region";
 import {
   addService,
@@ -6,6 +7,7 @@ import {
   updateService,
 } from "@/services/service";
 import { Region } from "@/types/models";
+import { Category, SubCategory } from "@/types/models";
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import DataTable from "react-data-table-component";
@@ -20,6 +22,12 @@ const ServiceAdminDashboard = () => {
   const [formLoading, setFormLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const loadServices = async () => {
@@ -37,6 +45,24 @@ const ServiceAdminDashboard = () => {
     loadRegions();
   }, [search, selectedRegion]);
 
+  useEffect(() => {
+    const loadCategories = async () => {
+      const { data } = await fetchCategories();
+      setCategories(data || []);
+    };
+
+    loadCategories();
+  }, []);
+
+  const handleCategoryChange = (e: any) => {
+    const categoryId = parseInt(e.target.value);
+    setSelectedCategory(categoryId);
+    const selectedCategory = categories.find(
+      (cat: any) => cat.id == categoryId
+    );
+    setSubcategories(selectedCategory?.subcategories || []);
+  };
+
   const handleAddOrEditService = async (e: any) => {
     e.preventDefault();
     setFormLoading(true);
@@ -49,6 +75,7 @@ const ServiceAdminDashboard = () => {
       validated: selectedService ? selectedService.validated : false,
       userId: selectedService?.userId || null, // Optional userId in case it's assigned to a user
       id: selectedService ? selectedService.id : undefined,
+      subcategoryId: parseInt(e.target.subcategory.value),
     };
 
     if (selectedService) {
@@ -202,6 +229,40 @@ const ServiceAdminDashboard = () => {
                 defaultValue={selectedService?.phoneNumber || ""}
                 required
               />
+            </Form.Group>
+            <Form.Group controlId="category">
+              <Form.Label>الفئة</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedCategory || ""}
+                onChange={(e) =>
+                  setSelectedCategory(parseInt(e.target.value) || null)
+                }
+              >
+                <option value="">اختر فئة</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="subcategory">
+              <Form.Label>الفئة الفرعية</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedSubcategory || ""}
+                onChange={(e) =>
+                  setSelectedSubcategory(parseInt(e.target.value) || null)
+                }
+              >
+                <option value="">اختر فئة فرعية</option>
+                {subcategories.map((subcategory) => (
+                  <option key={subcategory.id} value={subcategory.id}>
+                    {subcategory.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
             <Form.Group controlId="description">
               <Form.Label>الوصف</Form.Label>
