@@ -11,7 +11,7 @@ import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "reactstrap";
 import Swal from "sweetalert2";
-import style from "./my-house.module.scss";
+import style from "./house.module.scss";
 import tableStyle from "@/styles/tableStyle";
 import { GetServerSideProps } from "next";
 import { requireAuthentication } from "@/layouts/layout";

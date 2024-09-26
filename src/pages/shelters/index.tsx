@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { fetchShelters } from "@/services/shelter";
 import { fetchRegions } from "@/services/region";
 import { Row, Col, Form, Button, Spinner } from "react-bootstrap";
-import DataTable, {TableColumn} from "react-data-table-component";
+import DataTable, { TableColumn } from "react-data-table-component";
 import { Input } from "reactstrap";
 import tableStyle from "@/styles/tableStyle";
-import style from "@/pages/my-house/my-house.module.scss";
+import style from "./shelters.module.scss";
 import { Shelter } from "@/utils/interfaces/shelter";
 import { Region } from "@/types/models";
 
@@ -58,66 +58,66 @@ const SheltersFilterPage = () => {
   ];
 
   return (
-      <div className="d-flex w-100 align-items-center flex-column p-4">
-        <h1 className="w-100 text-align-center my-4">الملاجئ</h1>
-        <Row className={style.customRow}>
-          <Col sm={6} xs={12} className={"p-0"}>
-            <Input
-                type="text"
-                placeholder="ابحث باسم الملاجئ"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                disabled={loading}
-                className="w-100 my-2"
-            />
-          </Col>
-          <Col sm={4} xs={6} className={style.customColumn}>
-            <Form.Control
-                as="select"
-                value={selectedRegion || ""}
-                onChange={(e) => setSelectedRegion(Number(e.target.value))}
-                disabled={loading}
-                className="w-100 my-2"
-            >
-              <option value="">كل المناطق</option>
-              {regions.map((region: Region) => (
-                  <option key={region.id} value={region.id}>
-                    {region.name}
-                  </option>
-              ))}
-            </Form.Control>
-          </Col>
-          <Col sm={2} xs={6} className={style.customButton}>
-            <Button
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedRegion(null);
-                }}
-                variant="secondary"
-                disabled={loading} // Disable button when loading
-            >
-              مسح البحث
-            </Button>
-          </Col>
-        </Row>
+    <div className="d-flex w-100 align-items-center flex-column p-4">
+      <h1 className="w-100 text-align-center my-4">الملاجئ</h1>
+      <Row className={style.customRow}>
+        <Col sm={6} xs={12} className={"p-0"}>
+          <Input
+            type="text"
+            placeholder="ابحث باسم الملاجئ"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={loading}
+            className="w-100 my-2"
+          />
+        </Col>
+        <Col sm={4} xs={6} className={style.customColumn}>
+          <Form.Control
+            as="select"
+            value={selectedRegion || ""}
+            onChange={(e) => setSelectedRegion(Number(e.target.value))}
+            disabled={loading}
+            className="w-100 my-2"
+          >
+            <option value="">كل المناطق</option>
+            {regions.map((region: Region) => (
+              <option key={region.id} value={region.id}>
+                {region.name}
+              </option>
+            ))}
+          </Form.Control>
+        </Col>
+        <Col sm={2} xs={6} className={style.customButton}>
+          <Button
+            onClick={() => {
+              setSearchTerm("");
+              setSelectedRegion(null);
+            }}
+            variant="secondary"
+            disabled={loading} // Disable button when loading
+          >
+            مسح البحث
+          </Button>
+        </Col>
+      </Row>
 
-        {loading ? (
-            <Row className="d-flex justify-content-center align-items-center my-4">
-              <Spinner animation="border" role="status">
-                <span className="sr-only"></span>
-              </Spinner>
-            </Row>
-        ) : (
-            <DataTable
-                className={style.houseTable}
-                columns={columns}
-                data={shelters}
-                highlightOnHover
-                noDataComponent="لم يتم العثور على أية ملاجئ"
-                customStyles={tableStyle}
-            />
-        )}
-      </div>
+      {loading ? (
+        <Row className="d-flex justify-content-center align-items-center my-4">
+          <Spinner animation="border" role="status">
+            <span className="sr-only"></span>
+          </Spinner>
+        </Row>
+      ) : (
+        <DataTable
+          className={style.houseTable}
+          columns={columns}
+          data={shelters}
+          highlightOnHover
+          noDataComponent="لم يتم العثور على أية ملاجئ"
+          customStyles={tableStyle}
+        />
+      )}
+    </div>
   );
 };
 
