@@ -5,6 +5,7 @@ import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import { Col, Row, Spinner, Button, Modal, Form } from "react-bootstrap";
 import { Region } from "@/types/models";
+import { fetchSubcategories } from "@/services/cateogires";
 
 const PublicServicesPage = () => {
   const [services, setServices] = useState<any[]>([]);
@@ -16,18 +17,26 @@ const PublicServicesPage = () => {
   const [selectedServiceId, setSelectedServiceId] = useState<number | null>(
     null
   );
+  const [subcategories, setSubcategories] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const data = await filterServices(search, selectedRegion || undefined);
+      const data = await filterServices(
+        search,
+        selectedRegion || undefined,
+        selectedSubcategory || undefined
+      );
       setServices(data.data || []);
       setLoading(false);
     };
 
     fetchData();
-  }, [search, selectedRegion]);
+  }, [search, selectedRegion, selectedSubcategory]);
 
   useEffect(() => {
     async function fetchRegions() {
@@ -36,6 +45,11 @@ const PublicServicesPage = () => {
       setRegions(regionData);
     }
 
+    async function loadSubcategories() {
+      const response = await fetchSubcategories(1);
+      setSubcategories(response.data);
+    }
+    loadSubcategories();
     fetchRegions();
   }, []);
 
@@ -59,6 +73,16 @@ const PublicServicesPage = () => {
     {
       name: "المنطقة",
       selector: (row: any) => row.region?.name || "",
+      sortable: true,
+    },
+    {
+      name: "الفئة",
+      selector: (row: any) => row.subcategory?.name || "",
+      sortable: true,
+    },
+    {
+      name: "التحقق",
+      selector: (row: any) => (row.validated ? "تم التحقق" : "لم يتم التحقق"),
       sortable: true,
     },
     {
@@ -102,10 +126,24 @@ const PublicServicesPage = () => {
             value={selectedRegion || ""}
             onChange={(e) => setSelectedRegion(Number(e.target.value))}
           >
-            <option value="">الكل</option>
+            <option value="">المنطقة</option>
             {regions?.map((region) => (
               <option key={region.id} value={region.id}>
                 {region.name}
+              </option>
+            ))}
+          </Input>
+        </Col>
+        <Col lg="4" md="4" sm="12">
+          <Input
+            type="select"
+            value={selectedSubcategory || ""}
+            onChange={(e) => setSelectedSubcategory(Number(e.target.value))}
+          >
+            <option value="">الفئة</option>
+            {subcategories?.map((subcategory) => (
+              <option key={subcategory.id} value={subcategory.id}>
+                {subcategory.name}
               </option>
             ))}
           </Input>

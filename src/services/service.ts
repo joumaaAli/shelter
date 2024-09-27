@@ -1,10 +1,15 @@
 import axiosInstance from "@/utils/axiosInstance";
 
 // Fetch all services with optional search and region filtering
-export const fetchServices = async (search: string = "", regionId?: number) => {
+export const fetchServices = async (
+  search: string = "",
+  regionId?: number,
+
+  subcategoryId?: number
+) => {
   try {
     const response = await axiosInstance.get("/services", {
-      params: { search, regionId },
+      params: { search, regionId, subcategoryId },
     });
     return { success: true, data: response.data };
   } catch (error) {
@@ -16,11 +21,12 @@ export const fetchServices = async (search: string = "", regionId?: number) => {
 // Filter services by optional search and region
 export const filterServices = async (
   search: string = "",
-  regionId?: number
+  regionId?: number,
+  subcategoryId?: number
 ) => {
   try {
     const response = await axiosInstance.get("/services/filter", {
-      params: { search, regionId },
+      params: { search, regionId, subcategoryId },
     });
     return { success: true, data: response.data };
   } catch (error) {

@@ -47,6 +47,11 @@ export default async function handler(
         where: whereClause,
         include: {
           region: true,
+          subcategory: {
+            include: {
+              category: true,
+            },
+          },
         },
       });
 

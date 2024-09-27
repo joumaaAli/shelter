@@ -12,6 +12,7 @@ export default async function handler(
   if (req.method === "GET") {
     const search = (req.query.search as string) || "";
     const regionId = req.query.regionId ? Number(req.query.regionId) : null;
+    const subcategoryId = req.query.subcategoryId;
 
     try {
       const whereClause: any = {};
@@ -37,12 +38,21 @@ export default async function handler(
         whereClause.regionId = regionId;
       }
 
+      if (subcategoryId) {
+        whereClause.subcategoryId = Number(subcategoryId);
+      }
+
       whereClause.validated = true; // Only show validated services
 
       const services = await prisma.service.findMany({
         where: whereClause,
         include: {
-          region: true, // Include related region data
+          region: true,
+          subcategory: {
+            include: {
+              category: true,
+            },
+          }, // Include related region data
         },
       });
 

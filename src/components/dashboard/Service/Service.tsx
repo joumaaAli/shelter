@@ -124,6 +124,16 @@ const ServiceAdminDashboard = () => {
       sortable: true,
     },
     {
+      name: "الفئة",
+      selector: (row: any) => row.subcategory?.name || "",
+      sortable: true,
+    },
+    {
+      name: "التحقق",
+      selector: (row: any) => (row.validated ? "تم التحقق" : "لم يتم التحقق"),
+      sortable: true,
+    },
+    {
       name: "الوصف",
       selector: (row: any) => row.description || "",
       sortable: true,
@@ -192,6 +202,20 @@ const ServiceAdminDashboard = () => {
             ))}
           </Form.Control>
         </Col>
+        {/* <Col md="6">
+          <Form.Control
+            as="select"
+            value={selectedCategory || ""}
+            onChange={handleCategoryChange}
+          >
+            <option value="">اختر فئة</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </Form.Control>
+        </Col> */}
       </Row>
       <Button
         onClick={() => {

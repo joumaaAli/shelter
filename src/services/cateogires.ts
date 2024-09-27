@@ -13,6 +13,18 @@ export const fetchCategories = async () => {
   }
 };
 
+export const fetchSubcategories = async (categoryId: number) => {
+  try {
+    const response = await axiosInstance.get(
+      `${homePath}/subcategories/${categoryId}`
+    );
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error fetching subcategories:", error);
+    return { success: false, error };
+  }
+};
+
 export const updateCategory = async (categoryData: Category) => {
   try {
     const response = await axiosInstance.put(

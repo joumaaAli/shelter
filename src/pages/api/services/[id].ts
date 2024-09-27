@@ -64,5 +64,28 @@ export default async function handler(
     }
   }
 
-  res.setHeader("Allow", ["PUT"]);
+  if (req.method === "DELETE") {
+    try {
+      const deletedService = await prisma.service.findUnique({
+        where: { id: Number(id) },
+      });
+
+      if (!deletedService) {
+        return res.status(404).json({ error: "Service not found" });
+      }
+
+      if (!isAdmin && deletedService.userId !== session.user.id) {
+        return res.status(403).json({ error: "Forbidden: Access denied" });
+      }
+
+      await prisma.service.delete({
+        where: { id: Number(id) },
+      });
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete service" });
+    }
+  }
+
+  res.setHeader("Allow", ["PUT", "DELETE"]);
 }
