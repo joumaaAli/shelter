@@ -48,6 +48,11 @@ interface Address {
   address: string;
 }
 
+interface SubCategoryMap {
+  medicine: SubCategory[];
+  donation: SubCategory[];
+}
+
 export type {
   House,
   HouseType,
@@ -56,4 +61,5 @@ export type {
   Shelter,
   Category,
   SubCategory,
+  SubCategoryMap
 };

@@ -5,13 +5,15 @@ import {
   fetchServices,
   updateService,
 } from "@/services/service";
-import { Region } from "@/types/models";
+import {Region, SubCategoryMap} from "@/types/models";
 import { useEffect, useState } from "react";
 import {Button, CloseButton, Col, Form, Modal, Row, Spinner} from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Input } from "reactstrap";
 import style from "../house.module.scss";
-import styles from "@/components/Navbar/Navbar.module.scss";
+import tableStyle from "@/styles/tableStyle";
+import { Tabs, Tab } from 'react-bootstrap';
+
 
 const ServiceUserDashboard = () => {
   const [services, setServices] = useState<any[]>([]);
@@ -22,6 +24,22 @@ const ServiceUserDashboard = () => {
   const [formLoading, setFormLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedRegion, setSelectedRegion] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<'medicine' | 'donation'>('medicine');
+  // ADD THE SERVICE TO FETCH CATEGORIES
+  // SERVICES NOT BEING DISPLAYED IN THE SERVICES PAGE
+
+  const subcategories: SubCategoryMap = {
+    medicine: [
+      {id: 'general', name: 'عام'},
+      {id: 'specialized', name: 'متخصص'},
+      {id: 'emergency', name: 'طوارئ'},
+    ],
+    donation: [
+      {id: 'money', name: 'تبرع مالي'},
+      {id: 'food', name: 'تبرع غذائي'},
+      {id: 'clothes', name: 'تبرع بالملابس'},
+    ],
+  };
 
   const handleClose = () => setModalShow(false);
   const handleShow = () => setModalShow(true);
@@ -46,14 +64,17 @@ const ServiceUserDashboard = () => {
     e.preventDefault();
     setFormLoading(true);
 
+    // TO CHANGE
     const serviceData = {
       name: e.target.name.value || null,
       phoneNumber: e.target.phoneNumber.value,
       regionId: parseInt(e.target.region.value),
       description: e.target.description.value,
       validated: selectedService ? selectedService.validated : false,
+      category: e.target.category.value, // TO CHANGE
+      subcategoryId: 1, // TO CHANGE
       userId: selectedService?.userId || null, // Optional userId in case it's assigned to a user
-      id: selectedService ? selectedService.id : undefined,
+      id: 1, // TO CHANGE
     };
 
     if (selectedService) {
@@ -100,11 +121,12 @@ const ServiceUserDashboard = () => {
     },
     {
       name: "إجراءات",
-      minWidth: "400px",
+      minWidth: "260px",
       cell: (row: any) => (
           <Row>
             <Col>
               <Button
+                  variant="secondary"
                   onClick={() => {
                     setSelectedService(row);
                     handleShow();
@@ -126,6 +148,7 @@ const ServiceUserDashboard = () => {
     },
   ];
 
+  // @ts-ignore
   return (
       <div className="d-flex flex-column p-4">
         <h1 className="w-100 text-align-center my-4">خدماتي</h1>
@@ -171,7 +194,15 @@ const ServiceUserDashboard = () => {
         {loading ? (
             <Spinner animation="border"/>
         ) : (
-            <DataTable columns={columns} data={services} pagination/>
+            <DataTable className={style.houseTable}
+                       columns={columns}
+                       data={services}
+                       highlightOnHover
+                       pointerOnHover
+                       paginationPerPage={20}
+                       paginationRowsPerPageOptions={[5, 10, 15, 20]}
+                       noDataComponent="لم يتم العثور على أيَة خدمات"
+                       customStyles={tableStyle}/>
         )}
 
         <Modal show={modalShow} onHide={() => handleClose()}>
@@ -179,17 +210,30 @@ const ServiceUserDashboard = () => {
             <Modal.Title>
               {selectedService ? "تعديل الخدمة" : "إضافة خدمة"}
             </Modal.Title>
-            <CloseButton onClick={handleClose} aria-label="Hide" className={styles.closeButton}/>
+            <CloseButton onClick={handleClose} aria-label="Hide" className={style.closeButton}/>
           </Modal.Header>
           <Modal.Body>
+            {/* Tabs for switching between Medicine and Donations */}
+            <Tabs
+                activeKey={activeTab}
+                onSelect={(k) => setActiveTab((k as 'medicine' | 'donation') || 'medicine')} // Type assertion for the tab key
+                className="mb-3"
+            >
+              <Tab eventKey="medicine" title="طبابة"/>
+              <Tab eventKey="donation" title="تبرعات"/>
+            </Tabs>
+
+            {/* Shared form for both Medicine and Donations */}
             <Form onSubmit={handleAddOrEditService}>
               <Form.Group className="my-1" controlId="name">
                 <Form.Label>الاسم</Form.Label>
                 <Form.Control
                     type="text"
                     defaultValue={selectedService?.name || ""}
+                    required
                 />
               </Form.Group>
+
               <Form.Group className="my-1" controlId="phoneNumber">
                 <Form.Label>رقم الهاتف</Form.Label>
                 <Form.Control
@@ -198,14 +242,17 @@ const ServiceUserDashboard = () => {
                     required
                 />
               </Form.Group>
+
               <Form.Group controlId="description">
                 <Form.Label>الوصف</Form.Label>
-                <Form.Control className="my-1"
-                              type="text"
-                              defaultValue={selectedService?.description || ""}
-                              required
+                <Form.Control
+                    className="my-1"
+                    type="text"
+                    defaultValue={selectedService?.description || ""}
+                    required
                 />
               </Form.Group>
+
               <Form.Group controlId="region">
                 <Form.Label>المنطقة</Form.Label>
                 <Form.Control
@@ -214,22 +261,31 @@ const ServiceUserDashboard = () => {
                     defaultValue={selectedService?.regionId || ""}
                     required
                 >
-                  <option value=""></option>
-                  {regions?.map((region) => (
+                  <option value="">اختر منطقة</option>
+                  {regions.map((region) => (
                       <option key={region.id} value={region.id}>
                         {region.name}
                       </option>
                   ))}
                 </Form.Control>
               </Form.Group>
+
+              {/* Subcategory changes based on activeTab */}
+              <Form.Group controlId="subcategory">
+                <Form.Label>الفئة</Form.Label>
+                <Form.Control className="my-1" as="select" required>
+                  {subcategories[activeTab].map((subcategory) => (
+                      <option key={subcategory.id} value={subcategory.id}>
+                        {subcategory.name}
+                      </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+
               <Button type="submit" variant="primary" disabled={formLoading} className="my-2 mt-3">
                 {formLoading ? (
                     <Spinner as="span" animation="border" size="sm"/>
-                ) : selectedService ? (
-                    "حفظ التعديلات"
-                ) : (
-                    "إضافة الخدمة"
-                )}
+                ) : selectedService ? "حفظ التعديلات" : "إضافة الخدمة"}
               </Button>
             </Form>
           </Modal.Body>

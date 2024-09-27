@@ -46,11 +46,13 @@
 }
 
 .closeButton {
-  margin: 0;
+  margin: 0 !important;
+}
+
+.rowButton {
   display: flex;
+  flex-direction: row;
   flex: 1;
-  text-align: right;
-  justify-content: end;
 }
 
 @media screen and (max-width: 576px) {
