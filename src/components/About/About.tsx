@@ -10,6 +10,14 @@ function About() {
       link: path.dashboard,
     },
     { title: "للاطلاع على المنازل الموجودة اضغط هنا", link: path.houses },
+    {
+      link: path.services,
+      title: "للاطلاع على الخدمات المتوفرة اضغط هنا",
+    },
+    {
+      link: path.shelters,
+      title: "للاطلاع على الملاجئ المعتمدة اضغط هنا",
+    },
   ];
 
   return (
