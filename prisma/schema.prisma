@@ -64,7 +64,7 @@ model Shelter {
 model Service {
   id        Int      @id @default(autoincrement())
   name      String?
-  description String
+  description String?
   phoneNumber String
   validated Boolean  @default(false)  // Field for validation status
   userId    String?  // Foreign key to the User model
